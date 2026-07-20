@@ -217,6 +217,7 @@ body.menu-open .start-card {
 }
 
 body.menu-open #mainMenuScreen:not(.hidden) {
+  position: relative;
   justify-content: flex-start;
 }
 
@@ -225,10 +226,10 @@ body.menu-open #mainMenuScreen:not(.hidden) {
   place-items: center;
   margin: 0 auto;
   font-family: Impact, Haettenschweiler, "Arial Black", sans-serif;
-  font-size: clamp(72px, 15vh, 122px);
+  font-size: clamp(62px, 11.5vh, 96px);
   font-weight: 900;
   letter-spacing: -.055em;
-  line-height: .63;
+  line-height: .66;
   transform: scaleX(1.04);
   filter: drop-shadow(0 7px 0 #4a2817) drop-shadow(0 11px 10px rgba(0, 0, 0, .48));
 }
@@ -246,9 +247,34 @@ body.menu-open #mainMenuScreen:not(.hidden) {
 body.menu-open .menu-character-preview {
   visibility: hidden;
   width: 1px;
-  height: clamp(200px, 27vh, 310px);
+  height: clamp(365px, 45vh, 430px);
+  min-height: clamp(365px, 45vh, 430px);
   margin: 0;
 }
+
+.developer-shortcut {
+  position: absolute;
+  z-index: 2;
+  top: 2px;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 14px;
+  background: rgba(5, 25, 38, .7);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 5px 16px rgba(0,0,0,.24);
+  color: #dce8f2;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.developer-shortcut:active { transform: translateY(2px); background: rgba(15, 43, 60, .88); }
 
 .menu-mission {
   display: flex;
@@ -350,8 +376,8 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 }
 
 @media (max-height: 760px) {
-  .game-logo { font-size: clamp(58px, 13vh, 90px); }
-  body.menu-open .menu-character-preview { height: clamp(105px, 20vh, 180px); }
+  .game-logo { font-size: clamp(54px, 11vh, 78px); }
+  body.menu-open .menu-character-preview { height: clamp(285px, 41vh, 335px); min-height: clamp(285px, 41vh, 335px); }
   .menu-mission { padding-block: 9px; }
   body.menu-open .menu-stats > div { padding-block: 7px; }
   body.menu-open .menu-home-actions button { min-height: 45px; border-radius: 17px; }
@@ -362,6 +388,7 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
   body.menu-open #mainMenuScreen:not(.hidden) { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr auto; column-gap: 24px; }
   .game-logo { grid-column: 1; font-size: 74px; align-self: start; }
   body.menu-open .menu-character-preview { grid-column: 1; height: 80px; }
-  .menu-mission, body.menu-open .menu-stats { grid-column: 1; }
+  body.menu-open .menu-stats { grid-column: 1; }
   body.menu-open .menu-home-actions { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+  .developer-shortcut { right: calc(50% + 8px); }
 }

@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=5" />
 </head>
 <body class="menu-open">
   <main class="game-shell" aria-label="Игра Динозаврик">
@@ -25,8 +25,8 @@
         <div class="start-card">
           <div id="mainMenuScreen" class="menu-screen">
             <h1 class="game-logo" aria-label="Dino Run"><span>DINO</span><span>RUN</span></h1>
+            <button id="developerMenuButton" class="developer-shortcut" type="button" aria-label="Режим разработчика" title="Режим разработчика">⚙</button>
             <canvas id="menuCharacterPreview" class="menu-character-preview" width="112" height="80" aria-label="Выбранный персонаж"></canvas>
-            <p class="menu-mission"><span class="mission-dino" aria-hidden="true">◆</span><span>Прыгай через кактусы<br>и пригибайся под птицами.</span></p>
             <div class="menu-stats" aria-label="Статистика игрока">
               <div><span class="stat-icon coin-symbol">●</span><strong id="menuCoins">000</strong><small>МОНЕТЫ</small></div>
               <div><span class="stat-icon trophy-symbol">★</span><strong id="menuHighScore">00000</strong><small>РЕКОРД</small></div>
@@ -36,7 +36,6 @@
               <button id="startButton" class="primary-button" type="button"><span class="button-icon play-icon" aria-hidden="true"></span><span>НАЧАТЬ ИГРУ</span></button>
               <button id="characterMenuButton" class="menu-nav-button character-button" type="button"><span class="button-icon" aria-hidden="true">◆</span><span>ВЫБОР ПЕРСОНАЖА</span></button>
               <button id="leaderboardMenuButton" class="menu-nav-button leaderboard-button" type="button"><span class="button-icon" aria-hidden="true">♛</span><span>ТАБЛИЦА ЛИДЕРОВ</span></button>
-              <button id="developerMenuButton" class="menu-nav-button developer-button" type="button"><span class="button-icon" aria-hidden="true">⚙</span><span>РЕЖИМ РАЗРАБОТЧИКА</span></button>
             </div>
           </div>
 
@@ -112,8 +111,8 @@
       <span>↓ / SHIFT — ПРИГНУТЬСЯ</span>
     </footer>
   </main>
-  <script src="telegram.js?v=4"></script>
-  <script src="cloud-sync.js?v=4"></script>
-  <script src="game.js?v=4"></script>
+  <script src="telegram.js?v=5"></script>
+  <script src="cloud-sync.js?v=5"></script>
+  <script src="game.js?v=5"></script>
 </body>
 </html>
