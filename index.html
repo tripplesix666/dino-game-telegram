@@ -35,6 +35,7 @@
             <div class="menu-home-actions">
               <button id="startButton" class="primary-button" type="button">НАЧАТЬ ИГРУ</button>
               <button id="characterMenuButton" class="menu-nav-button" type="button">ВЫБОР ПЕРСОНАЖА</button>
+              <button id="leaderboardMenuButton" class="menu-nav-button" type="button">ТАБЛИЦА ЛИДЕРОВ</button>
               <button id="developerMenuButton" class="menu-nav-button" type="button">РЕЖИМ РАЗРАБОТЧИКА</button>
             </div>
           </div>
@@ -49,6 +50,15 @@
               <span>ПРЕДПРОСМОТР В ДВИЖЕНИИ</span>
             </div>
             <section class="skin-shop" aria-label="Скины"><div id="skinGrid" class="skin-grid"></div></section>
+          </div>
+
+          <div id="leaderboardMenuScreen" class="menu-screen hidden">
+            <button class="back-button" type="button" data-menu-back>← НАЗАД</button>
+            <p class="eyebrow">ЛУЧШИЕ ИГРОКИ</p>
+            <h2>ТАБЛИЦА ЛИДЕРОВ</h2>
+            <p>Топ игроков по максимальному расстоянию.</p>
+            <div id="leaderboardStatus" class="leaderboard-status">ЗАГРУЗКА...</div>
+            <ol id="leaderboardList" class="leaderboard-list" aria-live="polite"></ol>
           </div>
 
           <div id="developerMenuScreen" class="menu-screen hidden">

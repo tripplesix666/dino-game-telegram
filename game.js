@@ -26,9 +26,13 @@
   const devDistanceButtons = document.querySelector('#devDistanceButtons');
   const mainMenuScreen = document.querySelector('#mainMenuScreen');
   const skinsMenuScreen = document.querySelector('#skinsMenuScreen');
+  const leaderboardMenuScreen = document.querySelector('#leaderboardMenuScreen');
   const developerMenuScreen = document.querySelector('#developerMenuScreen');
   const characterMenuButton = document.querySelector('#characterMenuButton');
+  const leaderboardMenuButton = document.querySelector('#leaderboardMenuButton');
   const developerMenuButton = document.querySelector('#developerMenuButton');
+  const leaderboardList = document.querySelector('#leaderboardList');
+  const leaderboardStatus = document.querySelector('#leaderboardStatus');
   const menuCharacterPreview = document.querySelector('#menuCharacterPreview');
   const skinRunPreview = document.querySelector('#skinRunPreview');
 
@@ -201,8 +205,34 @@
     if (skinPreviewRaf) { cancelAnimationFrame(skinPreviewRaf); skinPreviewRaf = 0; }
     mainMenuScreen.classList.toggle('hidden', section !== 'main');
     skinsMenuScreen.classList.toggle('hidden', section !== 'skins');
+    leaderboardMenuScreen.classList.toggle('hidden', section !== 'leaderboard');
     developerMenuScreen.classList.toggle('hidden', section !== 'developer');
     if (section === 'skins') startSkinRunPreview();
+    if (section === 'leaderboard') loadLeaderboard();
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
+  }
+
+  async function loadLeaderboard() {
+    leaderboardList.innerHTML = '';
+    leaderboardStatus.textContent = window.DinoCloud?.enabled ? 'ЗАГРУЗКА...' : 'ОТКРОЙ ИГРУ В TELEGRAM';
+    if (!window.DinoCloud?.enabled) return;
+
+    try {
+      const entries = await window.DinoCloud.leaderboard();
+      leaderboardStatus.textContent = entries.length ? '' : 'ПОКА НЕТ РЕЗУЛЬТАТОВ';
+      leaderboardList.innerHTML = entries.map(entry => `
+        <li class="leaderboard-row${entry.isCurrent ? ' current' : ''}">
+          <strong class="leaderboard-rank">${entry.rank}</strong>
+          <span class="leaderboard-player">${escapeHtml(entry.name)}${entry.isCurrent ? '<small>ВЫ</small>' : ''}</span>
+          <strong class="leaderboard-score">${formatScore(entry.highScore)}</strong>
+        </li>`).join('');
+    } catch (error) {
+      leaderboardStatus.textContent = 'НЕ УДАЛОСЬ ЗАГРУЗИТЬ';
+      console.warn('Dino leaderboard:', error.message);
+    }
   }
 
   function pauseGame() {
@@ -584,6 +614,7 @@
     beep(560, .05, .015); start();
   });
   characterMenuButton.addEventListener('click', () => { showMenuSection('skins'); beep(420, .035, .01); });
+  leaderboardMenuButton.addEventListener('click', () => { showMenuSection('leaderboard'); beep(470, .035, .01); });
   developerMenuButton.addEventListener('click', () => { showMenuSection('developer'); beep(520, .035, .01); });
   for (const button of document.querySelectorAll('[data-menu-back]')) button.addEventListener('click', () => { showMenuSection('main'); beep(320, .035, .01); });
   soundButton.addEventListener('click', () => { soundOn = !soundOn; localStorage.setItem('dino-sound', soundOn ? 'on' : 'off'); soundIcon.textContent = soundOn ? '♪' : '×'; soundButton.setAttribute('aria-pressed', String(soundOn)); if (soundOn) beep(440, .06, .02); });

@@ -24,6 +24,7 @@
     enabled: Boolean(initData && userId),
     userId,
     load: () => request('load'),
+    leaderboard: () => request('leaderboard'),
     save: progress => request('save', progress)
   };
 })();

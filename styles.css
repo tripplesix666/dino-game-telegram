@@ -100,6 +100,15 @@ h1, h2 { margin: 0; font-size: clamp(34px, 7vw, 66px); letter-spacing: .12em; li
 .skin-action { color: var(--muted); font-size: 9px; letter-spacing: .6px; }
 .skin-card.affordable .skin-action { color: #bd7417; font-weight: 700; }
 
+.leaderboard-status { min-height: 28px; margin-top: 24px; color: var(--muted); font-size: 10px; letter-spacing: 1.5px; }
+.leaderboard-list { display: grid; gap: 7px; max-width: 560px; margin: 0 auto; padding: 0; list-style: none; }
+.leaderboard-row { display: grid; grid-template-columns: 42px 1fr auto; align-items: center; min-height: 48px; padding: 8px 14px; border: 1px solid rgba(49,91,112,.25); background: rgba(255,255,255,.28); text-align: left; }
+.leaderboard-row.current { border: 2px solid var(--accent); background: rgba(238,93,67,.1); }
+.leaderboard-rank { color: var(--accent); font-size: 15px; }
+.leaderboard-player { overflow: hidden; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.leaderboard-player small { margin-left: 9px; color: var(--accent); font-size: 8px; letter-spacing: 1px; }
+.leaderboard-score { font-size: 18px; letter-spacing: 2px; }
+
 .dev-mode { max-width: 500px; min-height: 118px; margin: 12px auto 5px; padding: 18px 12px; border: 1px dashed rgba(49,91,112,.35); background: rgba(255,255,255,.16); }
 .dev-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 8px; }
 .dev-heading h2 { margin: 0; font-size: 11px; letter-spacing: 1.5px; }
@@ -141,6 +150,7 @@ body.night .topbar, body.night footer { border-color: rgba(210,225,255,.18); }
 body.night .brand-mark { color: #15233d; background: #e8f0ff; }
 body.night .overlay { background: rgba(21,35,61,.84); }
 body.night .menu-stats > div, body.night .skin-card { background: rgba(255,255,255,.08); border-color: rgba(220,235,255,.24); }
+body.night .leaderboard-row { background: rgba(255,255,255,.08); border-color: rgba(220,235,255,.24); }
 body.night .dev-distances button { color: #e8f0ff; border-color: rgba(220,235,255,.24); }
 body.night .menu-nav-button, body.night .dev-start-distances button { color: #15233d; background: #e8f0ff; }
 body.night .mobile-controls button { color: #e8f0ff; border-color: rgba(232,240,255,.4); background: rgba(21,35,61,.7); }
