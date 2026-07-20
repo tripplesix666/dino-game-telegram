@@ -22,6 +22,7 @@
   const finalHighScore = document.querySelector('#finalHighScore');
   const menuCoins = document.querySelector('#menuCoins');
   const menuHighScore = document.querySelector('#menuHighScore');
+  const skinWalletCoins = document.querySelector('#skinWalletCoins');
   const skinGrid = document.querySelector('#skinGrid');
   const devDistanceButtons = document.querySelector('#devDistanceButtons');
   const mainMenuScreen = document.querySelector('#mainMenuScreen');
@@ -34,12 +35,11 @@
   const leaderboardList = document.querySelector('#leaderboardList');
   const leaderboardStatus = document.querySelector('#leaderboardStatus');
   const menuCharacterPreview = document.querySelector('#menuCharacterPreview');
-  const skinRunPreview = document.querySelector('#skinRunPreview');
 
   const C = { ink: '#2f414b', muted: '#83a6b8', cloud: '#ffffff', accent: '#ee5d43', paper: '#dff3ff', platform: '#5f8fa8', platformTop: '#315b70' };
   let width = 0, height = 0, scale = 1, groundY = 0;
   let running = false, paused = false, gameOver = false, lastTime = 0, elapsed = 0, score = 0, speed = 430;
-  let rafId = 0, skinPreviewRaf = 0, devStartDistance = 0;
+  let rafId = 0, devStartDistance = 0;
   let runSessionPromise = null;
   let spawnTimer = 0, nextSpawn = 1.25, coinTimer = 0, nextCoin = 1.8, platformTimer = 0, nextPlatform = 6, animTime = 0, milestone = 0, coinCount = 0;
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
@@ -47,16 +47,23 @@
   let highScore = Number(localStorage.getItem('dino-high-score') || 0);
   let totalCoins = Number(localStorage.getItem('dino-total-coins') || 0);
   const SKINS = [
-    { id: 'dino', name: 'ДИНО', price: 0, preview: '🦖', color: '#2f414b' },
-    { id: 'slime', name: 'СЛИЗЕНЬ', price: 15, preview: '🟢', color: '#61ad65' },
-    { id: 'lizard', name: 'ЯЩЕРИЦА', price: 35, preview: '🦎', color: '#3c9a70' },
-    { id: 'robot', name: 'РОБОТ', price: 70, preview: '🤖', color: '#687985' }
+    { id: 'classic', name: 'КЛАССИЧЕСКИЙ', price: 0, color: '#07977e', image: 'assets/skins/classic.jpg' },
+    { id: 'desert', name: 'ПУСТЫННЫЙ', price: 25, color: '#b87529', image: 'assets/skins/desert.jpg' },
+    { id: 'ice', name: 'ЛЕДЯНОЙ', price: 50, color: '#54cbe5', image: 'assets/skins/ice.jpg' },
+    { id: 'fire', name: 'ОГНЕННЫЙ', price: 75, color: '#343238', image: 'assets/skins/fire.jpg' },
+    { id: 'jungle', name: 'ДЖУНГЛЕВЫЙ', price: 100, color: '#4b9d2f', image: 'assets/skins/jungle.jpg' },
+    { id: 'twilight', name: 'СУМЕРЕЧНЫЙ', price: 150, color: '#6641a5', image: 'assets/skins/twilight.jpg' },
+    { id: 'gold', name: 'ЗОЛОТОЙ', price: 250, color: '#e8ad19', image: 'assets/skins/gold.jpg' },
+    { id: 'skeleton', name: 'СКЕЛЕТ', price: 350, color: '#d8ccb0', image: 'assets/skins/skeleton.jpg' },
+    { id: 'rainbow', name: 'РАДУЖНЫЙ', price: 500, color: '#e25445', image: 'assets/skins/rainbow.jpg' },
+    { id: 'cosmic', name: 'КОСМИЧЕСКИЙ', price: 750, color: '#172b66', image: 'assets/skins/cosmic.jpg' }
   ];
   let ownedSkins;
-  try { ownedSkins = JSON.parse(localStorage.getItem('dino-owned-skins') || '["dino"]'); } catch { ownedSkins = ['dino']; }
-  if (!Array.isArray(ownedSkins) || !ownedSkins.includes('dino')) ownedSkins = ['dino'];
-  let selectedSkin = localStorage.getItem('dino-selected-skin') || 'dino';
-  if (!ownedSkins.includes(selectedSkin)) selectedSkin = 'dino';
+  try { ownedSkins = JSON.parse(localStorage.getItem('dino-owned-skins') || '["classic"]'); } catch { ownedSkins = ['classic']; }
+  ownedSkins = Array.isArray(ownedSkins) ? ownedSkins.filter(id => SKINS.some(skin => skin.id === id)) : [];
+  if (!ownedSkins.includes('classic')) ownedSkins.unshift('classic');
+  let selectedSkin = localStorage.getItem('dino-selected-skin') || 'classic';
+  if (!ownedSkins.includes(selectedSkin)) selectedSkin = 'classic';
   const obstacles = [], coins = [], platforms = [], dust = [], clouds = [];
   let spriteColor = C.ink;
   let isNight = false, nightAmount = 0;
@@ -110,6 +117,7 @@
 
   function updateMenuStats() {
     menuCoins.textContent = String(totalCoins).padStart(3, '0');
+    skinWalletCoins.textContent = String(totalCoins).padStart(3, '0');
     menuHighScore.textContent = formatScore(highScore);
     renderSkinShop();
   }
@@ -118,7 +126,7 @@
     skinGrid.innerHTML = SKINS.map(skin => {
       const owned = ownedSkins.includes(skin.id), selected = selectedSkin === skin.id;
       const action = selected ? 'ВЫБРАН' : owned ? 'ВЫБРАТЬ' : `● ${skin.price}`;
-      return `<button class="skin-card${selected ? ' selected' : ''}${owned ? '' : ' locked'}${!owned && totalCoins >= skin.price ? ' affordable' : ''}" type="button" data-skin="${skin.id}" aria-pressed="${selected}"><span class="skin-preview">${skin.preview}</span><span class="skin-name">${skin.name}</span><span class="skin-action">${action}</span></button>`;
+      return `<button class="skin-card skin-${skin.id}${selected ? ' selected' : ''}${owned ? '' : ' locked'}${!owned && totalCoins >= skin.price ? ' affordable' : ''}" type="button" data-skin="${skin.id}" aria-pressed="${selected}"><img class="skin-card-art" src="${skin.image}" alt="${skin.name}" loading="lazy"><span class="skin-name">${skin.name}</span><span class="skin-action">${action}</span>${selected ? '<span class="skin-check" aria-hidden="true">✓</span>' : ''}</button>`;
     }).join('');
     drawMenuCharacter();
   }
@@ -149,39 +157,6 @@
     block(38, 59, 11, 15, ink); block(65, 58, 11, 16, ink);
     block(69, 19, 6, 6, eye); block(72, 21, 3, 3, '#2f414b');
     block(78, 33, 21, 5, eye); block(48, 42, 7, 12, eye);
-  }
-
-  function startSkinRunPreview() {
-    if (skinPreviewRaf) cancelAnimationFrame(skinPreviewRaf);
-    const preview = skinRunPreview.getContext('2d');
-    const frame = time => {
-      if (skinsMenuScreen.classList.contains('hidden')) { skinPreviewRaf = 0; return; }
-      const w = skinRunPreview.width, h = skinRunPreview.height, ground = 101;
-      preview.clearRect(0, 0, w, h); preview.fillStyle = '#dff3ff'; preview.fillRect(0, 0, w, ground);
-      preview.fillStyle = '#e7c987'; preview.fillRect(0, ground, w, h - ground); preview.fillStyle = '#c79548'; preview.fillRect(0, ground, w, 4);
-      const offset = (time * .18) % 48; preview.fillStyle = '#b88b49';
-      for (let x = -offset; x < w; x += 48) { preview.fillRect(Math.round(x), ground + 13, 20, 2); preview.fillRect(Math.round(x + 31), ground + 22, 8, 2); }
-
-      const skin = SKINS.find(item => item.id === selectedSkin) || SKINS[0];
-      const phase = Math.floor(time / 110) % 2, bob = phase ? 1 : 0;
-      preview.save(); preview.translate(218, 26 + bob); preview.scale(1.5, 1.5);
-      const px = (x, y, rw, rh, color = skin.id === 'dino' ? '#2f414b' : skin.color) => { preview.fillStyle = color; preview.fillRect(x, y, rw, rh); };
-      if (skin.id === 'slime') {
-        const squash = phase ? 2 : 0;
-        px(2, 25 + squash, 44, 20 - squash); px(8, 18 + squash, 32, 10); px(16, 13 + squash, 17, 7);
-        px(15, 25 + squash, 4, 5, '#dff3ff'); px(30, 25 + squash, 4, 5, '#dff3ff');
-        px(8 + phase * 22, 43, 12, 5);
-      } else if (skin.id === 'robot') {
-        px(7, 5, 34, 36); px(2, 16, 7, 19); px(40, 16, 7, 19); px(13, 12, 7, 6, '#b7f4ff'); px(29, 12, 7, 6, '#b7f4ff');
-        px(10 + phase * 19, 40, 10, 9); px(29 - phase * 19, 40, 10, 9); px(21, 0, 7, 6); px(23, -4, 3, 5, '#ee5d43');
-      } else {
-        px(13, 15, 22, 27); px(25, 0, 23, 24); px(42, 18, 8, 5); px(4, 25, 15, 9); px(0, 20, 7, 7); px(10, 38, 8, 7);
-        px(31, 5, 4, 4, '#dff3ff'); px(11 + phase * 16, 42, 8, 8);
-      }
-      preview.restore();
-      skinPreviewRaf = requestAnimationFrame(frame);
-    };
-    skinPreviewRaf = requestAnimationFrame(frame);
   }
 
   async function chooseOrBuySkin(id) {
@@ -220,12 +195,11 @@
   }
 
   function showMenuSection(section) {
-    if (skinPreviewRaf) { cancelAnimationFrame(skinPreviewRaf); skinPreviewRaf = 0; }
+    document.body.classList.toggle('skins-open', section === 'skins');
     mainMenuScreen.classList.toggle('hidden', section !== 'main');
     skinsMenuScreen.classList.toggle('hidden', section !== 'skins');
     leaderboardMenuScreen.classList.toggle('hidden', section !== 'leaderboard');
     developerMenuScreen.classList.toggle('hidden', section !== 'developer');
-    if (section === 'skins') startSkinRunPreview();
     if (section === 'leaderboard') loadLeaderboard();
   }
 
@@ -434,9 +408,9 @@
     if (!cloud) return;
     highScore = Number(cloud.high_score) || 0;
     totalCoins = Number(cloud.total_coins) || 0;
-    const cloudOwned = Array.isArray(cloud.owned_skins) ? cloud.owned_skins : ['dino'];
-    ownedSkins = [...new Set([...cloudOwned, 'dino'])];
-    selectedSkin = ownedSkins.includes(cloud.selected_skin) ? cloud.selected_skin : 'dino';
+    const cloudOwned = Array.isArray(cloud.owned_skins) ? cloud.owned_skins : ['classic'];
+    ownedSkins = [...new Set([...cloudOwned.filter(id => SKINS.some(skin => skin.id === id)), 'classic'])];
+    selectedSkin = ownedSkins.includes(cloud.selected_skin) ? cloud.selected_skin : 'classic';
     storeProgressLocally();
     updateMenuStats();
     finalHighScore.textContent = formatScore(highScore);

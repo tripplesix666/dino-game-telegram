@@ -10,7 +10,10 @@ const corsHeaders = {
   "Content-Type": "application/json",
 };
 
-const SKIN_PRICES: Record<string, number> = { dino: 0, slime: 15, lizard: 35, robot: 70 };
+const SKIN_PRICES: Record<string, number> = {
+  classic: 0, desert: 25, ice: 50, fire: 75, jungle: 100,
+  twilight: 150, gold: 250, skeleton: 350, rainbow: 500, cosmic: 750,
+};
 const RUN_TTL_SECONDS = 2 * 60 * 60;
 
 function json(body: unknown, status = 200) {
@@ -94,8 +97,9 @@ async function validateTelegram(initData: string) {
 }
 
 function sanitizeOwned(value: unknown) {
-  const skins = Array.isArray(value) ? value.filter((id) => typeof id === "string" && id in SKIN_PRICES) : [];
-  return [...new Set(["dino", ...skins])] as string[];
+  const source = Array.isArray(value) ? value.map((id) => id === "dino" ? "classic" : id) : [];
+  const skins = source.filter((id) => typeof id === "string" && id in SKIN_PRICES);
+  return [...new Set(["classic", ...skins])] as string[];
 }
 
 function progressFields() {
@@ -178,7 +182,7 @@ Deno.serve(async (req) => {
       if (current.updated_at !== session.version) throw new Error("Run result was already used or replaced");
 
       const owned = sanitizeOwned(current.owned_skins);
-      const selected = owned.includes(current.selected_skin) ? current.selected_skin : "dino";
+      const selected = owned.includes(current.selected_skin) ? current.selected_skin : "classic";
       const { data, error } = await supabase.from("player_progress").update({
         high_score: Math.max(current.high_score || 0, submittedScore),
         total_coins: Math.max(0, current.total_coins || 0) + submittedCoins,
@@ -191,7 +195,7 @@ Deno.serve(async (req) => {
     }
 
     if (action === "purchaseSkin") {
-      if (typeof skinId !== "string" || !(skinId in SKIN_PRICES) || skinId === "dino") throw new Error("Unknown skin");
+      if (typeof skinId !== "string" || !(skinId in SKIN_PRICES) || skinId === "classic") throw new Error("Unknown skin");
       const { data: current, error: currentError } = await supabase.from("player_progress").select(progressFields()).eq("telegram_id", user.id).single();
       if (currentError) throw currentError;
       const owned = sanitizeOwned(current.owned_skins);

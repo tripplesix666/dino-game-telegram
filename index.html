@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=8" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.6.0</span>
+  <span class="app-version" aria-label="Версия приложения">v0.7.0</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">D</span><span>DINO RUN</span></div>
@@ -35,19 +35,19 @@
             <p class="controls-hint"><span>Пробел / ↑</span> — прыжок &nbsp; <span>↓ / Shift</span> — пригнуться</p>
             <div class="menu-home-actions">
               <button id="startButton" class="primary-button" type="button"><span class="button-icon play-icon" aria-hidden="true"></span><span>НАЧАТЬ ИГРУ</span></button>
-              <button id="characterMenuButton" class="menu-nav-button character-button" type="button"><span class="button-icon" aria-hidden="true">◆</span><span>ВЫБОР ПЕРСОНАЖА</span></button>
+              <button id="characterMenuButton" class="menu-nav-button character-button" type="button"><span class="button-icon" aria-hidden="true">◆</span><span>СКИНЫ</span></button>
               <button id="leaderboardMenuButton" class="menu-nav-button leaderboard-button" type="button"><span class="button-icon" aria-hidden="true">♛</span><span>ТАБЛИЦА ЛИДЕРОВ</span></button>
             </div>
           </div>
 
-          <div id="skinsMenuScreen" class="menu-screen hidden">
-            <button class="back-button" type="button" data-menu-back>← НАЗАД</button>
-            <p class="eyebrow">МАГАЗИН</p>
-            <h2>ВЫБОР ПЕРСОНАЖА</h2>
-            <p>Покупай персонажей за собранные монеты.</p>
-            <div class="skin-run-stage">
-              <canvas id="skinRunPreview" width="520" height="130" aria-label="Анимация выбранного персонажа"></canvas>
-              <span>ПРЕДПРОСМОТР В ДВИЖЕНИИ</span>
+          <div id="skinsMenuScreen" class="menu-screen skins-menu hidden">
+            <div class="skins-toolbar">
+              <button class="back-button" type="button" data-menu-back>← НАЗАД</button>
+              <div class="skin-wallet"><span class="coin-symbol">●</span><strong id="skinWalletCoins">000</strong></div>
+            </div>
+            <div class="skins-title">
+              <span class="skins-title-dino" aria-hidden="true">◆</span>
+              <div><h2>СКИНЫ</h2><p>Собирай коллекцию и беги к рекорду!</p></div>
             </div>
             <section class="skin-shop" aria-label="Скины"><div id="skinGrid" class="skin-grid"></div></section>
           </div>
@@ -112,8 +112,8 @@
       <span>↓ / SHIFT — ПРИГНУТЬСЯ</span>
     </footer>
   </main>
-  <script src="telegram.js?v=6"></script>
-  <script src="cloud-sync.js?v=6"></script>
-  <script src="game.js?v=6"></script>
+  <script src="telegram.js?v=8"></script>
+  <script src="cloud-sync.js?v=8"></script>
+  <script src="game.js?v=8"></script>
 </body>
 </html>

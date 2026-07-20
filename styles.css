@@ -410,3 +410,66 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
   body.menu-open .menu-home-actions { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
   .developer-shortcut { right: calc(50% + 8px); }
 }
+
+/* Skin collection */
+body.skins-open .start-card { max-width: 1180px; }
+body.skins-open #startScreen { place-items: start center; }
+
+body.menu-open .menu-screen.skins-menu:not(#mainMenuScreen) {
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+  border-radius: 26px;
+  background: linear-gradient(180deg, rgba(3, 55, 78, .96), rgba(3, 22, 35, .97));
+}
+
+.skins-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.skins-toolbar .back-button { margin: 0 !important; color: #dff6ff !important; font-size: 11px; }
+.skin-wallet { display: flex; align-items: center; gap: 8px; min-width: 88px; padding: 8px 13px; border: 1px solid rgba(124, 218, 255, .32); border-radius: 16px; background: rgba(0, 12, 22, .55); font-family: system-ui, sans-serif; }
+.skin-wallet .coin-symbol { width: 19px; height: 19px; margin: 0; font-size: 10px; }
+.skin-wallet strong { font-size: 17px; letter-spacing: 1px; }
+
+.skins-title { display: flex; align-items: center; gap: 17px; margin: 0 0 22px; text-align: left; }
+.skins-title-dino { color: #89df4d; font-size: 42px; transform: rotate(45deg); filter: drop-shadow(3px 3px 0 rgba(0,0,0,.35)); }
+.skins-title h2 { margin: 0; color: white; font-family: Impact, "Arial Black", sans-serif; font-size: clamp(36px, 7vw, 62px); letter-spacing: .04em; line-height: .9; }
+.skins-title p { margin: 8px 0 0; color: #b9d9e7 !important; font-family: system-ui, sans-serif; font-size: clamp(11px, 2.2vw, 16px); font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
+
+body.skins-open .skin-shop { margin: 0; }
+body.skins-open .skin-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+body.skins-open .skin-card {
+  position: relative;
+  display: block;
+  min-height: 0;
+  padding: 0;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 2px solid rgba(104, 211, 248, .48);
+  border-radius: 20px;
+  background: #07324a;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.07), 0 10px 25px rgba(0,0,0,.24);
+  color: white;
+  text-align: left;
+  cursor: pointer;
+}
+
+body.skins-open .skin-card-art { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .22s ease, filter .22s ease; }
+body.skins-open .skin-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,12,22,.72) 0%, transparent 25%, transparent 59%, rgba(0,10,18,.92) 100%); pointer-events: none; }
+body.skins-open .skin-card:hover .skin-card-art { transform: scale(1.025); }
+body.skins-open .skin-card.locked .skin-card-art { filter: saturate(.72) brightness(.78); }
+body.skins-open .skin-card.affordable { border-color: rgba(255, 210, 77, .82); }
+body.skins-open .skin-card.selected { border: 3px solid #69e052; box-shadow: 0 0 0 2px rgba(105,224,82,.18), 0 12px 28px rgba(0,0,0,.28); }
+
+body.skins-open .skin-name { position: absolute; z-index: 2; top: 13px; left: 13px; right: 38px; font-family: Impact, "Arial Black", sans-serif; font-size: clamp(13px, 3.1vw, 22px); letter-spacing: .04em; line-height: 1; text-shadow: 0 3px 3px rgba(0,0,0,.65); }
+body.skins-open .skin-action { position: absolute; z-index: 2; left: 10px; right: 10px; bottom: 10px; display: grid; place-items: center; min-height: 34px; padding: 7px 8px; border: 1px solid rgba(255,255,255,.24); border-radius: 14px; background: rgba(1, 13, 22, .84); color: #e9f5fa; font-family: system-ui, sans-serif; font-size: clamp(10px, 2.4vw, 14px); font-weight: 900; letter-spacing: .05em; text-align: center; }
+body.skins-open .skin-card.affordable .skin-action { color: #ffd34e; }
+body.skins-open .skin-card.selected .skin-action { color: #8bf467; }
+.skin-check { position: absolute; z-index: 3; top: 10px; right: 10px; display: grid; place-items: center; width: 29px; height: 29px; border-radius: 50%; background: #61d64b; color: white; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 900; box-shadow: 0 3px 9px rgba(0,0,0,.3); }
+
+@media (min-width: 700px) {
+  body.skins-open .skin-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  body.menu-open .skins-menu { padding: 28px; }
+}
+
+@media (min-width: 1050px) {
+  body.skins-open .skin-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
