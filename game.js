@@ -186,7 +186,7 @@
       localStorage.setItem('dino-owned-skins', JSON.stringify(ownedSkins));
       beep(720, .12, .03);
     } else beep(440, .05, .015);
-    selectedSkin = id; localStorage.setItem('dino-selected-skin', selectedSkin); updateMenuStats(); draw();
+    selectedSkin = id; localStorage.setItem('dino-selected-skin', selectedSkin); updateMenuStats(); draw(); saveCloudProgress();
   }
 
   function showMenu() {
@@ -368,6 +368,56 @@
     totalCoins += coinCount; localStorage.setItem('dino-total-coins', String(totalCoins)); updateMenuStats();
     finalScore.textContent = formatScore(score); finalCoins.textContent = String(coinCount).padStart(3, '0'); finalHighScore.textContent = formatScore(highScore);
     overScreen.classList.remove('hidden');
+    saveCloudProgress();
+  }
+
+  function progressSnapshot() {
+    return { highScore, totalCoins, ownedSkins: [...ownedSkins], selectedSkin };
+  }
+
+  function storeProgressLocally() {
+    localStorage.setItem('dino-high-score', String(highScore));
+    localStorage.setItem('dino-total-coins', String(totalCoins));
+    localStorage.setItem('dino-owned-skins', JSON.stringify(ownedSkins));
+    localStorage.setItem('dino-selected-skin', selectedSkin);
+  }
+
+  function saveCloudProgress() {
+    if (!window.DinoCloud?.enabled) return;
+    window.DinoCloud.save(progressSnapshot()).catch(error => console.warn('Dino cloud save:', error.message));
+  }
+
+  async function loadCloudProgress() {
+    if (!window.DinoCloud?.enabled) return;
+
+    try {
+      const cloud = await window.DinoCloud.load();
+      if (!cloud) return;
+
+      const syncKey = `dino-cloud-synced-${window.DinoCloud.userId}`;
+      const firstSync = localStorage.getItem(syncKey) !== 'yes';
+      const cloudOwned = Array.isArray(cloud.owned_skins) ? cloud.owned_skins : ['dino'];
+
+      if (firstSync) {
+        highScore = Math.max(highScore, Number(cloud.high_score) || 0);
+        totalCoins = Math.max(totalCoins, Number(cloud.total_coins) || 0);
+        ownedSkins = [...new Set([...ownedSkins, ...cloudOwned, 'dino'])];
+        if (!ownedSkins.includes(selectedSkin)) selectedSkin = cloud.selected_skin || 'dino';
+        await window.DinoCloud.save(progressSnapshot());
+        localStorage.setItem(syncKey, 'yes');
+      } else {
+        highScore = Number(cloud.high_score) || 0;
+        totalCoins = Number(cloud.total_coins) || 0;
+        ownedSkins = [...new Set([...cloudOwned, 'dino'])];
+        selectedSkin = ownedSkins.includes(cloud.selected_skin) ? cloud.selected_skin : 'dino';
+      }
+
+      storeProgressLocally();
+      updateMenuStats();
+      draw();
+    } catch (error) {
+      console.warn('Dino cloud load:', error.message);
+    }
   }
 
   function makeDust(n) { for (let i = 0; i < n; i++) dust.push({ x: dino.x + 8 + Math.random() * 22, y: dino.surfaceY - Math.random() * 5, vx: Math.random() * 40, vy: -8 - Math.random() * 22, life: .18 + Math.random() * .25 }); }
@@ -539,5 +589,5 @@
   soundButton.addEventListener('click', () => { soundOn = !soundOn; localStorage.setItem('dino-sound', soundOn ? 'on' : 'off'); soundIcon.textContent = soundOn ? '♪' : '×'; soundButton.setAttribute('aria-pressed', String(soundOn)); if (soundOn) beep(440, .06, .02); });
   window.addEventListener('resize', resize);
   document.addEventListener('visibilitychange', () => { if (document.hidden && running && !paused) pauseGame(); });
-  soundIcon.textContent = soundOn ? '♪' : '×'; updateMenuStats(); resize();
+  soundIcon.textContent = soundOn ? '♪' : '×'; updateMenuStats(); resize(); loadCloudProgress();
 })();
