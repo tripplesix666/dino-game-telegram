@@ -47,16 +47,16 @@
   let highScore = Number(localStorage.getItem('dino-high-score') || 0);
   let totalCoins = Number(localStorage.getItem('dino-total-coins') || 0);
   const SKINS = [
-    { id: 'classic', name: 'КЛАССИЧЕСКИЙ', price: 0, color: '#07977e', image: 'assets/skins/classic.jpg' },
-    { id: 'desert', name: 'ПУСТЫННЫЙ', price: 0, color: '#b87529', image: 'assets/skins/desert.jpg' },
-    { id: 'ice', name: 'ЛЕДЯНОЙ', price: 0, color: '#54cbe5', image: 'assets/skins/ice.jpg' },
-    { id: 'fire', name: 'ОГНЕННЫЙ', price: 0, color: '#343238', image: 'assets/skins/fire.jpg' },
-    { id: 'jungle', name: 'ДЖУНГЛЕВЫЙ', price: 0, color: '#4b9d2f', image: 'assets/skins/jungle.jpg' },
-    { id: 'twilight', name: 'СУМЕРЕЧНЫЙ', price: 0, color: '#6641a5', image: 'assets/skins/twilight.jpg' },
-    { id: 'gold', name: 'ЗОЛОТОЙ', price: 0, color: '#e8ad19', image: 'assets/skins/gold.jpg' },
-    { id: 'skeleton', name: 'СКЕЛЕТ', price: 0, color: '#d8ccb0', image: 'assets/skins/skeleton.jpg' },
-    { id: 'rainbow', name: 'РАДУЖНЫЙ', price: 0, color: '#e25445', image: 'assets/skins/rainbow.jpg' },
-    { id: 'cosmic', name: 'КОСМИЧЕСКИЙ', price: 0, color: '#172b66', image: 'assets/skins/cosmic.jpg' }
+    { id: 'classic', name: 'КЛАССИЧЕСКИЙ', price: 0, color: '#07977e', accent: '#52c66d', image: 'assets/skins/classic.jpg' },
+    { id: 'desert', name: 'ПУСТЫННЫЙ', price: 0, color: '#b87529', accent: '#e1a54e', image: 'assets/skins/desert.jpg' },
+    { id: 'ice', name: 'ЛЕДЯНОЙ', price: 0, color: '#54cbe5', accent: '#d9f8ff', image: 'assets/skins/ice.jpg' },
+    { id: 'fire', name: 'ОГНЕННЫЙ', price: 0, color: '#302e34', accent: '#ff5a19', image: 'assets/skins/fire.jpg' },
+    { id: 'jungle', name: 'ДЖУНГЛЕВЫЙ', price: 0, color: '#4b9d2f', accent: '#a9d530', image: 'assets/skins/jungle.jpg' },
+    { id: 'twilight', name: 'СУМЕРЕЧНЫЙ', price: 0, color: '#433278', accent: '#bd4cff', image: 'assets/skins/twilight.jpg' },
+    { id: 'gold', name: 'ЗОЛОТОЙ', price: 0, color: '#e8ad19', accent: '#fff06a', image: 'assets/skins/gold.jpg' },
+    { id: 'skeleton', name: 'СКЕЛЕТ', price: 0, color: '#d8ccb0', accent: '#493f38', image: 'assets/skins/skeleton.jpg' },
+    { id: 'rainbow', name: 'РАДУЖНЫЙ', price: 0, color: '#e25445', accent: '#ffcf3d', image: 'assets/skins/rainbow.jpg' },
+    { id: 'cosmic', name: 'КОСМИЧЕСКИЙ', price: 0, color: '#172b66', accent: '#24e6ff', image: 'assets/skins/cosmic.jpg' }
   ];
   let ownedSkins;
   try { ownedSkins = JSON.parse(localStorage.getItem('dino-owned-skins') || '["classic"]'); } catch { ownedSkins = ['classic']; }
@@ -452,6 +452,45 @@
 
   function rect(x, y, w, h, color = spriteColor) { ctx.fillStyle = color; ctx.fillRect(Math.round(x), Math.round(y), Math.ceil(w), Math.ceil(h)); }
 
+  function drawSkinDetails(x, y, ducking, skin) {
+    const a = skin.accent;
+    if (skin.id === 'classic') {
+      rect(x + (ducking ? 10 : 16), y + (ducking ? 19 : 29), ducking ? 18 : 11, 4, a);
+    } else if (skin.id === 'desert') {
+      rect(x + 16, y + (ducking ? 13 : 21), 6, 5, a); rect(x + 26, y + (ducking ? 8 : 9), 8, 4, a);
+      rect(x + 8, y + (ducking ? 19 : 28), 5, 3, '#71471e');
+    } else if (skin.id === 'ice') {
+      rect(x + 10, y + (ducking ? 5 : 12), 5, 5, a); rect(x + 17, y + (ducking ? 2 : 9), 5, 6, a);
+      rect(x + 24, y + (ducking ? 1 : 6), 5, 6, a); rect(x + 30, y + (ducking ? 1 : 0), 5, 5, a);
+      rect(x + 17, y + (ducking ? 18 : 29), 12, 4, '#8feaff');
+    } else if (skin.id === 'fire') {
+      rect(x + 9, y + (ducking ? 9 : 19), 4, 8, a); rect(x + 13, y + (ducking ? 7 : 16), 4, 4, '#ff9c22');
+      rect(x + 20, y + (ducking ? 17 : 27), 4, 8, a); rect(x + 24, y + (ducking ? 21 : 31), 7, 3, a);
+      rect(x + 31, y + (ducking ? 5 : 8), 4, 5, '#ff9c22');
+    } else if (skin.id === 'jungle') {
+      rect(x + 11, y + (ducking ? 5 : 13), 5, 5, a); rect(x + 18, y + (ducking ? 2 : 9), 5, 5, a);
+      rect(x + 25, y + (ducking ? 1 : 6), 5, 5, a); rect(x + 18, y + (ducking ? 18 : 28), 8, 5, '#286b2c');
+    } else if (skin.id === 'twilight') {
+      rect(x + 11, y + (ducking ? 6 : 14), 4, 4, a); rect(x + 17, y + (ducking ? 3 : 10), 4, 4, a);
+      rect(x + 23, y + (ducking ? 1 : 7), 4, 4, a); rect(x + 17, y + (ducking ? 19 : 29), 13, 4, '#7654bd');
+    } else if (skin.id === 'gold') {
+      rect(x + 15, y + (ducking ? 8 : 17), 5, 12, a); rect(x + 27, y + (ducking ? 4 : 7), 11, 4, a);
+      rect(x + 5, y + (ducking ? 15 : 25), 4, 4, '#fff5a6');
+    } else if (skin.id === 'skeleton') {
+      rect(x + 17, y + (ducking ? 12 : 21), 15, 4, a); rect(x + 19, y + (ducking ? 8 : 17), 3, 12, a);
+      rect(x + 25, y + (ducking ? 8 : 17), 3, 12, a); rect(x + 31, y + (ducking ? 8 : 17), 3, 12, a);
+      rect(x + 31, y + (ducking ? 6 : 5), 5, 5, '#17191d');
+    } else if (skin.id === 'rainbow') {
+      const sy = y + (ducking ? 9 : 17);
+      rect(x + 13, sy, 20, 4, '#ffcf3d'); rect(x + 13, sy + 4, 20, 4, '#53cf62'); rect(x + 13, sy + 8, 20, 4, '#438bea');
+      rect(x + 5, y + (ducking ? 18 : 28), 7, 4, '#a95bdc');
+    } else if (skin.id === 'cosmic') {
+      ctx.shadowColor = a; ctx.shadowBlur = 7;
+      rect(x + 13, y + (ducking ? 8 : 16), 4, 4, a); rect(x + 25, y + (ducking ? 17 : 28), 3, 3, '#8cf6ff');
+      rect(x + 36, y + (ducking ? 6 : 8), 5, 3, a); ctx.shadowBlur = 0;
+    }
+  }
+
   function mixColor(day, night, amount) {
     const a = day.match(/\w\w/g).map(v => parseInt(v, 16)), b = night.match(/\w\w/g).map(v => parseInt(v, 16));
     return `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * amount)).join(',')})`;
@@ -481,6 +520,7 @@
       rect(x + 4, y + 8, 31, 19); rect(x + 29, y + 3, 18, 17); rect(x, y + 12, 10, 10);
       rect(x + 38, y + 7, 4, 4, C.paper);
       const phase = Math.floor(animTime * 12) % 2; rect(x + (phase ? 9 : 19), y + 25, 8, 5);
+      drawSkinDetails(x, y, true, skin);
     } else {
       rect(x + 13, y + 15, 22, 27); rect(x + 25, y, 23, 24); rect(x + 42, y + 18, 8, 5);
       rect(x + 4, y + 25, 15, 9); rect(x, y + 20, 7, 7); rect(x + 10, y + 38, 8, 7);
@@ -488,6 +528,7 @@
       if (dead) { rect(x + 30, y + 6, 7, 2); rect(x + 33, y + 3, 2, 7); }
       if (!dino.grounded) { rect(x + 12, y + 43, 8, 6); rect(x + 27, y + 40, 7, 6); }
       else { const phase = Math.floor(animTime * 12) % 2; rect(x + (phase ? 11 : 27), y + 42, 8, 8); }
+      drawSkinDetails(x, y, false, skin);
     }
     ctx.restore(); spriteColor = C.ink;
   }
