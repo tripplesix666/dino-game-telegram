@@ -201,6 +201,8 @@
     leaderboardMenuScreen.classList.toggle('hidden', section !== 'leaderboard');
     developerMenuScreen.classList.toggle('hidden', section !== 'developer');
     if (section === 'leaderboard') loadLeaderboard();
+    startScreen.scrollTop = 0;
+    requestAnimationFrame(() => { startScreen.scrollTop = 0; });
   }
 
   function escapeHtml(value) {
