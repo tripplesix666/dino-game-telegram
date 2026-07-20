@@ -1,0 +1,543 @@
+(() => {
+  'use strict';
+
+  const canvas = document.querySelector('#game');
+  const ctx = canvas.getContext('2d');
+  const wrap = document.querySelector('#gameWrap');
+  const startScreen = document.querySelector('#startScreen');
+  const overScreen = document.querySelector('#gameOverScreen');
+  const startButton = document.querySelector('#startButton');
+  const restartButton = document.querySelector('#restartButton');
+  const menuButton = document.querySelector('#menuButton');
+  const pauseButton = document.querySelector('#pauseButton');
+  const pauseScreen = document.querySelector('#pauseScreen');
+  const resumeButton = document.querySelector('#resumeButton');
+  const pauseMenuButton = document.querySelector('#pauseMenuButton');
+  const jumpButton = document.querySelector('#jumpButton');
+  const duckButton = document.querySelector('#duckButton');
+  const soundButton = document.querySelector('#soundButton');
+  const soundIcon = document.querySelector('#soundIcon');
+  const finalScore = document.querySelector('#finalScore');
+  const finalCoins = document.querySelector('#finalCoins');
+  const finalHighScore = document.querySelector('#finalHighScore');
+  const menuCoins = document.querySelector('#menuCoins');
+  const menuHighScore = document.querySelector('#menuHighScore');
+  const skinGrid = document.querySelector('#skinGrid');
+  const devDistanceButtons = document.querySelector('#devDistanceButtons');
+  const mainMenuScreen = document.querySelector('#mainMenuScreen');
+  const skinsMenuScreen = document.querySelector('#skinsMenuScreen');
+  const developerMenuScreen = document.querySelector('#developerMenuScreen');
+  const characterMenuButton = document.querySelector('#characterMenuButton');
+  const developerMenuButton = document.querySelector('#developerMenuButton');
+  const menuCharacterPreview = document.querySelector('#menuCharacterPreview');
+  const skinRunPreview = document.querySelector('#skinRunPreview');
+
+  const C = { ink: '#2f414b', muted: '#83a6b8', cloud: '#ffffff', accent: '#ee5d43', paper: '#dff3ff', platform: '#5f8fa8', platformTop: '#315b70' };
+  let width = 0, height = 0, scale = 1, groundY = 0;
+  let running = false, paused = false, gameOver = false, lastTime = 0, elapsed = 0, score = 0, speed = 430;
+  let rafId = 0, skinPreviewRaf = 0, devStartDistance = 0;
+  let spawnTimer = 0, nextSpawn = 1.25, coinTimer = 0, nextCoin = 1.8, platformTimer = 0, nextPlatform = 6, animTime = 0, milestone = 0, coinCount = 0;
+  let soundOn = localStorage.getItem('dino-sound') !== 'off';
+  let audio = null;
+  let highScore = Number(localStorage.getItem('dino-high-score') || 0);
+  let totalCoins = Number(localStorage.getItem('dino-total-coins') || 0);
+  const SKINS = [
+    { id: 'dino', name: 'ДИНО', price: 0, preview: '🦖', color: '#2f414b' },
+    { id: 'slime', name: 'СЛИЗЕНЬ', price: 15, preview: '🟢', color: '#61ad65' },
+    { id: 'lizard', name: 'ЯЩЕРИЦА', price: 35, preview: '🦎', color: '#3c9a70' },
+    { id: 'robot', name: 'РОБОТ', price: 70, preview: '🤖', color: '#687985' }
+  ];
+  let ownedSkins;
+  try { ownedSkins = JSON.parse(localStorage.getItem('dino-owned-skins') || '["dino"]'); } catch { ownedSkins = ['dino']; }
+  if (!Array.isArray(ownedSkins) || !ownedSkins.includes('dino')) ownedSkins = ['dino'];
+  let selectedSkin = localStorage.getItem('dino-selected-skin') || 'dino';
+  if (!ownedSkins.includes(selectedSkin)) selectedSkin = 'dino';
+  const obstacles = [], coins = [], platforms = [], dust = [], clouds = [];
+  let spriteColor = C.ink;
+  let isNight = false, nightAmount = 0;
+
+  const dino = { x: 90, y: 0, w: 46, h: 50, vy: 0, grounded: true, ducking: false, support: null, surfaceY: 0 };
+
+  function resize() {
+    const previousWidth = width;
+    const previousGroundY = groundY;
+    const rect = wrap.getBoundingClientRect();
+    scale = Math.min(window.devicePixelRatio || 1, 2);
+    width = rect.width; height = rect.height;
+    canvas.width = Math.round(width * scale); canvas.height = Math.round(height * scale);
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    groundY = Math.min(height * .72, height - 90);
+    dino.x = Math.max(42, Math.min(110, width * .1));
+    if (dino.grounded && !dino.support) { dino.surfaceY = groundY; dino.y = groundY - dino.h; }
+    if (!clouds.length) {
+      for (let i = 0; i < 5; i++) clouds.push({ x: Math.random() * width, y: 40 + Math.random() * Math.max(20, groundY - 115), s: .6 + Math.random() * .8 });
+    } else {
+      const oldSkyBottom = Math.max(60, previousGroundY - 65);
+      const newSkyBottom = Math.max(60, groundY - 65);
+      for (const cloud of clouds) {
+        if (previousWidth > 0) cloud.x = cloud.x / previousWidth * width;
+        const verticalRatio = Math.max(0, Math.min(1, (cloud.y - 35) / Math.max(1, oldSkyBottom - 35)));
+        cloud.y = 35 + verticalRatio * (newSkyBottom - 35);
+      }
+    }
+    draw();
+  }
+
+  function reset() {
+    obstacles.length = 0; coins.length = 0; platforms.length = 0; dust.length = 0; elapsed = 0; score = 0; speed = 430; coinCount = 0;
+    spawnTimer = 0; nextSpawn = 1.15; coinTimer = 0; nextCoin = 1.5; platformTimer = 0; nextPlatform = 5 + Math.random() * 3; milestone = 0; gameOver = false; paused = false;
+    Object.assign(dino, { y: groundY - 50, h: 50, vy: 0, grounded: true, ducking: false, support: null, surfaceY: groundY });
+    setNight(false, true);
+  }
+
+  function start() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+    reset(); score = devStartDistance; speed = Math.min(890, 430 + score * .095);
+    setNight(Math.floor(score / 1000) % 2 === 1, true);
+    running = true; lastTime = performance.now();
+    document.body.classList.remove('menu-open');
+    startScreen.classList.add('hidden'); overScreen.classList.add('hidden'); pauseScreen.classList.add('hidden');
+    initAudio(); beep(330, .05, .025); requestNextFrame();
+  }
+
+  function updateMenuStats() {
+    menuCoins.textContent = String(totalCoins).padStart(3, '0');
+    menuHighScore.textContent = formatScore(highScore);
+    renderSkinShop();
+  }
+
+  function renderSkinShop() {
+    skinGrid.innerHTML = SKINS.map(skin => {
+      const owned = ownedSkins.includes(skin.id), selected = selectedSkin === skin.id;
+      const action = selected ? 'ВЫБРАН' : owned ? 'ВЫБРАТЬ' : `● ${skin.price}`;
+      return `<button class="skin-card${selected ? ' selected' : ''}${owned ? '' : ' locked'}${!owned && totalCoins >= skin.price ? ' affordable' : ''}" type="button" data-skin="${skin.id}" aria-pressed="${selected}"><span class="skin-preview">${skin.preview}</span><span class="skin-name">${skin.name}</span><span class="skin-action">${action}</span></button>`;
+    }).join('');
+    drawMenuCharacter();
+  }
+
+  function drawMenuCharacter() {
+    const preview = menuCharacterPreview.getContext('2d');
+    const skin = SKINS.find(item => item.id === selectedSkin) || SKINS[0];
+    preview.clearRect(0, 0, menuCharacterPreview.width, menuCharacterPreview.height);
+    const block = (x, y, w, h, color = skin.color) => { preview.fillStyle = color; preview.fillRect(x, y, w, h); };
+    const ink = skin.color, eye = '#dff3ff';
+
+    if (skin.id === 'slime') {
+      block(22, 45, 68, 25, ink); block(30, 36, 52, 13, ink); block(41, 28, 30, 10, ink);
+      block(42, 42, 8, 9, eye); block(64, 42, 8, 9, eye); block(46, 46, 4, 5, '#2f414b'); block(64, 46, 4, 5, '#2f414b');
+      block(31, 69, 12, 5, ink); block(70, 69, 12, 5, ink);
+      return;
+    }
+
+    if (skin.id === 'robot') {
+      block(31, 18, 51, 45, ink); block(24, 30, 8, 26, ink); block(82, 30, 8, 26, ink);
+      block(40, 29, 10, 9, '#b7f4ff'); block(64, 29, 10, 9, '#b7f4ff'); block(42, 62, 11, 12, ink); block(62, 62, 11, 12, ink);
+      block(48, 10, 18, 8, ink); block(55, 5, 5, 7, '#ee5d43');
+      return;
+    }
+
+    block(43, 31, 33, 31, ink); block(59, 12, 40, 27, ink); block(91, 35, 14, 7, ink);
+    block(30, 43, 20, 17, ink); block(20, 39, 14, 13, ink); block(12, 35, 11, 9, ink);
+    block(38, 59, 11, 15, ink); block(65, 58, 11, 16, ink);
+    block(69, 19, 6, 6, eye); block(72, 21, 3, 3, '#2f414b');
+    block(78, 33, 21, 5, eye); block(48, 42, 7, 12, eye);
+  }
+
+  function startSkinRunPreview() {
+    if (skinPreviewRaf) cancelAnimationFrame(skinPreviewRaf);
+    const preview = skinRunPreview.getContext('2d');
+    const frame = time => {
+      if (skinsMenuScreen.classList.contains('hidden')) { skinPreviewRaf = 0; return; }
+      const w = skinRunPreview.width, h = skinRunPreview.height, ground = 101;
+      preview.clearRect(0, 0, w, h); preview.fillStyle = '#dff3ff'; preview.fillRect(0, 0, w, ground);
+      preview.fillStyle = '#e7c987'; preview.fillRect(0, ground, w, h - ground); preview.fillStyle = '#c79548'; preview.fillRect(0, ground, w, 4);
+      const offset = (time * .18) % 48; preview.fillStyle = '#b88b49';
+      for (let x = -offset; x < w; x += 48) { preview.fillRect(Math.round(x), ground + 13, 20, 2); preview.fillRect(Math.round(x + 31), ground + 22, 8, 2); }
+
+      const skin = SKINS.find(item => item.id === selectedSkin) || SKINS[0];
+      const phase = Math.floor(time / 110) % 2, bob = phase ? 1 : 0;
+      preview.save(); preview.translate(218, 26 + bob); preview.scale(1.5, 1.5);
+      const px = (x, y, rw, rh, color = skin.id === 'dino' ? '#2f414b' : skin.color) => { preview.fillStyle = color; preview.fillRect(x, y, rw, rh); };
+      if (skin.id === 'slime') {
+        const squash = phase ? 2 : 0;
+        px(2, 25 + squash, 44, 20 - squash); px(8, 18 + squash, 32, 10); px(16, 13 + squash, 17, 7);
+        px(15, 25 + squash, 4, 5, '#dff3ff'); px(30, 25 + squash, 4, 5, '#dff3ff');
+        px(8 + phase * 22, 43, 12, 5);
+      } else if (skin.id === 'robot') {
+        px(7, 5, 34, 36); px(2, 16, 7, 19); px(40, 16, 7, 19); px(13, 12, 7, 6, '#b7f4ff'); px(29, 12, 7, 6, '#b7f4ff');
+        px(10 + phase * 19, 40, 10, 9); px(29 - phase * 19, 40, 10, 9); px(21, 0, 7, 6); px(23, -4, 3, 5, '#ee5d43');
+      } else {
+        px(13, 15, 22, 27); px(25, 0, 23, 24); px(42, 18, 8, 5); px(4, 25, 15, 9); px(0, 20, 7, 7); px(10, 38, 8, 7);
+        px(31, 5, 4, 4, '#dff3ff'); px(11 + phase * 16, 42, 8, 8);
+      }
+      preview.restore();
+      skinPreviewRaf = requestAnimationFrame(frame);
+    };
+    skinPreviewRaf = requestAnimationFrame(frame);
+  }
+
+  function chooseOrBuySkin(id) {
+    const skin = SKINS.find(item => item.id === id);
+    if (!skin) return;
+    if (!ownedSkins.includes(id)) {
+      if (totalCoins < skin.price) { beep(130, .12, .025); return; }
+      totalCoins -= skin.price; ownedSkins.push(id);
+      localStorage.setItem('dino-total-coins', String(totalCoins));
+      localStorage.setItem('dino-owned-skins', JSON.stringify(ownedSkins));
+      beep(720, .12, .03);
+    } else beep(440, .05, .015);
+    selectedSkin = id; localStorage.setItem('dino-selected-skin', selectedSkin); updateMenuStats(); draw();
+  }
+
+  function showMenu() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+    running = false; paused = false; gameOver = false; setNight(false, true);
+    document.body.classList.add('menu-open');
+    overScreen.classList.add('hidden'); pauseScreen.classList.add('hidden'); startScreen.classList.remove('hidden');
+    showMenuSection('main'); updateMenuStats(); draw();
+  }
+
+  function showMenuSection(section) {
+    if (skinPreviewRaf) { cancelAnimationFrame(skinPreviewRaf); skinPreviewRaf = 0; }
+    mainMenuScreen.classList.toggle('hidden', section !== 'main');
+    skinsMenuScreen.classList.toggle('hidden', section !== 'skins');
+    developerMenuScreen.classList.toggle('hidden', section !== 'developer');
+    if (section === 'skins') startSkinRunPreview();
+  }
+
+  function pauseGame() {
+    if (!running || paused || gameOver) return;
+    paused = true; if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+    pauseScreen.classList.remove('hidden'); beep(240, .04, .012); draw();
+  }
+
+  function resumeGame() {
+    if (!running || !paused) return;
+    paused = false; pauseScreen.classList.add('hidden'); lastTime = performance.now(); beep(380, .04, .012); requestNextFrame();
+  }
+
+  function setNight(active, instant = false) {
+    isNight = active; document.body.classList.toggle('night', active);
+    if (instant) nightAmount = active ? 1 : 0;
+  }
+
+  function jump() {
+    if (!running) {
+      if (!gameOver && !startScreen.classList.contains('hidden') && !mainMenuScreen.classList.contains('hidden')) { devStartDistance = 0; start(); }
+      return;
+    }
+    if (dino.grounded) {
+      dino.ducking = false; dino.h = 50; dino.y = dino.surfaceY - 50;
+      dino.vy = -780; dino.grounded = false; dino.support = null; beep(520, .055, .018);
+    }
+  }
+
+  function setDuck(active) {
+    if (!running) return;
+    dino.ducking = active;
+    if (!dino.grounded && active) dino.vy += 620;
+    if (dino.grounded) { dino.h = active ? 30 : 50; dino.y = dino.surfaceY - dino.h; }
+  }
+
+  function spawnObstacle() {
+    const birdAllowed = score > 350 && Math.random() < .28;
+    if (birdAllowed) {
+      const levels = [groundY - 42, groundY - 72, groundY - 102];
+      obstacles.push({ type: 'bird', x: width + 30, y: levels[Math.floor(Math.random() * levels.length)], w: 48, h: 28, frame: 0 });
+    } else {
+      const group = score > 180 && Math.random() < .35 ? 2 + (Math.random() < .28 ? 1 : 0) : 1;
+      const tall = Math.random() < .52;
+      obstacles.push({ type: 'cactus', x: width + 30, y: groundY - (tall ? 48 : 35), w: group * (tall ? 24 : 19), h: tall ? 48 : 35, group, tall });
+    }
+  }
+
+  function spawnCoins() {
+    const amount = 1 + Math.floor(Math.random() * 3);
+    const levels = [groundY - 36, groundY - 78, groundY - 122];
+    const baseY = levels[Math.floor(Math.random() * levels.length)];
+    for (let i = 0; i < amount; i++) {
+      coins.push({ x: width + 35 + i * 34, y: baseY - (amount === 3 && i === 1 ? 15 : 0), size: 18, phase: Math.random() * Math.PI * 2 });
+    }
+  }
+
+  function spawnPlatformRoute() {
+    const count = 2 + Math.floor(Math.random() * 3);
+    let x = width + 90;
+    const levels = [groundY - 82, groundY - 125, groundY - 165];
+    let level = Math.floor(Math.random() * 2);
+    for (let i = 0; i < count; i++) {
+      if (i) level = Math.max(0, Math.min(2, level + (Math.random() < .5 ? -1 : 1)));
+      const w = 150 + Math.random() * 100;
+      const platform = { x, y: levels[level], w, h: 14 };
+      platforms.push(platform);
+      const coinAmount = 2 + Math.floor(w / 70);
+      for (let c = 0; c < coinAmount; c++) coins.push({ x: x + 28 + c * 34, y: platform.y - 30, size: 18, phase: c * .8 });
+      x += w + 65 + Math.random() * 45;
+    }
+  }
+
+  function update(dt) {
+    elapsed += dt; animTime += dt; score += dt * speed * .025;
+    speed = Math.min(890, 430 + score * .095);
+    setNight(Math.floor(score / 1000) % 2 === 1);
+    nightAmount += ((isNight ? 1 : 0) - nightAmount) * Math.min(1, dt * 2.2);
+    const currentMilestone = Math.floor(score / 500);
+    if (currentMilestone > milestone) { milestone = currentMilestone; beep(760, .08, .025); }
+
+    for (let i = platforms.length - 1; i >= 0; i--) {
+      const platform = platforms[i]; platform.x -= speed * dt;
+      if (platform.x + platform.w < -20) platforms.splice(i, 1);
+    }
+
+    if (dino.grounded && dino.support) {
+      const stillSupported = dino.x + dino.w > dino.support.x && dino.x < dino.support.x + dino.support.w;
+      if (!stillSupported) { dino.grounded = false; dino.support = null; dino.vy = 60; }
+    }
+
+    if (!dino.grounded) {
+      const previousBottom = dino.y + dino.h;
+      dino.vy += 2100 * dt; dino.y += dino.vy * dt;
+      let landing = null;
+      if (dino.vy >= 0) {
+        for (const platform of platforms) {
+          const overlaps = dino.x + dino.w - 6 > platform.x && dino.x + 6 < platform.x + platform.w;
+          if (overlaps && previousBottom <= platform.y + 4 && dino.y + dino.h >= platform.y && (!landing || platform.y < landing.y)) landing = platform;
+        }
+      }
+      if (landing) {
+        if (dino.ducking) dino.h = 30;
+        dino.surfaceY = landing.y; dino.y = landing.y - dino.h; dino.vy = 0; dino.grounded = true; dino.support = landing; makeDust(4); beep(280, .035, .01);
+      } else if (dino.y >= groundY - dino.h) {
+        if (dino.ducking) dino.h = 30;
+        dino.surfaceY = groundY; dino.y = groundY - dino.h; dino.vy = 0; dino.grounded = true; dino.support = null; makeDust(5);
+      }
+    }
+
+    spawnTimer += dt;
+    if (spawnTimer >= nextSpawn) {
+      spawnTimer = 0; spawnObstacle();
+      const minGap = Math.max(.68, 1.08 - speed / 2600);
+      nextSpawn = minGap + Math.random() * .72;
+    }
+
+    coinTimer += dt;
+    if (coinTimer >= nextCoin) {
+      coinTimer = 0; spawnCoins(); nextCoin = 1.8 + Math.random() * 2.1;
+    }
+
+    platformTimer += dt;
+    if (platformTimer >= nextPlatform) {
+      platformTimer = 0; spawnPlatformRoute(); nextPlatform = 9 + Math.random() * 5;
+    }
+
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+      const o = obstacles[i]; o.x -= (speed + (o.type === 'bird' ? 145 : 0)) * dt; o.frame += dt;
+      if (o.x + o.w < -10) obstacles.splice(i, 1);
+      else if (collides(o)) { endGame(); return; }
+    }
+    for (let i = coins.length - 1; i >= 0; i--) {
+      const coin = coins[i]; coin.x -= speed * dt; coin.phase += dt * 9;
+      if (coin.x + coin.size < -10) coins.splice(i, 1);
+      else if (collectsCoin(coin)) {
+        coinCount++; coins.splice(i, 1); beep(880 + (coinCount % 3) * 110, .07, .022);
+      }
+    }
+    for (const c of clouds) { c.x -= speed * .035 * c.s * dt; if (c.x < -80) { c.x = width + Math.random() * 150; c.y = 40 + Math.random() * Math.max(20, groundY - 115); } }
+    for (let i = dust.length - 1; i >= 0; i--) { const p = dust[i]; p.x -= (speed * .25 + p.vx) * dt; p.y += p.vy * dt; p.life -= dt; if (p.life <= 0) dust.splice(i, 1); }
+    if (dino.grounded && !dino.ducking && Math.random() < dt * 5) makeDust(1);
+  }
+
+  function collides(o) {
+    const padX = dino.ducking ? 7 : 9, padY = 6;
+    const dx = dino.x + padX, dy = dino.y + padY, dw = dino.w - padX * 2, dh = dino.h - padY - 2;
+    const op = o.type === 'bird' ? 5 : 3;
+    return dx < o.x + o.w - op && dx + dw > o.x + op && dy < o.y + o.h - 3 && dy + dh > o.y + 3;
+  }
+
+  function collectsCoin(coin) {
+    const dx = dino.x + 5, dy = dino.y + 3;
+    return dx < coin.x + coin.size && dx + dino.w - 10 > coin.x && dy < coin.y + coin.size && dy + dino.h - 6 > coin.y;
+  }
+
+  function endGame() {
+    if (!running) return;
+    running = false; paused = false; gameOver = true;
+    if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+    makeDust(9); beep(115, .25, .05);
+    if (devStartDistance === 0) { highScore = Math.max(highScore, Math.floor(score)); localStorage.setItem('dino-high-score', String(highScore)); }
+    totalCoins += coinCount; localStorage.setItem('dino-total-coins', String(totalCoins)); updateMenuStats();
+    finalScore.textContent = formatScore(score); finalCoins.textContent = String(coinCount).padStart(3, '0'); finalHighScore.textContent = formatScore(highScore);
+    overScreen.classList.remove('hidden');
+  }
+
+  function makeDust(n) { for (let i = 0; i < n; i++) dust.push({ x: dino.x + 8 + Math.random() * 22, y: dino.surfaceY - Math.random() * 5, vx: Math.random() * 40, vy: -8 - Math.random() * 22, life: .18 + Math.random() * .25 }); }
+  const formatScore = n => String(Math.floor(n)).padStart(5, '0').slice(-5);
+
+  function rect(x, y, w, h, color = spriteColor) { ctx.fillStyle = color; ctx.fillRect(Math.round(x), Math.round(y), Math.ceil(w), Math.ceil(h)); }
+
+  function mixColor(day, night, amount) {
+    const a = day.match(/\w\w/g).map(v => parseInt(v, 16)), b = night.match(/\w\w/g).map(v => parseInt(v, 16));
+    return `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * amount)).join(',')})`;
+  }
+
+  function drawDino() {
+    const x = Math.round(dino.x), y = Math.round(dino.y), dead = gameOver;
+    const skin = SKINS.find(item => item.id === selectedSkin) || SKINS[0];
+    spriteColor = skin.id === 'dino' ? C.ink : skin.color;
+    ctx.save(); ctx.fillStyle = C.ink;
+    if (skin.id === 'slime') {
+      const bodyH = dino.ducking && dino.grounded ? 22 : 32, bodyY = y + dino.h - bodyH;
+      rect(x + 3, bodyY + 9, 43, bodyH - 9); rect(x + 9, bodyY + 4, 31, 9); rect(x + 17, bodyY, 17, 7);
+      rect(x + 17, bodyY + 9, 4, 5, C.paper); rect(x + 31, bodyY + 9, 4, 5, C.paper);
+      rect(x + 19, bodyY + 11, 2, 3, C.ink); rect(x + 31, bodyY + 11, 2, 3, C.ink);
+      if (dead) rect(x + 12, bodyY + bodyH - 7, 26, 3, C.accent);
+      ctx.restore(); spriteColor = C.ink; return;
+    }
+    if (skin.id === 'robot') {
+      const bodyY = y + (dino.ducking && dino.grounded ? 4 : 6);
+      rect(x + 7, bodyY, 34, dino.h - 10); rect(x + 2, bodyY + 11, 7, 19); rect(x + 40, bodyY + 11, 7, 19);
+      rect(x + 13, bodyY + 7, 7, 6, dead ? C.accent : '#b7f4ff'); rect(x + 29, bodyY + 7, 7, 6, dead ? C.accent : '#b7f4ff');
+      rect(x + 14, bodyY + dino.h - 10, 8, 7); rect(x + 28, bodyY + dino.h - 10, 8, 7);
+      ctx.restore(); spriteColor = C.ink; return;
+    }
+    if (dino.ducking && dino.grounded) {
+      rect(x + 4, y + 8, 31, 19); rect(x + 29, y + 3, 18, 17); rect(x, y + 12, 10, 10);
+      rect(x + 38, y + 7, 4, 4, C.paper);
+      const phase = Math.floor(animTime * 12) % 2; rect(x + (phase ? 9 : 19), y + 25, 8, 5);
+    } else {
+      rect(x + 13, y + 15, 22, 27); rect(x + 25, y, 23, 24); rect(x + 42, y + 18, 8, 5);
+      rect(x + 4, y + 25, 15, 9); rect(x, y + 20, 7, 7); rect(x + 10, y + 38, 8, 7);
+      rect(x + 31, y + 5, 4, 4, dead ? C.accent : C.paper);
+      if (dead) { rect(x + 30, y + 6, 7, 2); rect(x + 33, y + 3, 2, 7); }
+      if (!dino.grounded) { rect(x + 12, y + 43, 8, 6); rect(x + 27, y + 40, 7, 6); }
+      else { const phase = Math.floor(animTime * 12) % 2; rect(x + (phase ? 11 : 27), y + 42, 8, 8); }
+    }
+    ctx.restore(); spriteColor = C.ink;
+  }
+
+  function drawCactus(o) {
+    const unit = o.tall ? 23 : 18;
+    for (let i = 0; i < o.group; i++) {
+      const x = o.x + i * (unit - 2), h = o.h * (.82 + ((i * 13) % 3) * .09), y = groundY - h;
+      rect(x + unit * .34, y, unit * .34, h); rect(x, y + h * .38, unit * .35, 6); rect(x, y + h * .25, 5, h * .24); rect(x + unit * .66, y + h * .52, unit * .34, 6); rect(x + unit - 5, y + h * .37, 5, h * .26);
+    }
+  }
+
+  function drawBird(o) {
+    const up = Math.floor(o.frame * 9) % 2 === 0;
+    spriteColor = C.ink;
+    ctx.save(); ctx.translate(o.x * 2 + 56, 0); ctx.scale(-1, 1);
+    rect(o.x + 13, o.y + 10, 29, 12); rect(o.x + 36, o.y + 6, 13, 13); rect(o.x + 47, o.y + 10, 9, 4);
+    rect(o.x + 3, o.y + 13, 15, 6); rect(o.x, o.y + 10, 7, 4); rect(o.x + 40, o.y + 9, 3, 3, C.paper);
+    if (up) {
+      rect(o.x + 14, o.y + 4, 23, 8); rect(o.x + 18, o.y, 17, 5); rect(o.x + 22, o.y - 4, 11, 5);
+    } else {
+      rect(o.x + 12, o.y + 20, 26, 7); rect(o.x + 17, o.y + 27, 20, 5); rect(o.x + 24, o.y + 32, 12, 4);
+    }
+    ctx.restore();
+  }
+
+  function drawCoin(coin) {
+    const squash = .35 + Math.abs(Math.cos(coin.phase)) * .65;
+    const w = Math.max(5, coin.size * squash), x = coin.x + (coin.size - w) / 2;
+    ctx.fillStyle = '#f2a93b'; ctx.fillRect(Math.round(x), Math.round(coin.y), Math.round(w), coin.size);
+    if (w > 9) { ctx.fillStyle = '#ffd36b'; ctx.fillRect(Math.round(x + 4), Math.round(coin.y + 3), Math.max(2, Math.round(w - 8)), coin.size - 6); }
+  }
+
+  function drawPlatform(platform) {
+    rect(platform.x, platform.y, platform.w, 5, C.platformTop);
+    rect(platform.x + 3, platform.y + 5, platform.w - 6, platform.h - 5, C.platform);
+    ctx.fillStyle = 'rgba(255,255,255,.28)';
+    for (let x = platform.x + 14; x < platform.x + platform.w - 8; x += 28) ctx.fillRect(Math.round(x), Math.round(platform.y + 8), 12, 2);
+  }
+
+  function drawCloud(c) {
+    ctx.strokeStyle = C.cloud; ctx.lineWidth = 2; ctx.beginPath();
+    ctx.moveTo(c.x, c.y + 13 * c.s); ctx.lineTo(c.x + 12 * c.s, c.y + 13 * c.s);
+    ctx.arc(c.x + 21 * c.s, c.y + 10 * c.s, 9 * c.s, Math.PI, 0);
+    ctx.arc(c.x + 38 * c.s, c.y + 8 * c.s, 13 * c.s, Math.PI, 0);
+    ctx.arc(c.x + 54 * c.s, c.y + 12 * c.s, 8 * c.s, Math.PI, 0); ctx.lineTo(c.x + 70 * c.s, c.y + 13 * c.s); ctx.stroke();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    const sky = mixColor('#dff3ff', '#15233d', nightAmount);
+    C.paper = sky; C.ink = mixColor('#2f414b', '#e8f0ff', nightAmount); C.muted = mixColor('#83a6b8', '#7185a9', nightAmount);
+    spriteColor = C.ink; rect(0, 0, width, height, sky);
+    if (nightAmount > .05) {
+      ctx.globalAlpha = nightAmount;
+      for (let i = 0; i < 28; i++) rect((i * 97 + 41) % Math.max(width, 1), 48 + (i * 53) % Math.max(80, groundY - 100), i % 4 === 0 ? 3 : 2, i % 4 === 0 ? 3 : 2, '#dce8ff');
+      ctx.beginPath(); ctx.fillStyle = '#f5edbd'; ctx.arc(width * .78, 95, 24, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.fillStyle = sky; ctx.arc(width * .78 + 10, 87, 23, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    rect(0, groundY, width, height - groundY, mixColor('#e7c987', '#584b3a', nightAmount));
+    rect(0, groundY, width, 5, mixColor('#c79548', '#9b825e', nightAmount));
+    for (const c of clouds) drawCloud(c);
+    ctx.strokeStyle = C.ink; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, groundY + .5); ctx.lineTo(width, groundY + .5); ctx.stroke();
+    ctx.fillStyle = C.muted;
+    const groundOffset = running ? (elapsed * speed) % 90 : 0;
+    for (let x = -groundOffset; x < width; x += 90) { ctx.fillRect(x, groundY + 12, 22, 2); ctx.fillRect(x + 46, groundY + 20, 9, 2); ctx.fillRect(x + 68, groundY + 7, 4, 2); }
+    for (const platform of platforms) drawPlatform(platform);
+    for (const p of dust) rect(p.x, p.y, 3, 3, C.muted);
+    for (const coin of coins) drawCoin(coin);
+    for (const o of obstacles) o.type === 'cactus' ? drawCactus(o) : drawBird(o);
+    drawDino();
+
+    ctx.textAlign = 'right'; ctx.font = '700 16px "Courier New"'; ctx.fillStyle = C.ink;
+    const hs = highScore ? `HI ${formatScore(highScore)}  ` : '';
+    ctx.fillText(`${hs}${formatScore(score)}`, width - 22, 30);
+    if (devStartDistance > 0 && running) { ctx.font = '700 10px "Courier New"'; ctx.fillStyle = C.accent; ctx.fillText('DEV', width - 22, 47); }
+    ctx.textAlign = 'center'; ctx.fillStyle = '#d98a22'; ctx.fillText(`● ${String(coinCount).padStart(3, '0')}`, width / 2, 30);
+    if (running) { ctx.textAlign = 'left'; ctx.font = '10px "Courier New"'; ctx.fillStyle = C.muted; ctx.fillText(`${Math.round(speed)} PX/S`, 22, 30); }
+  }
+
+  function requestNextFrame() {
+    if (!rafId && running && !paused) rafId = requestAnimationFrame(loop);
+  }
+
+  function loop(now) {
+    rafId = 0;
+    if (!running) { draw(); return; }
+    if (paused) { draw(); return; }
+    const dt = Math.min((now - lastTime) / 1000, .035); lastTime = now;
+    update(dt); draw(); requestNextFrame();
+  }
+
+  function initAudio() { if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === 'suspended') audio.resume(); }
+  function beep(freq, duration, volume) {
+    if (!soundOn) return; initAudio();
+    const osc = audio.createOscillator(), gain = audio.createGain(); osc.type = 'square'; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(volume, audio.currentTime); gain.gain.exponentialRampToValueAtTime(.0001, audio.currentTime + duration);
+    osc.connect(gain).connect(audio.destination); osc.start(); osc.stop(audio.currentTime + duration);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (['Space', 'ArrowUp', 'ArrowDown', 'ShiftLeft', 'ShiftRight', 'Escape', 'KeyP'].includes(e.code)) e.preventDefault();
+    if ((e.code === 'Escape' || e.code === 'KeyP') && !e.repeat) { paused ? resumeGame() : pauseGame(); return; }
+    if (paused) return;
+    if ((e.code === 'Space' || e.code === 'ArrowUp') && !e.repeat) jump();
+    if (e.code === 'ArrowDown' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') setDuck(true);
+    if (e.code === 'KeyR' && gameOver) start();
+  });
+  document.addEventListener('keyup', e => { if (e.code === 'ArrowDown' || e.code === 'ShiftLeft' || e.code === 'ShiftRight') setDuck(false); });
+  canvas.addEventListener('pointerdown', e => { e.preventDefault(); jump(); });
+  jumpButton.addEventListener('pointerdown', e => { e.preventDefault(); jump(); });
+  duckButton.addEventListener('pointerdown', e => { e.preventDefault(); setDuck(true); });
+  for (const event of ['pointerup', 'pointercancel', 'pointerleave']) duckButton.addEventListener(event, () => setDuck(false));
+  startButton.addEventListener('click', () => { devStartDistance = 0; start(); }); restartButton.addEventListener('click', start); menuButton.addEventListener('click', showMenu);
+  pauseButton.addEventListener('click', () => paused ? resumeGame() : pauseGame()); resumeButton.addEventListener('click', resumeGame); pauseMenuButton.addEventListener('click', showMenu);
+  skinGrid.addEventListener('click', e => { const card = e.target.closest('[data-skin]'); if (card) chooseOrBuySkin(card.dataset.skin); });
+  devDistanceButtons.addEventListener('click', e => {
+    const button = e.target.closest('[data-distance]'); if (!button) return;
+    devStartDistance = Number(button.dataset.distance);
+    beep(560, .05, .015); start();
+  });
+  characterMenuButton.addEventListener('click', () => { showMenuSection('skins'); beep(420, .035, .01); });
+  developerMenuButton.addEventListener('click', () => { showMenuSection('developer'); beep(520, .035, .01); });
+  for (const button of document.querySelectorAll('[data-menu-back]')) button.addEventListener('click', () => { showMenuSection('main'); beep(320, .035, .01); });
+  soundButton.addEventListener('click', () => { soundOn = !soundOn; localStorage.setItem('dino-sound', soundOn ? 'on' : 'off'); soundIcon.textContent = soundOn ? '♪' : '×'; soundButton.setAttribute('aria-pressed', String(soundOn)); if (soundOn) beep(440, .06, .02); });
+  window.addEventListener('resize', resize);
+  document.addEventListener('visibilitychange', () => { if (document.hidden && running && !paused) pauseGame(); });
+  soundIcon.textContent = soundOn ? '♪' : '×'; updateMenuStats(); resize();
+})();

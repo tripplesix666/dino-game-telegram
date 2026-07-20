@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#f7f7f7" />
+  <title>Dino Run</title>
+  <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="menu-open">
+  <main class="game-shell" aria-label="Игра Динозаврик">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">D</span><span>DINO RUN</span></div>
+      <div class="header-actions">
+        <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">Ⅱ</button>
+        <button id="soundButton" class="icon-button" type="button" aria-label="Выключить звук" aria-pressed="true"><span id="soundIcon">♪</span></button>
+      </div>
+    </header>
+
+    <section id="gameWrap" class="game-wrap">
+      <canvas id="game" aria-label="Игровое поле"></canvas>
+
+      <div id="startScreen" class="overlay">
+        <div class="start-card">
+          <div id="mainMenuScreen" class="menu-screen">
+            <h1>DINO RUN</h1>
+            <canvas id="menuCharacterPreview" class="menu-character-preview" width="112" height="80" aria-label="Выбранный персонаж"></canvas>
+            <p>Прыгай через кактусы и пригибайся под птицами.</p>
+            <div class="menu-stats" aria-label="Статистика игрока">
+              <div><span class="coin-symbol">●</span><strong id="menuCoins">000</strong><small>МОНЕТЫ</small></div>
+              <div><strong id="menuHighScore">00000</strong><small>РЕКОРД</small></div>
+            </div>
+            <p class="controls-hint"><span>Пробел / ↑</span> — прыжок &nbsp; <span>↓ / Shift</span> — пригнуться</p>
+            <div class="menu-home-actions">
+              <button id="startButton" class="primary-button" type="button">НАЧАТЬ ИГРУ</button>
+              <button id="characterMenuButton" class="menu-nav-button" type="button">ВЫБОР ПЕРСОНАЖА</button>
+              <button id="developerMenuButton" class="menu-nav-button" type="button">РЕЖИМ РАЗРАБОТЧИКА</button>
+            </div>
+          </div>
+
+          <div id="skinsMenuScreen" class="menu-screen hidden">
+            <button class="back-button" type="button" data-menu-back>← НАЗАД</button>
+            <p class="eyebrow">МАГАЗИН</p>
+            <h2>ВЫБОР ПЕРСОНАЖА</h2>
+            <p>Покупай персонажей за собранные монеты.</p>
+            <div class="skin-run-stage">
+              <canvas id="skinRunPreview" width="520" height="130" aria-label="Анимация выбранного персонажа"></canvas>
+              <span>ПРЕДПРОСМОТР В ДВИЖЕНИИ</span>
+            </div>
+            <section class="skin-shop" aria-label="Скины"><div id="skinGrid" class="skin-grid"></div></section>
+          </div>
+
+          <div id="developerMenuScreen" class="menu-screen hidden">
+            <button class="back-button" type="button" data-menu-back>← НАЗАД</button>
+            <p class="eyebrow">ТЕСТОВЫЙ ЗАБЕГ</p>
+            <h2>РЕЖИМ РАЗРАБОТЧИКА</h2>
+            <p>Выбери расстояние — игра запустится сразу. Рекорд не сохраняется.</p>
+            <div id="devDistanceButtons" class="dev-distances dev-start-distances">
+              <button type="button" data-distance="1000">1000</button>
+              <button type="button" data-distance="2000">2000</button>
+              <button type="button" data-distance="5000">5000</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="gameOverScreen" class="overlay hidden">
+        <div class="game-over-card">
+          <p class="eyebrow">ЗАБЕГ ОКОНЧЕН</p>
+          <h2>GAME OVER</h2>
+          <div class="result-row">
+            <div><span>СЧЁТ</span><strong id="finalScore">00000</strong></div>
+            <div class="divider"></div>
+            <div><span>МОНЕТЫ</span><strong id="finalCoins">000</strong></div>
+            <div class="divider"></div>
+            <div><span>РЕКОРД</span><strong id="finalHighScore">00000</strong></div>
+          </div>
+          <button id="restartButton" class="primary-button" type="button">ЕЩЁ РАЗ</button>
+          <button id="menuButton" class="secondary-button" type="button">ГЛАВНОЕ МЕНЮ</button>
+        </div>
+      </div>
+
+      <div id="pauseScreen" class="overlay hidden">
+        <div class="pause-card">
+          <p class="eyebrow">ИГРА ОСТАНОВЛЕНА</p>
+          <h2>ПАУЗА</h2>
+          <button id="resumeButton" class="primary-button" type="button">ПРОДОЛЖИТЬ</button>
+          <button id="pauseMenuButton" class="secondary-button" type="button">ГЛАВНОЕ МЕНЮ</button>
+          <p class="controls-hint"><span>P / Esc</span> — продолжить игру</p>
+        </div>
+      </div>
+
+      <div class="mobile-controls" aria-label="Сенсорное управление">
+        <button id="duckButton" type="button" aria-label="Пригнуться">↓</button>
+        <button id="jumpButton" type="button" aria-label="Прыгнуть">↑</button>
+      </div>
+    </section>
+
+    <footer>
+      <span>ПРОБЕЛ — ПРЫЖОК</span>
+      <span>↓ / SHIFT — ПРИГНУТЬСЯ</span>
+    </footer>
+  </main>
+  <script src="telegram.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
