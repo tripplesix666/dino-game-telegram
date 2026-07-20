@@ -11,8 +11,8 @@ const corsHeaders = {
 };
 
 const SKIN_PRICES: Record<string, number> = {
-  classic: 0, desert: 25, ice: 50, fire: 75, jungle: 100,
-  twilight: 150, gold: 250, skeleton: 350, rainbow: 500, cosmic: 750,
+  classic: 0, desert: 0, ice: 0, fire: 0, jungle: 0,
+  twilight: 0, gold: 0, skeleton: 0, rainbow: 0, cosmic: 0,
 };
 const RUN_TTL_SECONDS = 2 * 60 * 60;
 

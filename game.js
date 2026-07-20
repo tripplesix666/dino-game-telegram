@@ -48,15 +48,15 @@
   let totalCoins = Number(localStorage.getItem('dino-total-coins') || 0);
   const SKINS = [
     { id: 'classic', name: 'КЛАССИЧЕСКИЙ', price: 0, color: '#07977e', image: 'assets/skins/classic.jpg' },
-    { id: 'desert', name: 'ПУСТЫННЫЙ', price: 25, color: '#b87529', image: 'assets/skins/desert.jpg' },
-    { id: 'ice', name: 'ЛЕДЯНОЙ', price: 50, color: '#54cbe5', image: 'assets/skins/ice.jpg' },
-    { id: 'fire', name: 'ОГНЕННЫЙ', price: 75, color: '#343238', image: 'assets/skins/fire.jpg' },
-    { id: 'jungle', name: 'ДЖУНГЛЕВЫЙ', price: 100, color: '#4b9d2f', image: 'assets/skins/jungle.jpg' },
-    { id: 'twilight', name: 'СУМЕРЕЧНЫЙ', price: 150, color: '#6641a5', image: 'assets/skins/twilight.jpg' },
-    { id: 'gold', name: 'ЗОЛОТОЙ', price: 250, color: '#e8ad19', image: 'assets/skins/gold.jpg' },
-    { id: 'skeleton', name: 'СКЕЛЕТ', price: 350, color: '#d8ccb0', image: 'assets/skins/skeleton.jpg' },
-    { id: 'rainbow', name: 'РАДУЖНЫЙ', price: 500, color: '#e25445', image: 'assets/skins/rainbow.jpg' },
-    { id: 'cosmic', name: 'КОСМИЧЕСКИЙ', price: 750, color: '#172b66', image: 'assets/skins/cosmic.jpg' }
+    { id: 'desert', name: 'ПУСТЫННЫЙ', price: 0, color: '#b87529', image: 'assets/skins/desert.jpg' },
+    { id: 'ice', name: 'ЛЕДЯНОЙ', price: 0, color: '#54cbe5', image: 'assets/skins/ice.jpg' },
+    { id: 'fire', name: 'ОГНЕННЫЙ', price: 0, color: '#343238', image: 'assets/skins/fire.jpg' },
+    { id: 'jungle', name: 'ДЖУНГЛЕВЫЙ', price: 0, color: '#4b9d2f', image: 'assets/skins/jungle.jpg' },
+    { id: 'twilight', name: 'СУМЕРЕЧНЫЙ', price: 0, color: '#6641a5', image: 'assets/skins/twilight.jpg' },
+    { id: 'gold', name: 'ЗОЛОТОЙ', price: 0, color: '#e8ad19', image: 'assets/skins/gold.jpg' },
+    { id: 'skeleton', name: 'СКЕЛЕТ', price: 0, color: '#d8ccb0', image: 'assets/skins/skeleton.jpg' },
+    { id: 'rainbow', name: 'РАДУЖНЫЙ', price: 0, color: '#e25445', image: 'assets/skins/rainbow.jpg' },
+    { id: 'cosmic', name: 'КОСМИЧЕСКИЙ', price: 0, color: '#172b66', image: 'assets/skins/cosmic.jpg' }
   ];
   let ownedSkins;
   try { ownedSkins = JSON.parse(localStorage.getItem('dino-owned-skins') || '["classic"]'); } catch { ownedSkins = ['classic']; }
