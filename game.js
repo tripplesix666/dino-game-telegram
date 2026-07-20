@@ -47,17 +47,23 @@
   let highScore = Number(localStorage.getItem('dino-high-score') || 0);
   let totalCoins = Number(localStorage.getItem('dino-total-coins') || 0);
   const SKINS = [
-    { id: 'classic', name: 'КЛАССИЧЕСКИЙ', price: 0, color: '#07977e', accent: '#52c66d', image: 'assets/skins/classic.jpg' },
-    { id: 'desert', name: 'ПУСТЫННЫЙ', price: 0, color: '#b87529', accent: '#e1a54e', image: 'assets/skins/desert.jpg' },
+    { id: 'classic', name: 'КЛАССИЧЕСКИЙ', price: 0, color: '#07977e', accent: '#52c66d', image: 'assets/skins/classic.jpg', gameSprite: 'assets/game-skins/classic.png' },
+    { id: 'desert', name: 'ПУСТЫННЫЙ', price: 0, color: '#b87529', accent: '#e1a54e', image: 'assets/skins/desert.jpg', gameSprite: 'assets/game-skins/desert.png' },
     { id: 'ice', name: 'ЛЕДЯНОЙ', price: 0, color: '#54cbe5', accent: '#d9f8ff', image: 'assets/skins/ice.jpg' },
     { id: 'fire', name: 'ОГНЕННЫЙ', price: 0, color: '#302e34', accent: '#ff5a19', image: 'assets/skins/fire.jpg' },
     { id: 'jungle', name: 'ДЖУНГЛЕВЫЙ', price: 0, color: '#4b9d2f', accent: '#a9d530', image: 'assets/skins/jungle.jpg' },
     { id: 'twilight', name: 'СУМЕРЕЧНЫЙ', price: 0, color: '#433278', accent: '#bd4cff', image: 'assets/skins/twilight.jpg' },
-    { id: 'gold', name: 'ЗОЛОТОЙ', price: 0, color: '#e8ad19', accent: '#fff06a', image: 'assets/skins/gold.jpg' },
-    { id: 'skeleton', name: 'СКЕЛЕТ', price: 0, color: '#d8ccb0', accent: '#493f38', image: 'assets/skins/skeleton.jpg' },
+    { id: 'gold', name: 'ЗОЛОТОЙ', price: 0, color: '#e8ad19', accent: '#fff06a', image: 'assets/skins/skeleton.jpg' },
+    { id: 'skeleton', name: 'СКЕЛЕТ', price: 0, color: '#d8ccb0', accent: '#493f38', image: 'assets/skins/gold.jpg' },
     { id: 'rainbow', name: 'РАДУЖНЫЙ', price: 0, color: '#e25445', accent: '#ffcf3d', image: 'assets/skins/rainbow.jpg' },
     { id: 'cosmic', name: 'КОСМИЧЕСКИЙ', price: 0, color: '#172b66', accent: '#24e6ff', image: 'assets/skins/cosmic.jpg' }
   ];
+  const skinSprites = new Map(SKINS.filter(skin => skin.gameSprite).map(skin => {
+    const image = new Image();
+    image.src = skin.gameSprite;
+    image.addEventListener('load', draw);
+    return [skin.id, image];
+  }));
   let ownedSkins;
   try { ownedSkins = JSON.parse(localStorage.getItem('dino-owned-skins') || '["classic"]'); } catch { ownedSkins = ['classic']; }
   ownedSkins = Array.isArray(ownedSkins) ? ownedSkins.filter(id => SKINS.some(skin => skin.id === id)) : [];
@@ -499,6 +505,20 @@
   function drawDino() {
     const x = Math.round(dino.x), y = Math.round(dino.y), dead = gameOver;
     const skin = SKINS.find(item => item.id === selectedSkin) || SKINS[0];
+    const rasterSprite = skinSprites.get(skin.id);
+    if (rasterSprite?.complete && rasterSprite.naturalWidth) {
+      const ducking = dino.ducking && dino.grounded;
+      const spriteW = ducking ? 104 : 112;
+      const spriteH = ducking ? 70 : 106;
+      const spriteX = x - 28;
+      const spriteY = y + dino.h - spriteH + 3;
+      ctx.save();
+      ctx.imageSmoothingEnabled = true;
+      if (dead) ctx.globalAlpha = .62;
+      ctx.drawImage(rasterSprite, spriteX, spriteY, spriteW, spriteH);
+      ctx.restore();
+      return;
+    }
     spriteColor = skin.id === 'dino' ? C.ink : skin.color;
     ctx.save(); ctx.fillStyle = C.ink;
     if (skin.id === 'slime') {
