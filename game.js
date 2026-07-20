@@ -40,6 +40,7 @@
   let width = 0, height = 0, scale = 1, groundY = 0;
   let running = false, paused = false, gameOver = false, lastTime = 0, elapsed = 0, score = 0, speed = 430;
   let rafId = 0, skinPreviewRaf = 0, devStartDistance = 0;
+  let runSessionPromise = null;
   let spawnTimer = 0, nextSpawn = 1.25, coinTimer = 0, nextCoin = 1.8, platformTimer = 0, nextPlatform = 6, animTime = 0, milestone = 0, coinCount = 0;
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
   let audio = null;
@@ -97,6 +98,9 @@
   function start() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     reset(); score = devStartDistance; speed = Math.min(890, 430 + score * .095);
+    runSessionPromise = devStartDistance === 0 && window.DinoCloud?.enabled
+      ? window.DinoCloud.startRun()
+      : null;
     setNight(Math.floor(score / 1000) % 2 === 1, true);
     running = true; lastTime = performance.now();
     document.body.classList.remove('menu-open');
@@ -180,9 +184,23 @@
     skinPreviewRaf = requestAnimationFrame(frame);
   }
 
-  function chooseOrBuySkin(id) {
+  async function chooseOrBuySkin(id) {
     const skin = SKINS.find(item => item.id === id);
     if (!skin) return;
+    if (window.DinoCloud?.enabled) {
+      try {
+        const wasOwned = ownedSkins.includes(id);
+        const cloud = wasOwned
+          ? await window.DinoCloud.selectSkin(id)
+          : await window.DinoCloud.purchaseSkin(id);
+        applyCloudProgress(cloud);
+        beep(wasOwned ? 440 : 720, .08, .025);
+      } catch (error) {
+        beep(130, .12, .025);
+        console.warn('Dino skin purchase:', error.message);
+      }
+      return;
+    }
     if (!ownedSkins.includes(id)) {
       if (totalCoins < skin.price) { beep(130, .12, .025); return; }
       totalCoins -= skin.price; ownedSkins.push(id);
@@ -190,7 +208,7 @@
       localStorage.setItem('dino-owned-skins', JSON.stringify(ownedSkins));
       beep(720, .12, .03);
     } else beep(440, .05, .015);
-    selectedSkin = id; localStorage.setItem('dino-selected-skin', selectedSkin); updateMenuStats(); draw(); saveCloudProgress();
+    selectedSkin = id; localStorage.setItem('dino-selected-skin', selectedSkin); updateMenuStats(); draw();
   }
 
   function showMenu() {
@@ -394,15 +412,15 @@
     running = false; paused = false; gameOver = true;
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     makeDust(9); beep(115, .25, .05);
-    if (devStartDistance === 0) { highScore = Math.max(highScore, Math.floor(score)); localStorage.setItem('dino-high-score', String(highScore)); }
-    totalCoins += coinCount; localStorage.setItem('dino-total-coins', String(totalCoins)); updateMenuStats();
+    if (devStartDistance === 0) {
+      highScore = Math.max(highScore, Math.floor(score));
+      totalCoins += coinCount;
+      storeProgressLocally();
+    }
+    updateMenuStats();
     finalScore.textContent = formatScore(score); finalCoins.textContent = String(coinCount).padStart(3, '0'); finalHighScore.textContent = formatScore(highScore);
     overScreen.classList.remove('hidden');
-    saveCloudProgress();
-  }
-
-  function progressSnapshot() {
-    return { highScore, totalCoins, ownedSkins: [...ownedSkins], selectedSkin };
+    if (devStartDistance === 0) finishCloudRun(Math.floor(score), coinCount);
   }
 
   function storeProgressLocally() {
@@ -412,9 +430,32 @@
     localStorage.setItem('dino-selected-skin', selectedSkin);
   }
 
-  function saveCloudProgress() {
-    if (!window.DinoCloud?.enabled) return;
-    window.DinoCloud.save(progressSnapshot()).catch(error => console.warn('Dino cloud save:', error.message));
+  function applyCloudProgress(cloud) {
+    if (!cloud) return;
+    highScore = Number(cloud.high_score) || 0;
+    totalCoins = Number(cloud.total_coins) || 0;
+    const cloudOwned = Array.isArray(cloud.owned_skins) ? cloud.owned_skins : ['dino'];
+    ownedSkins = [...new Set([...cloudOwned, 'dino'])];
+    selectedSkin = ownedSkins.includes(cloud.selected_skin) ? cloud.selected_skin : 'dino';
+    storeProgressLocally();
+    updateMenuStats();
+    finalHighScore.textContent = formatScore(highScore);
+    draw();
+  }
+
+  async function finishCloudRun(runScore, runCoins) {
+    if (!window.DinoCloud?.enabled || !runSessionPromise) return;
+    try {
+      const session = await runSessionPromise;
+      if (!session?.runToken) throw new Error('Run session was not created');
+      const cloud = await window.DinoCloud.finishRun(session.runToken, runScore, runCoins);
+      applyCloudProgress(cloud);
+    } catch (error) {
+      console.warn('Dino cloud result:', error.message);
+      await loadCloudProgress();
+    } finally {
+      runSessionPromise = null;
+    }
   }
 
   async function loadCloudProgress() {
@@ -424,27 +465,7 @@
       const cloud = await window.DinoCloud.load();
       if (!cloud) return;
 
-      const syncKey = `dino-cloud-synced-${window.DinoCloud.userId}`;
-      const firstSync = localStorage.getItem(syncKey) !== 'yes';
-      const cloudOwned = Array.isArray(cloud.owned_skins) ? cloud.owned_skins : ['dino'];
-
-      if (firstSync) {
-        highScore = Math.max(highScore, Number(cloud.high_score) || 0);
-        totalCoins = Math.max(totalCoins, Number(cloud.total_coins) || 0);
-        ownedSkins = [...new Set([...ownedSkins, ...cloudOwned, 'dino'])];
-        if (!ownedSkins.includes(selectedSkin)) selectedSkin = cloud.selected_skin || 'dino';
-        await window.DinoCloud.save(progressSnapshot());
-        localStorage.setItem(syncKey, 'yes');
-      } else {
-        highScore = Number(cloud.high_score) || 0;
-        totalCoins = Number(cloud.total_coins) || 0;
-        ownedSkins = [...new Set([...cloudOwned, 'dino'])];
-        selectedSkin = ownedSkins.includes(cloud.selected_skin) ? cloud.selected_skin : 'dino';
-      }
-
-      storeProgressLocally();
-      updateMenuStats();
-      draw();
+      applyCloudProgress(cloud);
     } catch (error) {
       console.warn('Dino cloud load:', error.message);
     }
