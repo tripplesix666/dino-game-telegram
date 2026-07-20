@@ -516,7 +516,7 @@
       const spriteW = ducking ? 104 : 112;
       const spriteH = ducking ? 70 : 106;
       const spriteX = x - 28;
-      const spriteY = y + dino.h - spriteH + 3;
+      const spriteY = y + dino.h - spriteH + 1;
       ctx.save();
       ctx.imageSmoothingEnabled = true;
       if (dead) ctx.globalAlpha = .62;
