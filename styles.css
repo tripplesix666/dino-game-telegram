@@ -192,3 +192,176 @@ body.night .mobile-controls button { color: #e8f0ff; border-color: rgba(232,240,
   .mobile-controls { bottom: max(10px, env(safe-area-inset-bottom)); }
   .mobile-controls button { width: 62px; height: 62px; }
 }
+
+/* Jungle home screen */
+body.menu-open {
+  --menu-navy: #061d2b;
+  --menu-panel: rgba(7, 20, 31, .86);
+  --menu-line: rgba(151, 205, 232, .24);
+  background: #061d2b;
+}
+
+body.menu-open #startScreen {
+  background:
+    linear-gradient(180deg, rgba(0, 92, 126, .1) 0%, rgba(1, 16, 27, .16) 56%, rgba(1, 13, 24, .74) 100%),
+    url("assets/dino-jungle-menu.png") center center / cover no-repeat;
+  backdrop-filter: none;
+}
+
+body.menu-open .start-card {
+  max-width: 560px;
+  min-height: 100%;
+  padding: max(18px, env(safe-area-inset-top)) 22px max(22px, env(safe-area-inset-bottom));
+  color: #fff;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, .36);
+}
+
+body.menu-open #mainMenuScreen:not(.hidden) {
+  justify-content: flex-start;
+}
+
+.game-logo {
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  font-family: Impact, Haettenschweiler, "Arial Black", sans-serif;
+  font-size: clamp(72px, 15vh, 122px);
+  font-weight: 900;
+  letter-spacing: -.055em;
+  line-height: .63;
+  transform: scaleX(1.04);
+  filter: drop-shadow(0 7px 0 #4a2817) drop-shadow(0 11px 10px rgba(0, 0, 0, .48));
+}
+
+.game-logo span:first-child {
+  color: #fff9e9;
+  -webkit-text-stroke: 2px #e4d9bd;
+}
+
+.game-logo span:last-child {
+  color: #ff9c10;
+  -webkit-text-stroke: 2px #f07400;
+}
+
+body.menu-open .menu-character-preview {
+  visibility: hidden;
+  width: 1px;
+  height: clamp(200px, 27vh, 310px);
+  margin: 0;
+}
+
+.menu-mission {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: min(390px, 96%);
+  margin: 0 auto 10px;
+  padding: 12px 18px;
+  border: 1px solid var(--menu-line);
+  border-radius: 22px;
+  background: var(--menu-panel);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 8px 25px rgba(0, 0, 0, .25);
+  color: #e8edf5 !important;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: clamp(13px, 2vh, 17px);
+  font-weight: 650;
+  line-height: 1.35 !important;
+  text-align: left;
+}
+
+.mission-dino { color: #27e6a0; font-size: 27px; transform: rotate(45deg); }
+
+body.menu-open .menu-stats {
+  width: min(390px, 96%);
+  margin: 0 auto 12px;
+  gap: 10px;
+}
+
+body.menu-open .menu-stats > div {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 10px 9px;
+  border: 1px solid var(--menu-line);
+  border-radius: 21px;
+  background: var(--menu-panel);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 7px 20px rgba(0,0,0,.22);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+body.menu-open .menu-stats strong { color: #fff; font-size: clamp(22px, 4vh, 31px); }
+body.menu-open .menu-stats small { color: #aab6c3; font-size: 9px; font-weight: 750; }
+.stat-icon { display: inline-grid; place-items: center; width: 24px; height: 24px; margin-right: 7px; border-radius: 50%; font-size: 14px; }
+.coin-symbol { color: #fff4a6; background: #f6a400; border: 2px solid #ffd557; }
+.trophy-symbol { color: #fff1a4; background: transparent; }
+
+body.menu-open .controls-hint { display: none; }
+
+body.menu-open .menu-home-actions {
+  width: min(390px, 96%);
+  margin: 0 auto;
+  gap: 9px;
+}
+
+body.menu-open .menu-home-actions button {
+  display: grid;
+  grid-template-columns: 52px 1fr 52px;
+  align-items: center;
+  min-height: 52px;
+  margin: 0;
+  padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 20px;
+  color: white;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: clamp(14px, 2.2vh, 18px);
+  font-weight: 900;
+  letter-spacing: .02em;
+  text-shadow: 0 2px 2px rgba(0,0,0,.25);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.25), inset 0 -4px 0 rgba(0,0,0,.18), 0 6px 14px rgba(0,0,0,.26);
+}
+
+body.menu-open .menu-home-actions button > span:last-child { grid-column: 2; }
+.button-icon { grid-column: 1; font-size: 24px; }
+.play-icon { width: 0; height: 0; margin-left: 11px; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 19px solid white; filter: drop-shadow(0 2px 1px rgba(0,0,0,.3)); }
+body.menu-open #startButton { background: linear-gradient(#6eea4d, #18b83f); }
+body.menu-open .character-button { background: linear-gradient(#23c9f2, #0870ca); }
+body.menu-open .leaderboard-button { background: linear-gradient(#9b58f0, #5123a2); }
+body.menu-open .developer-button { background: linear-gradient(#48536f, #242b42); }
+body.menu-open .menu-home-actions button:active { transform: translateY(3px); box-shadow: inset 0 2px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.2); }
+
+body.menu-open .menu-screen:not(#mainMenuScreen) {
+  min-height: calc(100% - 20px);
+  padding: 22px;
+  border: 1px solid var(--menu-line);
+  border-radius: 28px;
+  background: rgba(4, 19, 30, .92);
+  box-shadow: 0 18px 55px rgba(0,0,0,.36);
+  color: white;
+  text-shadow: none;
+}
+
+body.menu-open .menu-screen:not(#mainMenuScreen) .back-button,
+body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
+
+@media (min-width: 720px) {
+  body.menu-open #startScreen { background-size: auto max(100%, 900px); background-color: #061d2b; }
+  body.menu-open .start-card { border-inline: 1px solid rgba(255,255,255,.08); box-shadow: 0 0 70px rgba(0,0,0,.45); }
+}
+
+@media (max-height: 760px) {
+  .game-logo { font-size: clamp(58px, 13vh, 90px); }
+  body.menu-open .menu-character-preview { height: clamp(105px, 20vh, 180px); }
+  .menu-mission { padding-block: 9px; }
+  body.menu-open .menu-stats > div { padding-block: 7px; }
+  body.menu-open .menu-home-actions button { min-height: 45px; border-radius: 17px; }
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  body.menu-open .start-card { max-width: 920px; transform: none; }
+  body.menu-open #mainMenuScreen:not(.hidden) { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr auto; column-gap: 24px; }
+  .game-logo { grid-column: 1; font-size: 74px; align-self: start; }
+  body.menu-open .menu-character-preview { grid-column: 1; height: 80px; }
+  .menu-mission, body.menu-open .menu-stats { grid-column: 1; }
+  body.menu-open .menu-home-actions { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+}

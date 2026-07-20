@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body class="menu-open">
   <main class="game-shell" aria-label="Игра Динозаврик">
@@ -24,19 +24,19 @@
       <div id="startScreen" class="overlay">
         <div class="start-card">
           <div id="mainMenuScreen" class="menu-screen">
-            <h1>DINO RUN</h1>
+            <h1 class="game-logo" aria-label="Dino Run"><span>DINO</span><span>RUN</span></h1>
             <canvas id="menuCharacterPreview" class="menu-character-preview" width="112" height="80" aria-label="Выбранный персонаж"></canvas>
-            <p>Прыгай через кактусы и пригибайся под птицами.</p>
+            <p class="menu-mission"><span class="mission-dino" aria-hidden="true">◆</span><span>Прыгай через кактусы<br>и пригибайся под птицами.</span></p>
             <div class="menu-stats" aria-label="Статистика игрока">
-              <div><span class="coin-symbol">●</span><strong id="menuCoins">000</strong><small>МОНЕТЫ</small></div>
-              <div><strong id="menuHighScore">00000</strong><small>РЕКОРД</small></div>
+              <div><span class="stat-icon coin-symbol">●</span><strong id="menuCoins">000</strong><small>МОНЕТЫ</small></div>
+              <div><span class="stat-icon trophy-symbol">★</span><strong id="menuHighScore">00000</strong><small>РЕКОРД</small></div>
             </div>
             <p class="controls-hint"><span>Пробел / ↑</span> — прыжок &nbsp; <span>↓ / Shift</span> — пригнуться</p>
             <div class="menu-home-actions">
-              <button id="startButton" class="primary-button" type="button">НАЧАТЬ ИГРУ</button>
-              <button id="characterMenuButton" class="menu-nav-button" type="button">ВЫБОР ПЕРСОНАЖА</button>
-              <button id="leaderboardMenuButton" class="menu-nav-button" type="button">ТАБЛИЦА ЛИДЕРОВ</button>
-              <button id="developerMenuButton" class="menu-nav-button" type="button">РЕЖИМ РАЗРАБОТЧИКА</button>
+              <button id="startButton" class="primary-button" type="button"><span class="button-icon play-icon" aria-hidden="true"></span><span>НАЧАТЬ ИГРУ</span></button>
+              <button id="characterMenuButton" class="menu-nav-button character-button" type="button"><span class="button-icon" aria-hidden="true">◆</span><span>ВЫБОР ПЕРСОНАЖА</span></button>
+              <button id="leaderboardMenuButton" class="menu-nav-button leaderboard-button" type="button"><span class="button-icon" aria-hidden="true">♛</span><span>ТАБЛИЦА ЛИДЕРОВ</span></button>
+              <button id="developerMenuButton" class="menu-nav-button developer-button" type="button"><span class="button-icon" aria-hidden="true">⚙</span><span>РЕЖИМ РАЗРАБОТЧИКА</span></button>
             </div>
           </div>
 
@@ -112,8 +112,8 @@
       <span>↓ / SHIFT — ПРИГНУТЬСЯ</span>
     </footer>
   </main>
-  <script src="telegram.js?v=3"></script>
-  <script src="cloud-sync.js?v=3"></script>
-  <script src="game.js?v=3"></script>
+  <script src="telegram.js?v=4"></script>
+  <script src="cloud-sync.js?v=4"></script>
+  <script src="game.js?v=4"></script>
 </body>
 </html>
