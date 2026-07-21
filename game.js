@@ -44,6 +44,7 @@
   let spawnTimer = 0, nextSpawn = 1.25, coinTimer = 0, nextCoin = 1.8, platformTimer = 0, nextPlatform = 6, animTime = 0, milestone = 0, coinCount = 0;
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
   let audio = null;
+  let menuMusicTimer = null, menuMusicStep = 0, activeMenuSection = 'main';
   let highScore = Number(localStorage.getItem('dino-high-score') || 0);
   let totalCoins = Number(localStorage.getItem('dino-total-coins') || 0);
   const SKINS = [
@@ -129,6 +130,7 @@
 
   function start() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+    stopMenuMusic();
     reset(); score = devStartDistance; speed = Math.min(890, 430 + score * .095);
     runSessionPromise = devStartDistance === 0 && window.DinoCloud?.enabled
       ? window.DinoCloud.startRun()
@@ -221,12 +223,14 @@
   }
 
   function showMenuSection(section) {
+    activeMenuSection = section;
     document.body.classList.toggle('skins-open', section === 'skins');
     mainMenuScreen.classList.toggle('hidden', section !== 'main');
     skinsMenuScreen.classList.toggle('hidden', section !== 'skins');
     leaderboardMenuScreen.classList.toggle('hidden', section !== 'leaderboard');
     developerMenuScreen.classList.toggle('hidden', section !== 'developer');
     if (section === 'leaderboard') loadLeaderboard();
+    if (section === 'main') startMenuMusic(); else stopMenuMusic();
     startScreen.scrollTop = 0;
     requestAnimationFrame(() => { startScreen.scrollTop = 0; });
   }
@@ -680,6 +684,40 @@
   }
 
   function initAudio() { if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === 'suspended') audio.resume(); }
+  const MENU_MELODY = [659, 784, 880, 784, 659, 587, 523, 587, 659, 784, 880, 988, 880, 784, 659, 587, 523, 659, 784, 659, 587, 523, 494, 523, 587, 659, 784, 659, 587, 523, 494, 440];
+  const MENU_BASS = [131, 131, 110, 110, 98, 98, 110, 110];
+
+  function playMusicTone(frequency, type, volume, duration) {
+    if (!audio || !soundOn) return;
+    const oscillator = audio.createOscillator(), gain = audio.createGain();
+    const now = audio.currentTime;
+    oscillator.type = type; oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(.0001, now);
+    gain.gain.exponentialRampToValueAtTime(volume, now + .025);
+    gain.gain.exponentialRampToValueAtTime(.0001, now + duration);
+    oscillator.connect(gain).connect(audio.destination);
+    oscillator.start(now); oscillator.stop(now + duration + .02);
+  }
+
+  function playMenuMusicStep() {
+    if (!soundOn || running || activeMenuSection !== 'main' || !document.body.classList.contains('menu-open')) { stopMenuMusic(); return; }
+    const melody = MENU_MELODY[menuMusicStep % MENU_MELODY.length];
+    playMusicTone(melody, 'square', .007, .26);
+    if (menuMusicStep % 4 === 0) playMusicTone(MENU_BASS[Math.floor(menuMusicStep / 4) % MENU_BASS.length], 'triangle', .018, 1.05);
+    menuMusicStep = (menuMusicStep + 1) % MENU_MELODY.length;
+  }
+
+  function startMenuMusic() {
+    if (!soundOn || menuMusicTimer || running || activeMenuSection !== 'main' || !document.body.classList.contains('menu-open')) return;
+    initAudio(); playMenuMusicStep();
+    menuMusicTimer = window.setInterval(playMenuMusicStep, 320);
+  }
+
+  function stopMenuMusic() {
+    if (menuMusicTimer) window.clearInterval(menuMusicTimer);
+    menuMusicTimer = null; menuMusicStep = 0;
+  }
+
   function beep(freq, duration, volume) {
     if (!soundOn) return; initAudio();
     const osc = audio.createOscillator(), gain = audio.createGain(); osc.type = 'square'; osc.frequency.value = freq;
@@ -712,8 +750,15 @@
   leaderboardMenuButton.addEventListener('click', () => { showMenuSection('leaderboard'); beep(470, .035, .01); });
   developerMenuButton.addEventListener('click', () => { showMenuSection('developer'); beep(520, .035, .01); });
   for (const button of document.querySelectorAll('[data-menu-back]')) button.addEventListener('click', () => { showMenuSection('main'); beep(320, .035, .01); });
-  soundButton.addEventListener('click', () => { soundOn = !soundOn; localStorage.setItem('dino-sound', soundOn ? 'on' : 'off'); soundIcon.textContent = soundOn ? '♪' : '×'; soundButton.setAttribute('aria-pressed', String(soundOn)); if (soundOn) beep(440, .06, .02); });
+  soundButton.addEventListener('click', () => {
+    soundOn = !soundOn; localStorage.setItem('dino-sound', soundOn ? 'on' : 'off'); soundIcon.textContent = soundOn ? '♪' : '×'; soundButton.setAttribute('aria-pressed', String(soundOn));
+    if (soundOn) { beep(440, .06, .02); startMenuMusic(); } else stopMenuMusic();
+  });
+  document.addEventListener('pointerdown', () => startMenuMusic(), { once: true });
   window.addEventListener('resize', resize);
-  document.addEventListener('visibilitychange', () => { if (document.hidden && running && !paused) pauseGame(); });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { stopMenuMusic(); if (running && !paused) pauseGame(); }
+    else if (!running && activeMenuSection === 'main') startMenuMusic();
+  });
   soundIcon.textContent = soundOn ? '♪' : '×'; updateMenuStats(); resize(); loadCloudProgress();
 })();
