@@ -463,6 +463,9 @@ body.skins-open .skin-name { position: absolute; z-index: 2; top: 13px; left: 13
 body.skins-open .skin-action { position: absolute; z-index: 2; left: 10px; right: 10px; bottom: 10px; display: grid; place-items: center; min-height: 34px; padding: 7px 8px; border: 1px solid rgba(255,255,255,.24); border-radius: 14px; background: rgba(1, 13, 22, .84); color: #e9f5fa; font-family: system-ui, sans-serif; font-size: clamp(10px, 2.4vw, 14px); font-weight: 900; letter-spacing: .05em; text-align: center; }
 body.skins-open .skin-card.affordable .skin-action { color: #ffd34e; }
 body.skins-open .skin-card.selected .skin-action { color: #8bf467; }
+body.skins-open .skin-card.coming-soon { cursor: default; border-color: rgba(135, 155, 170, .38); }
+body.skins-open .skin-card.coming-soon .skin-card-art { filter: grayscale(.28) saturate(.58) brightness(.58); }
+body.skins-open .skin-card.coming-soon .skin-action { color: #d6e0e7; letter-spacing: .14em; }
 .skin-check { position: absolute; z-index: 3; top: 10px; right: 10px; display: grid; place-items: center; width: 29px; height: 29px; border-radius: 50%; background: #61d64b; color: white; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 900; box-shadow: 0 3px 9px rgba(0,0,0,.3); }
 
 @media (min-width: 700px) {

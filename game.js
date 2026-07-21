@@ -72,7 +72,7 @@
   ownedSkins = Array.isArray(ownedSkins) ? ownedSkins.filter(id => SKINS.some(skin => skin.id === id)) : [];
   if (!ownedSkins.includes('classic')) ownedSkins.unshift('classic');
   let selectedSkin = localStorage.getItem('dino-selected-skin') || 'classic';
-  if (!ownedSkins.includes(selectedSkin)) selectedSkin = 'classic';
+  if (!ownedSkins.includes(selectedSkin) || selectedSkin !== 'classic') selectedSkin = 'classic';
   const obstacles = [], coins = [], platforms = [], dust = [], clouds = [];
   let spriteColor = C.ink;
   let isNight = false, nightAmount = 0;
@@ -133,9 +133,10 @@
 
   function renderSkinShop() {
     skinGrid.innerHTML = SKINS.map(skin => {
+      const comingSoon = skin.id !== 'classic';
       const owned = ownedSkins.includes(skin.id), selected = selectedSkin === skin.id;
-      const action = selected ? 'ВЫБРАН' : owned ? 'ВЫБРАТЬ' : `● ${skin.price}`;
-      return `<button class="skin-card skin-${skin.id}${selected ? ' selected' : ''}${owned ? '' : ' locked'}${!owned && totalCoins >= skin.price ? ' affordable' : ''}" type="button" data-skin="${skin.id}" aria-pressed="${selected}"><img class="skin-card-art" src="${skin.image}" alt="${skin.name}" loading="lazy"><span class="skin-name">${skin.name}</span><span class="skin-action">${action}</span>${selected ? '<span class="skin-check" aria-hidden="true">✓</span>' : ''}</button>`;
+      const action = comingSoon ? 'СКОРО' : selected ? 'ВЫБРАН' : 'ВЫБРАТЬ';
+      return `<button class="skin-card skin-${skin.id}${selected ? ' selected' : ''}${comingSoon ? ' coming-soon' : ''}" type="button" data-skin="${skin.id}" aria-pressed="${selected}"${comingSoon ? ' disabled aria-disabled="true"' : ''}><img class="skin-card-art" src="${skin.image}" alt="${skin.name}" loading="lazy"><span class="skin-name">${skin.name}</span><span class="skin-action">${action}</span>${selected ? '<span class="skin-check" aria-hidden="true">✓</span>' : ''}</button>`;
     }).join('');
     drawMenuCharacter();
   }
@@ -170,7 +171,7 @@
 
   async function chooseOrBuySkin(id) {
     const skin = SKINS.find(item => item.id === id);
-    if (!skin) return;
+    if (!skin || skin.id !== 'classic') return;
     if (window.DinoCloud?.enabled) {
       try {
         const wasOwned = ownedSkins.includes(id);
