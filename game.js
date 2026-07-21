@@ -28,10 +28,14 @@
   const mainMenuScreen = document.querySelector('#mainMenuScreen');
   const skinsMenuScreen = document.querySelector('#skinsMenuScreen');
   const leaderboardMenuScreen = document.querySelector('#leaderboardMenuScreen');
+  const settingsMenuScreen = document.querySelector('#settingsMenuScreen');
   const developerMenuScreen = document.querySelector('#developerMenuScreen');
   const characterMenuButton = document.querySelector('#characterMenuButton');
   const leaderboardMenuButton = document.querySelector('#leaderboardMenuButton');
+  const settingsMenuButton = document.querySelector('#settingsMenuButton');
   const developerMenuButton = document.querySelector('#developerMenuButton');
+  const menuSoundToggle = document.querySelector('#menuSoundToggle');
+  const menuSoundLabel = document.querySelector('#menuSoundLabel');
   const leaderboardList = document.querySelector('#leaderboardList');
   const leaderboardStatus = document.querySelector('#leaderboardStatus');
   const menuCharacterPreview = document.querySelector('#menuCharacterPreview');
@@ -228,6 +232,7 @@
     mainMenuScreen.classList.toggle('hidden', section !== 'main');
     skinsMenuScreen.classList.toggle('hidden', section !== 'skins');
     leaderboardMenuScreen.classList.toggle('hidden', section !== 'leaderboard');
+    settingsMenuScreen.classList.toggle('hidden', section !== 'settings');
     developerMenuScreen.classList.toggle('hidden', section !== 'developer');
     if (section === 'leaderboard') loadLeaderboard();
     if (section === 'main') startMenuMusic(); else stopMenuMusic();
@@ -718,6 +723,22 @@
     menuMusicTimer = null; menuMusicStep = 0;
   }
 
+  function updateSoundControls() {
+    soundIcon.textContent = soundOn ? '♪' : '×';
+    soundButton.setAttribute('aria-pressed', String(soundOn));
+    soundButton.setAttribute('aria-label', soundOn ? 'Выключить звук' : 'Включить звук');
+    menuSoundToggle.setAttribute('aria-pressed', String(soundOn));
+    menuSoundLabel.textContent = `ЗВУК И МУЗЫКА: ${soundOn ? 'ВКЛ' : 'ВЫКЛ'}`;
+  }
+
+  function toggleSound() {
+    soundOn = !soundOn;
+    localStorage.setItem('dino-sound', soundOn ? 'on' : 'off');
+    updateSoundControls();
+    if (soundOn) { beep(440, .06, .02); if (activeMenuSection === 'main') startMenuMusic(); }
+    else stopMenuMusic();
+  }
+
   function beep(freq, duration, volume) {
     if (!soundOn) return; initAudio();
     const osc = audio.createOscillator(), gain = audio.createGain(); osc.type = 'square'; osc.frequency.value = freq;
@@ -748,17 +769,16 @@
   });
   characterMenuButton.addEventListener('click', () => { showMenuSection('skins'); beep(420, .035, .01); });
   leaderboardMenuButton.addEventListener('click', () => { showMenuSection('leaderboard'); beep(470, .035, .01); });
+  settingsMenuButton.addEventListener('click', () => { showMenuSection('settings'); beep(390, .035, .01); });
   developerMenuButton.addEventListener('click', () => { showMenuSection('developer'); beep(520, .035, .01); });
   for (const button of document.querySelectorAll('[data-menu-back]')) button.addEventListener('click', () => { showMenuSection('main'); beep(320, .035, .01); });
-  soundButton.addEventListener('click', () => {
-    soundOn = !soundOn; localStorage.setItem('dino-sound', soundOn ? 'on' : 'off'); soundIcon.textContent = soundOn ? '♪' : '×'; soundButton.setAttribute('aria-pressed', String(soundOn));
-    if (soundOn) { beep(440, .06, .02); startMenuMusic(); } else stopMenuMusic();
-  });
+  soundButton.addEventListener('click', toggleSound);
+  menuSoundToggle.addEventListener('click', toggleSound);
   document.addEventListener('pointerdown', () => startMenuMusic(), { once: true });
   window.addEventListener('resize', resize);
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) { stopMenuMusic(); if (running && !paused) pauseGame(); }
     else if (!running && activeMenuSection === 'main') startMenuMusic();
   });
-  soundIcon.textContent = soundOn ? '♪' : '×'; updateMenuStats(); resize(); loadCloudProgress();
+  updateSoundControls(); updateMenuStats(); resize(); loadCloudProgress();
 })();

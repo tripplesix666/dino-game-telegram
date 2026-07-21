@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=9" />
+  <link rel="stylesheet" href="styles.css?v=10" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.9.8</span>
+  <span class="app-version" aria-label="Версия приложения">v0.9.9</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">D</span><span>DINO RUN</span></div>
@@ -37,6 +37,7 @@
               <button id="startButton" class="primary-button" type="button"><span class="button-icon play-icon" aria-hidden="true"></span><span>НАЧАТЬ ИГРУ</span></button>
               <button id="characterMenuButton" class="menu-nav-button character-button" type="button"><span class="button-icon" aria-hidden="true">◆</span><span>СКИНЫ</span></button>
               <button id="leaderboardMenuButton" class="menu-nav-button leaderboard-button" type="button"><span class="button-icon" aria-hidden="true">♛</span><span>ТАБЛИЦА ЛИДЕРОВ</span></button>
+              <button id="settingsMenuButton" class="menu-nav-button settings-button" type="button"><span class="button-icon" aria-hidden="true">⚙</span><span>НАСТРОЙКИ</span></button>
             </div>
           </div>
 
@@ -59,6 +60,17 @@
             <p>Топ игроков по максимальному расстоянию.</p>
             <div id="leaderboardStatus" class="leaderboard-status">ЗАГРУЗКА...</div>
             <ol id="leaderboardList" class="leaderboard-list" aria-live="polite"></ol>
+          </div>
+
+          <div id="settingsMenuScreen" class="menu-screen settings-menu hidden">
+            <button class="back-button" type="button" data-menu-back>← НАЗАД</button>
+            <p class="eyebrow">ПАРАМЕТРЫ ИГРЫ</p>
+            <h2>НАСТРОЙКИ</h2>
+            <p>Музыка главного меню и игровые звуки.</p>
+            <button id="menuSoundToggle" class="settings-toggle" type="button" aria-pressed="true">
+              <span class="settings-toggle-icon" aria-hidden="true">♪</span>
+              <span id="menuSoundLabel">ЗВУК И МУЗЫКА: ВКЛ</span>
+            </button>
           </div>
 
           <div id="developerMenuScreen" class="menu-screen hidden">
@@ -114,6 +126,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=22"></script>
+  <script src="game.js?v=23"></script>
 </body>
 </html>
