@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="stylesheet" href="styles.css?v=12" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.10.0</span>
+  <span class="app-version" aria-label="Версия приложения">v0.10.1</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">D</span><span>DINO RUN</span></div>
@@ -26,7 +26,7 @@
         <div class="start-card">
           <div id="mainMenuScreen" class="menu-screen">
             <h1 class="game-logo" aria-label="Dino Run"><span>DINO</span><span>RUN</span></h1>
-            <button id="developerMenuButton" class="developer-shortcut" type="button" aria-label="Режим разработчика" title="Режим разработчика">⚙</button>
+            <button id="developerMenuButton" class="developer-shortcut" type="button" aria-label="Настройки" title="Настройки">⚙</button>
             <canvas id="menuCharacterPreview" class="menu-character-preview" width="112" height="80" aria-label="Выбранный персонаж"></canvas>
             <div class="menu-stats" aria-label="Статистика игрока">
               <div><span class="stat-icon coin-symbol">●</span><strong id="menuCoins">000</strong><small>МОНЕТЫ</small></div>
@@ -37,7 +37,6 @@
               <button id="startButton" class="primary-button" type="button"><span class="button-icon play-icon" aria-hidden="true"></span><span>НАЧАТЬ ИГРУ</span></button>
               <button id="characterMenuButton" class="menu-nav-button character-button" type="button"><span class="button-icon" aria-hidden="true">◆</span><span>СКИНЫ</span></button>
               <button id="leaderboardMenuButton" class="menu-nav-button leaderboard-button" type="button"><span class="button-icon" aria-hidden="true">♛</span><span>ТАБЛИЦА ЛИДЕРОВ</span></button>
-              <button id="settingsMenuButton" class="menu-nav-button settings-button" type="button"><span class="button-icon" aria-hidden="true">⚙</span><span>НАСТРОЙКИ</span></button>
             </div>
           </div>
 
@@ -71,17 +70,15 @@
               <span class="settings-toggle-icon" aria-hidden="true">♪</span>
               <span id="menuSoundLabel">ЗВУК И МУЗЫКА: ВКЛ</span>
             </button>
-          </div>
-
-          <div id="developerMenuScreen" class="menu-screen hidden">
-            <button class="back-button" type="button" data-menu-back>← НАЗАД</button>
-            <p class="eyebrow">ТЕСТОВЫЙ ЗАБЕГ</p>
-            <h2>РЕЖИМ РАЗРАБОТЧИКА</h2>
-            <p>Выбери расстояние — игра запустится сразу. Рекорд не сохраняется.</p>
-            <div id="devDistanceButtons" class="dev-distances dev-start-distances">
-              <button type="button" data-distance="1000">1000</button>
-              <button type="button" data-distance="2000">2000</button>
-              <button type="button" data-distance="5000">5000</button>
+            <div class="settings-developer">
+              <p class="eyebrow">ТЕСТОВЫЙ ЗАБЕГ</p>
+              <h3>РЕЖИМ РАЗРАБОТЧИКА</h3>
+              <p>Выбери расстояние — игра запустится сразу. Рекорд не сохраняется.</p>
+              <div id="devDistanceButtons" class="dev-distances dev-start-distances">
+                <button type="button" data-distance="1000">1000</button>
+                <button type="button" data-distance="2000">2000</button>
+                <button type="button" data-distance="5000">5000</button>
+              </div>
             </div>
           </div>
         </div>
@@ -126,6 +123,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=23"></script>
+  <script src="game.js?v=24"></script>
 </body>
 </html>

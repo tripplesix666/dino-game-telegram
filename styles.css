@@ -389,6 +389,9 @@ body.menu-open .menu-screen:not(#mainMenuScreen) {
 .settings-toggle { display: grid; grid-template-columns: 54px 1fr; align-items: center; width: 100%; margin-top: 28px; padding: 16px 18px; border: 1px solid rgba(255,255,255,.24); border-radius: 18px; background: linear-gradient(#35c975, #17874d); color: white; font-family: system-ui, sans-serif; font-size: 16px; font-weight: 900; cursor: pointer; box-shadow: inset 0 2px 0 rgba(255,255,255,.2), 0 7px 18px rgba(0,0,0,.3); }
 .settings-toggle[aria-pressed="false"] { background: linear-gradient(#596275, #303746); color: #c6cdd8; }
 .settings-toggle-icon { font-size: 28px; }
+.settings-developer { margin-top: 30px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.18); }
+.settings-developer h3 { margin: 6px 0 8px; font-size: clamp(18px, 5vw, 26px); }
+.settings-developer .dev-start-distances { margin-top: 18px; }
 
 body.menu-open .menu-screen:not(#mainMenuScreen) .back-button,
 body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }

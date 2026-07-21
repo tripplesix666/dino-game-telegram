@@ -29,10 +29,8 @@
   const skinsMenuScreen = document.querySelector('#skinsMenuScreen');
   const leaderboardMenuScreen = document.querySelector('#leaderboardMenuScreen');
   const settingsMenuScreen = document.querySelector('#settingsMenuScreen');
-  const developerMenuScreen = document.querySelector('#developerMenuScreen');
   const characterMenuButton = document.querySelector('#characterMenuButton');
   const leaderboardMenuButton = document.querySelector('#leaderboardMenuButton');
-  const settingsMenuButton = document.querySelector('#settingsMenuButton');
   const developerMenuButton = document.querySelector('#developerMenuButton');
   const menuSoundToggle = document.querySelector('#menuSoundToggle');
   const menuSoundLabel = document.querySelector('#menuSoundLabel');
@@ -233,7 +231,6 @@
     skinsMenuScreen.classList.toggle('hidden', section !== 'skins');
     leaderboardMenuScreen.classList.toggle('hidden', section !== 'leaderboard');
     settingsMenuScreen.classList.toggle('hidden', section !== 'settings');
-    developerMenuScreen.classList.toggle('hidden', section !== 'developer');
     if (section === 'leaderboard') loadLeaderboard();
     if (section === 'main') startMenuMusic(); else stopMenuMusic();
     startScreen.scrollTop = 0;
@@ -769,8 +766,7 @@
   });
   characterMenuButton.addEventListener('click', () => { showMenuSection('skins'); beep(420, .035, .01); });
   leaderboardMenuButton.addEventListener('click', () => { showMenuSection('leaderboard'); beep(470, .035, .01); });
-  settingsMenuButton.addEventListener('click', () => { showMenuSection('settings'); beep(390, .035, .01); });
-  developerMenuButton.addEventListener('click', () => { showMenuSection('developer'); beep(520, .035, .01); });
+  developerMenuButton.addEventListener('click', () => { showMenuSection('settings'); beep(390, .035, .01); });
   for (const button of document.querySelectorAll('[data-menu-back]')) button.addEventListener('click', () => { showMenuSection('main'); beep(320, .035, .01); });
   soundButton.addEventListener('click', toggleSound);
   menuSoundToggle.addEventListener('click', toggleSound);
