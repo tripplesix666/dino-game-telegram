@@ -67,6 +67,9 @@
     });
     return [skin.id, images];
   }));
+  const groundTexture = new Image();
+  groundTexture.src = 'assets/desert-ground.png';
+  groundTexture.addEventListener('load', draw);
   let ownedSkins;
   try { ownedSkins = JSON.parse(localStorage.getItem('dino-owned-skins') || '["classic"]'); } catch { ownedSkins = ['classic']; }
   ownedSkins = Array.isArray(ownedSkins) ? ownedSkins.filter(id => SKINS.some(skin => skin.id === id)) : [];
@@ -617,13 +620,24 @@
       ctx.beginPath(); ctx.fillStyle = sky; ctx.arc(width * .78 + 10, 87, 23, 0, Math.PI * 2); ctx.fill();
       ctx.globalAlpha = 1;
     }
-    rect(0, groundY, width, height - groundY, mixColor('#e7c987', '#584b3a', nightAmount));
-    rect(0, groundY, width, 5, mixColor('#c79548', '#9b825e', nightAmount));
     for (const c of clouds) drawCloud(c);
-    ctx.strokeStyle = C.ink; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, groundY + .5); ctx.lineTo(width, groundY + .5); ctx.stroke();
-    ctx.fillStyle = C.muted;
-    const groundOffset = running ? (elapsed * speed) % 90 : 0;
-    for (let x = -groundOffset; x < width; x += 90) { ctx.fillRect(x, groundY + 12, 22, 2); ctx.fillRect(x + 46, groundY + 20, 9, 2); ctx.fillRect(x + 68, groundY + 7, 4, 2); }
+    const groundHeight = height - groundY;
+    if (groundTexture.complete && groundTexture.naturalWidth) {
+      const sourceY = 500;
+      const sourceHeight = groundTexture.naturalHeight - sourceY;
+      const tileWidth = groundTexture.naturalWidth * groundHeight / sourceHeight;
+      const groundOffset = running ? (elapsed * speed) % tileWidth : 0;
+      ctx.imageSmoothingEnabled = true;
+      for (let x = -groundOffset; x < width; x += tileWidth) {
+        ctx.drawImage(groundTexture, 0, sourceY, groundTexture.naturalWidth, sourceHeight, x, groundY, tileWidth + 1, groundHeight);
+      }
+      if (nightAmount > 0) {
+        ctx.fillStyle = `rgba(10, 21, 38, ${nightAmount * .58})`;
+        ctx.fillRect(0, groundY, width, groundHeight);
+      }
+    } else {
+      rect(0, groundY, width, groundHeight, mixColor('#e7c987', '#584b3a', nightAmount));
+    }
     for (const platform of platforms) drawPlatform(platform);
     for (const p of dust) rect(p.x, p.y, 3, 3, C.muted);
     for (const coin of coins) drawCoin(coin);
