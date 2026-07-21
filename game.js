@@ -47,7 +47,7 @@
   let highScore = Number(localStorage.getItem('dino-high-score') || 0);
   let totalCoins = Number(localStorage.getItem('dino-total-coins') || 0);
   const SKINS = [
-    { id: 'classic', name: 'КЛАССИЧЕСКИЙ', price: 0, color: '#07977e', accent: '#52c66d', image: 'assets/skins/classic.jpg', gameSprites: ['assets/game-skins/classic-run-1.png', 'assets/game-skins/classic-run-2.png', 'assets/game-skins/classic-run-3.png', 'assets/game-skins/classic-run-4.png', 'assets/game-skins/classic-run-5.png', 'assets/game-skins/classic-run-6.png', 'assets/game-skins/classic-run-7.png', 'assets/game-skins/classic-run-8.png'] },
+    { id: 'classic', name: 'КЛАССИЧЕСКИЙ', price: 0, color: '#07977e', accent: '#52c66d', image: 'assets/skins/classic.jpg', gameSprites: ['assets/game-skins/classic-run-4.png', 'assets/game-skins/classic-run-8.png'] },
     { id: 'desert', name: 'ПУСТЫННЫЙ', price: 0, color: '#b87529', accent: '#e1a54e', image: 'assets/skins/desert.jpg', gameSprites: ['assets/game-skins/desert.png', 'assets/game-skins/desert-run-2.png'] },
     { id: 'ice', name: 'ЛЕДЯНОЙ', price: 0, color: '#54cbe5', accent: '#d9f8ff', image: 'assets/skins/ice.jpg' },
     { id: 'fire', name: 'ОГНЕННЫЙ', price: 0, color: '#302e34', accent: '#ff5a19', image: 'assets/skins/fire.jpg' },
@@ -509,14 +509,16 @@
     const x = Math.round(dino.x), y = Math.round(dino.y), dead = gameOver;
     const skin = SKINS.find(item => item.id === selectedSkin) || SKINS[0];
     const rasterFrames = skinSprites.get(skin.id);
-    const runningFrame = dino.grounded && !dino.ducking ? Math.floor(animTime * 12) % (rasterFrames?.length || 1) : 0;
+    const runningFrame = dino.grounded && !dino.ducking ? Math.floor(animTime * 7) % (rasterFrames?.length || 1) : 0;
     const rasterSprite = rasterFrames?.[runningFrame] || rasterFrames?.[0];
     if (rasterSprite?.complete && rasterSprite.naturalWidth) {
       const ducking = dino.ducking && dino.grounded;
       const spriteW = ducking ? 104 : 112;
       const spriteH = ducking ? 70 : 106;
       const spriteX = x - 28;
-      const spriteY = y + dino.h - spriteH + 1;
+      // Generated frames have equal transparent padding below the feet.
+      // Keep that padding outside the collision box so both poses touch the ground.
+      const spriteY = y + dino.h - spriteH + 13;
       ctx.save();
       ctx.imageSmoothingEnabled = true;
       if (dead) ctx.globalAlpha = .62;
