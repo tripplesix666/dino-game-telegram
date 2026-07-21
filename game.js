@@ -70,6 +70,19 @@
   const groundTexture = new Image();
   groundTexture.src = 'assets/desert-ground.png';
   groundTexture.addEventListener('load', draw);
+  const CACTUS_VARIANTS = [
+    { source: 'assets/obstacles/cactus-1.png', w: 26, h: 40 },
+    { source: 'assets/obstacles/cactus-2.png', w: 37, h: 60 },
+    { source: 'assets/obstacles/cactus-3.png', w: 46, h: 42 },
+    { source: 'assets/obstacles/cactus-4.png', w: 51, h: 46 },
+    { source: 'assets/obstacles/cactus-5.png', w: 46, h: 64 },
+    { source: 'assets/obstacles/cactus-6.png', w: 33, h: 60 }
+  ].map(variant => {
+    const image = new Image();
+    image.src = variant.source;
+    image.addEventListener('load', draw);
+    return { ...variant, image };
+  });
   let ownedSkins;
   try { ownedSkins = JSON.parse(localStorage.getItem('dino-owned-skins') || '["classic"]'); } catch { ownedSkins = ['classic']; }
   ownedSkins = Array.isArray(ownedSkins) ? ownedSkins.filter(id => SKINS.some(skin => skin.id === id)) : [];
@@ -282,9 +295,9 @@
       const levels = [groundY - 42, groundY - 72, groundY - 102];
       obstacles.push({ type: 'bird', x: width + 30, y: levels[Math.floor(Math.random() * levels.length)], w: 48, h: 28, frame: 0 });
     } else {
-      const group = score > 180 && Math.random() < .35 ? 2 + (Math.random() < .28 ? 1 : 0) : 1;
-      const tall = Math.random() < .52;
-      obstacles.push({ type: 'cactus', x: width + 30, y: groundY - (tall ? 48 : 35), w: group * (tall ? 24 : 19), h: tall ? 48 : 35, group, tall });
+      const available = score > 180 ? CACTUS_VARIANTS : CACTUS_VARIANTS.filter((_, index) => index === 0 || index === 2);
+      const variant = available[Math.floor(Math.random() * available.length)];
+      obstacles.push({ type: 'cactus', x: width + 30, y: groundY - variant.h, w: variant.w, h: variant.h, variant });
     }
   }
 
@@ -565,11 +578,14 @@
   }
 
   function drawCactus(o) {
-    const unit = o.tall ? 23 : 18;
-    for (let i = 0; i < o.group; i++) {
-      const x = o.x + i * (unit - 2), h = o.h * (.82 + ((i * 13) % 3) * .09), y = groundY - h;
-      rect(x + unit * .34, y, unit * .34, h); rect(x, y + h * .38, unit * .35, 6); rect(x, y + h * .25, 5, h * .24); rect(x + unit * .66, y + h * .52, unit * .34, 6); rect(x + unit - 5, y + h * .37, 5, h * .26);
+    if (o.variant?.image.complete && o.variant.image.naturalWidth) {
+      ctx.save();
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(o.variant.image, o.x, groundY - o.h, o.w, o.h);
+      ctx.restore();
+      return;
     }
+    rect(o.x + o.w * .34, groundY - o.h, o.w * .34, o.h);
   }
 
   function drawBird(o) {
