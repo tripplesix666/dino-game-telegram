@@ -295,8 +295,7 @@
       const levels = [groundY - 42, groundY - 72, groundY - 102];
       obstacles.push({ type: 'bird', x: width + 30, y: levels[Math.floor(Math.random() * levels.length)], w: 48, h: 28, frame: 0 });
     } else {
-      const available = score > 180 ? CACTUS_VARIANTS : CACTUS_VARIANTS.filter((_, index) => index === 0 || index === 2);
-      const variant = available[Math.floor(Math.random() * available.length)];
+      const variant = CACTUS_VARIANTS[Math.floor(Math.random() * CACTUS_VARIANTS.length)];
       obstacles.push({ type: 'cactus', x: width + 30, y: groundY - variant.h, w: variant.w, h: variant.h, variant });
     }
   }
