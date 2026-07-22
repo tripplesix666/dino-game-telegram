@@ -412,6 +412,9 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 .location-desert::before { background-image: url("assets/desert-sky-day.png"); background-color: #e5a93e; }
 .location-forest::before { background: linear-gradient(155deg, #29683d, #082b25 70%); }
 .location-jungle::before { background: radial-gradient(circle at 70% 28%, rgba(104,214,95,.72), transparent 24%), linear-gradient(145deg, #13735d, #05291f 72%); }
+.location-meteor::before { background: radial-gradient(circle at 74% 22%, #ff9b3d 0 2%, transparent 3%), linear-gradient(145deg, #4d244a, #140d26 72%); }
+.location-ice-age::before { background: radial-gradient(circle at 70% 22%, rgba(225,250,255,.75), transparent 24%), linear-gradient(145deg, #6ccfe5, #173b68 74%); }
+.location-scorched::before { background: radial-gradient(circle at 68% 32%, rgba(255,79,22,.75), transparent 24%), linear-gradient(145deg, #7f351e, #1e1014 74%); }
 .location-number { position: absolute; top: 15px; left: 17px; font-size: 13px; font-weight: 900; opacity: .8; }
 .location-name { font-size: clamp(24px, 5vw, 36px); font-weight: 950; letter-spacing: 1px; }
 .location-range { margin-top: 3px; color: #cde8f1; font-size: 13px; font-weight: 800; letter-spacing: 1px; }
