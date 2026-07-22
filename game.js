@@ -79,6 +79,9 @@
   const sunTexture = new Image();
   sunTexture.src = 'assets/voxel-sun.png';
   sunTexture.addEventListener('load', draw);
+  const moonTexture = new Image();
+  moonTexture.src = 'assets/voxel-moon.png';
+  moonTexture.addEventListener('load', draw);
   const CACTUS_VARIANTS = [
     { source: 'assets/obstacles/cactus-1.png', w: 26, h: 40 },
     { source: 'assets/obstacles/cactus-2.png', w: 37, h: 60 },
@@ -295,7 +298,11 @@
   }
 
   function updateDayNight(instant = false) {
-    const target = smoothstep((score - 1700) / 400);
+    const cycleDistance = ((score % 3000) + 3000) % 3000;
+    let target = 0;
+    if (cycleDistance >= 1300 && cycleDistance < 1500) target = smoothstep((cycleDistance - 1300) / 200);
+    else if (cycleDistance >= 1500 && cycleDistance < 2800) target = 1;
+    else if (cycleDistance >= 2800) target = 1 - smoothstep((cycleDistance - 2800) / 200);
     isNight = target >= .55;
     document.body.classList.toggle('night', isNight);
     if (instant) nightAmount = target;
@@ -670,9 +677,12 @@
     ctx.restore();
   }
 
-  function drawSun() {
-    if (!sunTexture.complete || !sunTexture.naturalWidth) return;
-    const journey = smoothstep(score / 2000);
+  function drawCelestialBody() {
+    const segmentDistance = ((score % 1500) + 1500) % 1500;
+    const isMoonSegment = Math.floor(score / 1500) % 2 === 1;
+    const texture = isMoonSegment ? moonTexture : sunTexture;
+    if (!texture.complete || !texture.naturalWidth) return;
+    const journey = smoothstep(segmentDistance / 1500);
     const size = Math.min(116, Math.max(72, width * .18));
     const x = width * (.1 + journey * 1.08) - size / 2;
     const startCenterY = groundY * .52;
@@ -685,7 +695,7 @@
     const y = centerY - size / 2;
     ctx.save();
     ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(sunTexture, x, y, size, size);
+    ctx.drawImage(texture, x, y, size, size);
     ctx.restore();
   }
 
@@ -695,7 +705,6 @@
     C.paper = sky; C.ink = mixColor('#2f414b', '#e8f0ff', nightAmount); C.muted = mixColor('#83a6b8', '#7185a9', nightAmount);
     spriteColor = C.ink; rect(0, 0, width, height, sky);
     drawSkyBackground();
-    drawSun();
     if (nightAmount > 0) {
       ctx.fillStyle = `rgba(7, 18, 40, ${nightAmount * .72})`;
       ctx.fillRect(0, 0, width, groundY);
@@ -703,10 +712,9 @@
     if (nightAmount > .05) {
       ctx.globalAlpha = nightAmount;
       for (let i = 0; i < 28; i++) rect((i * 97 + 41) % Math.max(width, 1), 48 + (i * 53) % Math.max(80, groundY - 100), i % 4 === 0 ? 3 : 2, i % 4 === 0 ? 3 : 2, '#dce8ff');
-      ctx.beginPath(); ctx.fillStyle = '#f5edbd'; ctx.arc(width * .78, 95, 24, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.fillStyle = sky; ctx.arc(width * .78 + 10, 87, 23, 0, Math.PI * 2); ctx.fill();
       ctx.globalAlpha = 1;
     }
+    drawCelestialBody();
     for (const c of clouds) drawCloud(c);
     const groundHeight = height - groundY;
     if (groundTexture.complete && groundTexture.naturalWidth) {
