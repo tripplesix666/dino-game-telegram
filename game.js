@@ -790,8 +790,10 @@
   function initAudio() { if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === 'suspended') audio.resume(); }
   const MENU_MELODY = [659, 784, 880, 784, 659, 587, 523, 587, 659, 784, 880, 988, 880, 784, 659, 587, 523, 659, 784, 659, 587, 523, 494, 523, 587, 659, 784, 659, 587, 523, 494, 440];
   const MENU_BASS = [131, 131, 110, 110, 98, 98, 110, 110];
-  const GAME_MELODY = [330, 392, 440, 494, 440, 392, 330, 294, 330, 392, 440, 523, 494, 440, 392, 330];
-  const GAME_BASS = [82, 98, 110, 98, 73, 82, 98, 110];
+  const GAME_DAY_MELODY = [523, 659, 784, 659, 587, 698, 880, 698, 523, 659, 784, 988, 880, 784, 659, 587];
+  const GAME_DAY_BASS = [131, 165, 147, 196, 131, 147, 165, 196];
+  const GAME_NIGHT_MELODY = [440, 523, 659, 523, 392, 494, 587, 494, 349, 440, 523, 659, 587, 523, 494, 392];
+  const GAME_NIGHT_BASS = [110, 82, 98, 73, 110, 98, 82, 73];
 
   function playMusicTone(frequency, type, volume, duration) {
     if (!audio || !soundOn) return;
@@ -826,12 +828,18 @@
 
   function playGameMusicStep() {
     if (!soundOn || !running || paused || gameOver) { stopGameMusic(); return; }
-    const melody = GAME_MELODY[gameMusicStep % GAME_MELODY.length];
-    playMusicTone(melody, 'square', .006, .17);
-    if (gameMusicStep % 4 === 0) playMusicTone(GAME_BASS[Math.floor(gameMusicStep / 4) % GAME_BASS.length], 'triangle', .013, .48);
-    gameMusicStep = (gameMusicStep + 1) % GAME_MELODY.length;
+    const nightMusic = nightAmount >= .5;
+    const melodyNotes = nightMusic ? GAME_NIGHT_MELODY : GAME_DAY_MELODY;
+    const bassNotes = nightMusic ? GAME_NIGHT_BASS : GAME_DAY_BASS;
+    const melody = melodyNotes[gameMusicStep % melodyNotes.length];
+    playMusicTone(melody, nightMusic ? 'sine' : 'square', nightMusic ? .012 : .006, nightMusic ? .25 : .17);
+    if (gameMusicStep % 4 === 0) {
+      playMusicTone(bassNotes[Math.floor(gameMusicStep / 4) % bassNotes.length], 'triangle', nightMusic ? .011 : .014, nightMusic ? .62 : .48);
+    }
+    if (!nightMusic && gameMusicStep % 4 === 2) playMusicTone(melody * 1.5, 'triangle', .0035, .12);
+    gameMusicStep = (gameMusicStep + 1) % melodyNotes.length;
     const speedProgress = Math.max(0, Math.min(1, (speed - 430) / 460));
-    const stepDelay = Math.round(285 - speedProgress * 135);
+    const stepDelay = Math.round(285 - speedProgress * 135 + (nightMusic ? 18 : 0));
     gameMusicTimer = window.setTimeout(playGameMusicStep, stepDelay);
   }
 
