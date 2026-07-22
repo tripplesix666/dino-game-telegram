@@ -120,8 +120,17 @@
     cloud.w = Math.min(150, Math.max(72, width * (.16 + Math.random() * .12)));
     cloud.x = x;
     cloud.y = 72 + Math.random() * Math.max(28, groundY - 235);
-    cloud.vx = 7 + Math.random() * 10;
+    cloud.distanceSpeed = .65 + Math.random() * .9;
     return cloud;
+  }
+
+  function advanceClouds(distanceDelta) {
+    for (const cloud of clouds) {
+      cloud.x -= distanceDelta * cloud.distanceSpeed;
+      const loopWidth = width + cloud.w + 200;
+      while (cloud.x < -cloud.w - 20) cloud.x += loopWidth;
+      while (cloud.x > width + 180) cloud.x -= loopWidth;
+    }
   }
 
   function resize() {
@@ -384,7 +393,8 @@
   }
 
   function update(dt) {
-    elapsed += dt; animTime += dt; score += dt * speed * .025;
+    const distanceDelta = dt * speed * .025;
+    elapsed += dt; animTime += dt; score += distanceDelta;
     speed = devObstacleFree ? 890 : Math.min(890, 430 + score * .095);
     const nightTarget = updateDayNight();
     nightAmount += (nightTarget - nightAmount) * Math.min(1, dt * 2.2);
@@ -451,10 +461,7 @@
         coinCount++; coins.splice(i, 1); beep(880 + (coinCount % 3) * 110, .07, .022);
       }
     }
-    for (const c of clouds) {
-      c.x -= c.vx * dt;
-      if (c.x < -c.w - 20) configureCloud(c, width + Math.random() * 180);
-    }
+    advanceClouds(distanceDelta);
     for (let i = dust.length - 1; i >= 0; i--) { const p = dust[i]; p.x -= (speed * .25 + p.vx) * dt; p.y += p.vy * dt; p.life -= dt; if (p.life <= 0) dust.splice(i, 1); }
     if (dino.grounded && !dino.ducking && Math.random() < dt * 5) makeDust(1);
   }
@@ -696,7 +703,7 @@
     const sourceHeight = Math.round(daySkyTexture.naturalHeight * .95);
     const skyHeight = groundY + 2;
     const tileWidth = daySkyTexture.naturalWidth * skyHeight / sourceHeight;
-    const offset = running ? (elapsed * speed * .035) % tileWidth : 0;
+    const offset = (score * 1.4) % tileWidth;
     ctx.save();
     ctx.imageSmoothingEnabled = true;
     for (let x = -offset; x < width; x += tileWidth) {
@@ -903,7 +910,9 @@
   devJumpControls.addEventListener('click', e => {
     const button = e.target.closest('[data-jump-distance]');
     if (!button || !devObstacleFree || !running) return;
-    score = Number(button.dataset.jumpDistance);
+    const nextDistance = Number(button.dataset.jumpDistance);
+    advanceClouds(nextDistance - score);
+    score = nextDistance;
     speed = 890;
     milestone = Math.floor(score / 500);
     updateDayNight(true);
