@@ -675,10 +675,10 @@
     if (!sunTexture.complete || !sunTexture.naturalWidth) return;
     const journey = smoothstep(score / 2000);
     const size = Math.min(116, Math.max(72, width * .18));
-    const x = width * (.1 + journey * .8) - size / 2;
+    const x = width * (.1 + journey * .45) - size / 2;
     const startCenterY = groundY * .52;
     const highCenterY = Math.max(size * .62, 72);
-    const endCenterY = groundY + size * .18;
+    const endCenterY = groundY * .76;
     const inverseJourney = 1 - journey;
     const centerY = inverseJourney * inverseJourney * startCenterY
       + 2 * inverseJourney * journey * highCenterY
