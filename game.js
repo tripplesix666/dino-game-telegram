@@ -670,10 +670,12 @@
 
   function drawSun() {
     if (!sunTexture.complete || !sunTexture.naturalWidth) return;
-    const sunset = smoothstep((score - 1450) / 650);
+    const journey = smoothstep(score / 2000);
     const size = Math.min(116, Math.max(72, width * .18));
-    const x = width * (.78 - sunset * .18) - size / 2;
-    const y = 54 + sunset * Math.max(0, groundY - 34) - size / 2;
+    const x = width * (.1 + journey * .8) - size / 2;
+    const horizonY = groundY - size * .12;
+    const arcHeight = Math.max(0, groundY - 92) * Math.sin(journey * Math.PI);
+    const y = horizonY - arcHeight - size / 2;
     ctx.save();
     ctx.globalAlpha = Math.max(0, 1 - nightAmount * 1.15);
     ctx.imageSmoothingEnabled = true;
