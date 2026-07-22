@@ -54,6 +54,8 @@
   const thirdRouteEnd = document.querySelector('#thirdRouteEnd');
   const thirdDistanceLeft = document.querySelector('#thirdDistanceLeft');
   const thirdLocationPlay = document.querySelector('#thirdLocationPlay');
+  const thirdLocationPrev = document.querySelector('#thirdLocationPrev');
+  const thirdLocationNext = document.querySelector('#thirdLocationNext');
 
   const C = { ink: '#2f414b', muted: '#83a6b8', cloud: '#ffffff', accent: '#ee5d43', paper: '#dff3ff', platform: '#5f8fa8', platformTop: '#315b70' };
   const DINO_STAND_HEIGHT = 60;
@@ -74,6 +76,7 @@
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
   const savedLocationView = localStorage.getItem('dino-location-view');
   let locationView = ['legacy', 'new', 'third'].includes(savedLocationView) ? savedLocationView : 'legacy';
+  let thirdViewedLocationIndex = null;
   let audio = null;
   let menuMusicTimer = null, menuMusicStep = 0, gameMusicTimer = null, gameMusicStep = 0, activeMenuSection = 'main';
   let highScore = Number(localStorage.getItem('dino-high-score') || 0);
@@ -208,6 +211,28 @@
     initAudio(); beep(330, .05, .025); startGameMusic(); requestNextFrame();
   }
 
+  function renderThirdLocation(index) {
+    thirdViewedLocationIndex = Math.max(0, Math.min(LOCATIONS.length - 1, index));
+    const viewedLocation = LOCATIONS[thirdViewedLocationIndex];
+    const locationProgress = Math.max(0, Math.min(1, (highScore - viewedLocation.from) / (viewedLocation.to - viewedLocation.from)));
+    const isFutureLocation = highScore < viewedLocation.from;
+    thirdLocationStage.className = `third-location-stage third-theme-${viewedLocation.theme}${isFutureLocation ? ' future' : ''}`;
+    thirdLocationStage.style.setProperty('--third-progress', `${locationProgress * 100}%`);
+    thirdLocationStage.style.setProperty('--third-marker', `${7 + locationProgress * 86}%`);
+    thirdLocationNumber.textContent = `ЛОКАЦИЯ ${String(thirdViewedLocationIndex + 1).padStart(2, '0')}`;
+    thirdLocationName.textContent = viewedLocation.name;
+    thirdLocationRange.textContent = `${viewedLocation.from}–${viewedLocation.to} М`;
+    thirdFlagRecord.textContent = `${formatScore(highScore)} М`;
+    thirdRouteStart.textContent = String(viewedLocation.from);
+    thirdRouteEnd.textContent = `${viewedLocation.to} М`;
+    thirdDistanceLeft.textContent = `${Math.max(0, Math.ceil(viewedLocation.to - Math.max(highScore, viewedLocation.from)))} М`;
+    thirdLocationPlay.dataset.locationStart = String(viewedLocation.from);
+    thirdLocationPlay.disabled = viewedLocation.from !== 0;
+    thirdLocationPlay.textContent = viewedLocation.from === 0 ? 'ИГРАТЬ' : 'СКОРО';
+    thirdLocationPrev.classList.toggle('hidden', thirdViewedLocationIndex === 0);
+    thirdLocationNext.classList.toggle('hidden', thirdViewedLocationIndex === LOCATIONS.length - 1);
+  }
+
   function updateMenuStats() {
     menuCoins.textContent = String(totalCoins).padStart(3, '0');
     skinWalletCoins.textContent = String(totalCoins).padStart(3, '0');
@@ -231,22 +256,8 @@
       card.classList.toggle('complete', cardProgress >= 1);
       card.classList.toggle('current', highScore >= from && highScore < to);
     }
-    const locationIndex = Math.min(LOCATIONS.length - 1, Math.floor(Math.max(0, highScore) / 3000));
-    const currentLocation = LOCATIONS[locationIndex];
-    const locationProgress = Math.max(0, Math.min(1, (highScore - currentLocation.from) / (currentLocation.to - currentLocation.from)));
-    thirdLocationStage.className = `third-location-stage third-theme-${currentLocation.theme}`;
-    thirdLocationStage.style.setProperty('--third-progress', `${locationProgress * 100}%`);
-    thirdLocationStage.style.setProperty('--third-marker', `${7 + locationProgress * 86}%`);
-    thirdLocationNumber.textContent = `ЛОКАЦИЯ ${String(locationIndex + 1).padStart(2, '0')}`;
-    thirdLocationName.textContent = currentLocation.name;
-    thirdLocationRange.textContent = `${currentLocation.from}–${currentLocation.to} М`;
-    thirdFlagRecord.textContent = `${formatScore(highScore)} М`;
-    thirdRouteStart.textContent = String(currentLocation.from);
-    thirdRouteEnd.textContent = `${currentLocation.to} М`;
-    thirdDistanceLeft.textContent = `${Math.max(0, Math.ceil(currentLocation.to - highScore))} М`;
-    thirdLocationPlay.dataset.locationStart = String(currentLocation.from);
-    thirdLocationPlay.disabled = currentLocation.from !== 0;
-    thirdLocationPlay.textContent = currentLocation.from === 0 ? 'ИГРАТЬ' : 'СКОРО';
+    const recordLocationIndex = Math.min(LOCATIONS.length - 1, Math.floor(Math.max(0, highScore) / 3000));
+    renderThirdLocation(thirdViewedLocationIndex === null ? recordLocationIndex : thirdViewedLocationIndex);
     renderSkinShop();
   }
 
@@ -979,6 +990,8 @@
     if (thirdLocationPlay.disabled) return;
     devStartDistance = Number(thirdLocationPlay.dataset.locationStart || 0); devObstacleFree = false; start();
   });
+  thirdLocationPrev.addEventListener('click', () => { renderThirdLocation(thirdViewedLocationIndex - 1); beep(360, .035, .01); });
+  thirdLocationNext.addEventListener('click', () => { renderThirdLocation(thirdViewedLocationIndex + 1); beep(480, .035, .01); });
   restartButton.addEventListener('click', start); menuButton.addEventListener('click', showMenu);
   pauseButton.addEventListener('click', () => paused ? resumeGame() : pauseGame()); resumeButton.addEventListener('click', resumeGame); pauseMenuButton.addEventListener('click', showMenu);
   skinGrid.addEventListener('click', e => { const card = e.target.closest('[data-skin]'); if (card) chooseOrBuySkin(card.dataset.skin); });
@@ -991,8 +1004,9 @@
   locationViewButtons.addEventListener('click', e => {
     const button = e.target.closest('[data-location-view]'); if (!button) return;
     locationView = button.dataset.locationView;
+    if (locationView === 'third') thirdViewedLocationIndex = null;
     localStorage.setItem('dino-location-view', locationView);
-    updateLocationView(); beep(430, .04, .012);
+    updateLocationView(); updateMenuStats(); beep(430, .04, .012);
   });
   devJumpControls.addEventListener('click', e => {
     const button = e.target.closest('[data-jump-distance]');

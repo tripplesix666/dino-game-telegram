@@ -435,6 +435,11 @@ body.location-view-new .new-location-view { display: block; }
 .third-location-view { display: none; width: min(680px, 100%); margin: 18px auto 24px; }
 .third-location-stage { --third-progress: 0%; --third-marker: 7%; --third-bg: url("assets/desert-sky-day.png"); position: relative; min-height: min(620px, calc(100vh - 220px)); overflow: hidden; border: 1px solid rgba(255,255,255,.3); border-radius: 28px; background: var(--third-bg) center / cover; color: white; isolation: isolate; box-shadow: 0 18px 44px rgba(0,0,0,.42); }
 .third-location-stage::before { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(2,16,25,.15), transparent 35%, rgba(2,16,25,.35) 58%, rgba(2,13,21,.96) 100%); }
+.third-location-nav { position: absolute; z-index: 12; top: 50%; display: grid; place-items: center; width: 50px; height: 64px; border: 1px solid rgba(255,255,255,.4); border-radius: 18px; background: rgba(5,20,30,.76); color: white; font: 800 48px/1 system-ui, sans-serif; cursor: pointer; box-shadow: inset 0 2px 0 rgba(255,255,255,.13), 0 8px 20px rgba(0,0,0,.4); transform: translateY(-50%); backdrop-filter: blur(6px); }
+.third-location-nav:active { transform: translateY(-50%) scale(.92); }
+.third-nav-prev { left: 14px; }
+.third-nav-next { right: 14px; }
+.third-location-nav.hidden { display: none; }
 .third-theme-desert { --third-bg: url("assets/desert-sky-day.png"); }
 .third-theme-forest { --third-bg: linear-gradient(145deg, #4f8053, #10291e); }
 .third-theme-jungle { --third-bg: radial-gradient(circle at 70% 28%, #72d45f, transparent 25%), linear-gradient(145deg, #17775d, #06271e); }
@@ -456,6 +461,7 @@ body.location-view-new .new-location-view { display: block; }
 .third-record-flag { position: absolute; z-index: 7; bottom: calc(41% + 4px); left: var(--third-marker); width: 3px; height: 62px; background: #f3ead2; box-shadow: 0 2px 6px rgba(0,0,0,.55); transform: translateX(-50%); transition: left .55s ease; }
 .third-record-flag::after { content: ""; position: absolute; bottom: -5px; left: 50%; width: 13px; height: 13px; border: 3px solid white; border-radius: 50%; background: #28c979; transform: translateX(-50%); }
 .third-record-flag strong { position: absolute; top: 0; left: 3px; min-width: 78px; padding: 8px 12px 8px 10px; background: #ef644d; color: white; clip-path: polygon(0 0, 100% 0, 88% 50%, 100% 100%, 0 100%); font-size: 10px; line-height: 1; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 2px 4px rgba(0,0,0,.4); box-shadow: 0 4px 10px rgba(0,0,0,.38); }
+.third-location-stage.future .third-record-flag { display: none; }
 .third-stage-footer { position: absolute; z-index: 7; right: 20px; bottom: 20px; left: 20px; display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 18px; border: 1px solid rgba(255,255,255,.22); border-radius: 20px; background: rgba(4,17,27,.88); box-shadow: 0 10px 28px rgba(0,0,0,.35); }
 .third-stage-footer p { margin: 0; color: #9fb1bd; font-size: 9px; font-weight: 850; letter-spacing: 1.5px; text-align: left; }
 .third-stage-footer strong { grid-column: 1; color: white; font-size: 21px; text-align: left; }
