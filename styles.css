@@ -415,25 +415,24 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 .new-location-record { width: fit-content; margin: 0 auto 18px; padding: 8px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; background: rgba(0,0,0,.32); color: #b8cbd6; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
 .new-location-record strong { color: white; }
 .new-location-grid { display: grid; gap: 14px; }
-.new-location-card { --card-progress: 0%; position: relative; display: grid; grid-template-columns: 58% 42%; min-height: 154px; overflow: hidden; padding: 0; border: 1px solid rgba(255,255,255,.27); border-radius: 22px; background: #0b2433; color: white; text-align: left; cursor: pointer; box-shadow: inset 0 2px 0 rgba(255,255,255,.12), 0 10px 22px rgba(0,0,0,.3); }
-.new-location-copy { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 22px 18px 28px 22px; background: linear-gradient(90deg, #0b2433 78%, rgba(11,36,51,.75)); }
+.new-location-card { --card-progress: 0%; --location-bg: linear-gradient(145deg, #315b70, #0b2433); position: relative; display: grid; grid-template-columns: 1fr; min-height: 154px; overflow: hidden; padding: 0; border: 1px solid rgba(255,255,255,.27); border-radius: 22px; background: #0b2433; color: white; text-align: left; cursor: pointer; isolation: isolate; box-shadow: inset 0 2px 0 rgba(255,255,255,.12), 0 10px 22px rgba(0,0,0,.3); }
+.new-location-card::before { content: ""; position: absolute; z-index: 1; inset: 0 auto 0 0; width: var(--card-progress); background: var(--location-bg); background-position: center; background-size: cover; transition: width .45s ease; }
+.new-location-copy { position: relative; z-index: 3; display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 22px 18px 22px 22px; background: linear-gradient(90deg, rgba(5,23,34,.9), rgba(5,23,34,.58) 58%, transparent 82%); }
 .new-location-copy small { color: #ff7056; font-size: 9px; font-weight: 900; letter-spacing: 1.5px; }
 .new-location-copy strong { margin-top: 8px; font-size: clamp(18px, 4vw, 27px); line-height: 1.05; }
 .new-location-copy em { margin-top: 8px; color: #a9c1ce; font-size: 10px; font-style: normal; font-weight: 800; letter-spacing: 1px; }
-.new-location-art { position: relative; display: grid; place-items: center; min-width: 0; background-position: center; background-size: cover; }
-.new-location-art::after { content: ""; position: absolute; inset: 0; background: rgba(3,13,20,.18); }
-.new-location-art b { position: relative; z-index: 2; display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid rgba(255,255,255,.3); border-radius: 50%; background: rgba(4,13,20,.7); font-size: 20px; }
-.new-location-card.locked .new-location-art { filter: saturate(.5) brightness(.48); }
-.new-art-desert { background-image: url("assets/desert-sky-day.png"); }
-.new-art-forest { background: linear-gradient(145deg, #4f8053, #132d23); }
-.new-art-jungle { background: radial-gradient(circle at 70% 28%, #6bd35e, transparent 24%), linear-gradient(145deg, #16755b, #082a21); }
-.new-art-meteor { background: radial-gradient(circle at 68% 28%, #ff8739, transparent 10%), linear-gradient(145deg, #5a294d, #171027); }
-.new-art-ice { background: linear-gradient(145deg, #a8edf4, #245589); }
-.new-art-scorched { background: radial-gradient(circle at 65% 45%, #ff5b23, transparent 22%), linear-gradient(145deg, #78331f, #211015); }
-.new-card-progress { position: absolute; z-index: 5; right: 0; bottom: 0; left: 0; height: 10px; background: rgba(255,255,255,.12); }
-.new-card-progress::before { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--card-progress); background: linear-gradient(90deg, #33d36d, #28bfe4); box-shadow: 0 0 11px rgba(43,209,177,.72); transition: width .45s ease; }
-.new-card-progress i { position: absolute; top: 50%; left: var(--card-progress); display: none; width: 17px; height: 17px; border: 3px solid white; border-radius: 50%; background: #28ca7a; transform: translate(-50%, -50%); }
-.new-location-card.current .new-card-progress i { display: block; }
+.new-location-art { position: absolute; z-index: 0; inset: 0; display: grid; place-items: center end; padding-right: 16%; background: var(--location-bg); background-position: center; background-size: cover; filter: grayscale(1) brightness(.48); }
+.new-location-art::after { content: ""; position: absolute; inset: 0; background: rgba(3,13,20,.2); }
+.new-location-art b { position: relative; z-index: 2; display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid rgba(255,255,255,.3); border-radius: 50%; background: rgba(4,13,20,.72); font-size: 20px; }
+.new-theme-desert { --location-bg: url("assets/desert-sky-day.png"); }
+.new-theme-forest { --location-bg: linear-gradient(145deg, #4f8053, #132d23); }
+.new-theme-jungle { --location-bg: radial-gradient(circle at 70% 28%, #6bd35e, transparent 24%), linear-gradient(145deg, #16755b, #082a21); }
+.new-theme-meteor { --location-bg: radial-gradient(circle at 68% 28%, #ff8739, transparent 10%), linear-gradient(145deg, #5a294d, #171027); }
+.new-theme-ice { --location-bg: linear-gradient(145deg, #a8edf4, #245589); }
+.new-theme-scorched { --location-bg: radial-gradient(circle at 65% 45%, #ff5b23, transparent 22%), linear-gradient(145deg, #78331f, #211015); }
+.new-card-progress { position: absolute; z-index: 5; top: 0; bottom: 0; left: var(--card-progress); width: 4px; background: #58ef72; box-shadow: 0 0 12px #37d8a0, -2px 0 6px rgba(255,255,255,.5); transform: translateX(-50%); transition: left .45s ease; }
+.new-card-progress::before { content: ""; position: absolute; top: 50%; left: 50%; width: 13px; height: 34px; border: 2px solid white; border-radius: 8px; background: #25c77c; transform: translate(-50%, -50%); }
+.new-card-progress i { display: none; }
 body.location-view-new .legacy-location-view { display: none; }
 body.location-view-new .new-location-view { display: block; }
 
