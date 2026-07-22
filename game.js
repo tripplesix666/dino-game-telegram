@@ -704,9 +704,12 @@
     const isMoonSegment = Math.floor(score / 1500) % 2 === 1;
     const texture = isMoonSegment ? moonTexture : sunTexture;
     if (!texture.complete || !texture.naturalWidth) return;
-    const journey = smoothstep(segmentDistance / 1500);
+    const linearJourney = segmentDistance / 1500;
+    const journey = smoothstep(linearJourney);
     const size = Math.min(116, Math.max(72, width * .18));
-    const x = width * (.1 + journey * 1.08) - size / 2;
+    const x = isMoonSegment
+      ? -size + linearJourney * (width + size * 2)
+      : width * (.1 + journey * 1.08) - size / 2;
     const startCenterY = groundY * .52;
     const highCenterY = Math.max(size * .62, 72);
     const endCenterY = groundY * .76;
