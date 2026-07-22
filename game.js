@@ -82,6 +82,12 @@
   const moonTexture = new Image();
   moonTexture.src = 'assets/voxel-moon.png';
   moonTexture.addEventListener('load', draw);
+  const cloudSprites = Array.from({ length: 8 }, (_, index) => {
+    const image = new Image();
+    image.src = `assets/clouds/cloud-${index + 1}.png`;
+    image.addEventListener('load', draw);
+    return image;
+  });
   const CACTUS_VARIANTS = [
     { source: 'assets/obstacles/cactus-1.png', w: 26, h: 40 },
     { source: 'assets/obstacles/cactus-2.png', w: 37, h: 60 },
@@ -107,6 +113,15 @@
 
   const dino = { x: 90, y: 0, w: 46, h: 50, vy: 0, grounded: true, ducking: false, support: null, surfaceY: 0 };
 
+  function configureCloud(cloud, x, variant) {
+    cloud.variant = variant ?? Math.floor(Math.random() * cloudSprites.length);
+    cloud.w = Math.min(150, Math.max(72, width * (.16 + Math.random() * .12)));
+    cloud.x = x;
+    cloud.y = 72 + Math.random() * Math.max(28, groundY - 235);
+    cloud.vx = 7 + Math.random() * 10;
+    return cloud;
+  }
+
   function resize() {
     const previousWidth = width;
     const previousGroundY = groundY;
@@ -119,7 +134,8 @@
     dino.x = Math.max(42, Math.min(110, width * .1));
     if (dino.grounded && !dino.support) { dino.surfaceY = groundY; dino.y = groundY - dino.h; }
     if (!clouds.length) {
-      for (let i = 0; i < 5; i++) clouds.push({ x: Math.random() * width, y: 40 + Math.random() * Math.max(20, groundY - 115), s: .6 + Math.random() * .8 });
+      const cloudCount = Math.max(5, Math.min(8, Math.round(width / 140)));
+      for (let i = 0; i < cloudCount; i++) clouds.push(configureCloud({}, Math.random() * width, i % cloudSprites.length));
     } else {
       const oldSkyBottom = Math.max(60, previousGroundY - 65);
       const newSkyBottom = Math.max(60, groundY - 65);
@@ -431,7 +447,10 @@
         coinCount++; coins.splice(i, 1); beep(880 + (coinCount % 3) * 110, .07, .022);
       }
     }
-    for (const c of clouds) { c.x -= speed * .035 * c.s * dt; if (c.x < -80) { c.x = width + Math.random() * 150; c.y = 40 + Math.random() * Math.max(20, groundY - 115); } }
+    for (const c of clouds) {
+      c.x -= c.vx * dt;
+      if (c.x < -c.w - 20) configureCloud(c, width + Math.random() * 180);
+    }
     for (let i = dust.length - 1; i >= 0; i--) { const p = dust[i]; p.x -= (speed * .25 + p.vx) * dt; p.y += p.vy * dt; p.life -= dt; if (p.life <= 0) dust.splice(i, 1); }
     if (dino.grounded && !dino.ducking && Math.random() < dt * 5) makeDust(1);
   }
@@ -656,11 +675,14 @@
   }
 
   function drawCloud(c) {
-    ctx.strokeStyle = C.cloud; ctx.lineWidth = 2; ctx.beginPath();
-    ctx.moveTo(c.x, c.y + 13 * c.s); ctx.lineTo(c.x + 12 * c.s, c.y + 13 * c.s);
-    ctx.arc(c.x + 21 * c.s, c.y + 10 * c.s, 9 * c.s, Math.PI, 0);
-    ctx.arc(c.x + 38 * c.s, c.y + 8 * c.s, 13 * c.s, Math.PI, 0);
-    ctx.arc(c.x + 54 * c.s, c.y + 12 * c.s, 8 * c.s, Math.PI, 0); ctx.lineTo(c.x + 70 * c.s, c.y + 13 * c.s); ctx.stroke();
+    const image = cloudSprites[c.variant];
+    if (!image?.complete || !image.naturalWidth) return;
+    const cloudHeight = c.w * image.naturalHeight / image.naturalWidth;
+    ctx.save();
+    ctx.globalAlpha = 1 - nightAmount * .28;
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(image, c.x, c.y, c.w, cloudHeight);
+    ctx.restore();
   }
 
   function drawSkyBackground() {
