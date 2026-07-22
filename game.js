@@ -196,6 +196,9 @@
       connector.style.setProperty('--segment-progress', `${segmentProgress * 100}%`);
       connector.classList.toggle('has-progress', segmentProgress > 0);
       connector.classList.toggle('complete', segmentProgress >= 1);
+      const isCurrent = highScore >= from && highScore < to;
+      connector.classList.toggle('current', isCurrent);
+      connector.querySelector('b').textContent = isCurrent ? `${formatScore(highScore)} М` : '';
     }
     renderSkinShop();
   }

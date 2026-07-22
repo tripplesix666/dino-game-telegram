@@ -427,12 +427,14 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 .location-card.locked { filter: saturate(.55); cursor: default; opacity: 1; }
 .location-card.locked::after { background: linear-gradient(180deg, rgba(5,15,22,.22) 5%, rgba(2,13,21,.98) 90%); }
 .location-card.locked .location-action { background: #657083; }
-.location-connector { --segment-progress: 0%; --tick-step: 6px; position: relative; justify-self: center; width: 34px; height: 180px; background: linear-gradient(90deg, transparent 13px, rgba(255,255,255,.25) 13px 21px, transparent 21px); }
-.location-connector::after { content: ""; position: absolute; inset: 0 4px; z-index: 2; background: repeating-linear-gradient(to bottom, rgba(218,238,247,.78) 0 1px, transparent 1px var(--tick-step)); pointer-events: none; }
-.location-connector > span { position: absolute; z-index: 1; top: 0; left: 13px; width: 8px; height: var(--segment-progress); max-height: 100%; background: linear-gradient(#66ef58, #16bde4); box-shadow: 0 0 10px rgba(54,220,179,.72); transition: height .5s ease; }
+.location-connector { --segment-progress: 0%; --tick-step: 6px; position: relative; justify-self: center; width: 110px; height: 180px; }
+.location-connector::before { content: ""; position: absolute; inset-block: 0; left: 50%; width: 24px; border: 3px solid rgba(205,232,243,.72); border-radius: 14px; background: rgba(9,30,43,.82); box-shadow: inset 4px 0 5px rgba(255,255,255,.16), inset -4px 0 5px rgba(0,0,0,.35), 0 0 0 3px rgba(0,0,0,.2); transform: translateX(-50%); }
+.location-connector::after { content: ""; position: absolute; top: 3px; bottom: 3px; left: 50%; z-index: 3; width: 8px; background: repeating-linear-gradient(to bottom, rgba(225,242,248,.78) 0 1px, transparent 1px var(--tick-step)); transform: translateX(-50%); pointer-events: none; }
+.location-connector > span { position: absolute; z-index: 2; top: 0; left: 50%; width: 18px; height: var(--segment-progress); min-height: 0; max-height: 100%; border-radius: 9px; background: linear-gradient(90deg, #128eb6, #55ef64 48%, #18b9dc); box-shadow: inset 3px 0 4px rgba(255,255,255,.28), 0 0 13px rgba(54,220,179,.78); transform: translateX(-50%); transition: height .5s ease; }
 .location-connector i { display: none; position: absolute; right: 50%; bottom: 0; width: 18px; height: 18px; border: 4px solid white; border-radius: 50%; background: #20c878; box-shadow: 0 3px 12px rgba(0,0,0,.55); transform: translate(50%, 50%); }
-.location-connector.has-progress i { display: block; }
-.location-connector.complete i { width: 14px; height: 14px; }
+.location-connector.current i { display: block; }
+.location-connector b { display: none; position: absolute; left: 32px; bottom: 0; padding: 7px 10px; border: 1px solid rgba(255,255,255,.25); border-radius: 10px; background: #102635; color: white; font-size: 11px; font-style: normal; line-height: 1; letter-spacing: 1px; white-space: nowrap; box-shadow: 0 5px 14px rgba(0,0,0,.4); transform: translateY(50%); }
+.location-connector.current b { display: block; }
 .location-card::marker { display: none; }
 .location-card .location-number { display: grid; place-items: center; top: 15px; left: 17px; z-index: 4; width: 34px; height: 34px; border: 3px solid rgba(255,255,255,.85); border-radius: 50%; background: #26384c; color: white; opacity: 1; transform: none; box-shadow: 0 3px 10px rgba(0,0,0,.45); }
 
