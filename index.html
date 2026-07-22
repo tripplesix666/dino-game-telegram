@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=23" />
+  <link rel="stylesheet" href="styles.css?v=24" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.12.7</span>
+  <span class="app-version" aria-label="Версия приложения">v0.12.8</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -140,11 +140,14 @@
             <div class="settings-developer">
               <p class="eyebrow">ТЕСТОВЫЙ ЗАБЕГ</p>
               <h3>РЕЖИМ РАЗРАБОТЧИКА</h3>
-              <p>Выбери расстояние или отдельный безопасный забег. Рекорд не сохраняется.</p>
+              <p>Быстро запусти игру с начала нужной локации. Рекорд не сохраняется.</p>
               <div id="devDistanceButtons" class="dev-distances dev-start-distances">
-                <button type="button" data-distance="1000">1000</button>
-                <button type="button" data-distance="2000">2000</button>
-                <button type="button" data-distance="5000">5000</button>
+                <button type="button" data-distance="0"><strong>ПУСТЫНЯ</strong><small>0 М</small></button>
+                <button type="button" data-distance="3000"><strong>ЛЕС</strong><small>3000 М</small></button>
+                <button type="button" data-distance="6000"><strong>ДЖУНГЛИ</strong><small>6000 М</small></button>
+                <button type="button" data-distance="9000"><strong>МЕТЕОРИТЫ</strong><small>9000 М</small></button>
+                <button type="button" data-distance="12000"><strong>ЛЕДНИКОВЫЙ ПЕРИОД</strong><small>12000 М</small></button>
+                <button type="button" data-distance="15000"><strong>ИСПЕПЕЛЁННАЯ ЗЕМЛЯ</strong><small>15000 М</small></button>
                 <button type="button" data-obstacle-free>БЕЗ ПРЕГРАД</button>
               </div>
             </div>
