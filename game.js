@@ -46,7 +46,7 @@
   let spawnTimer = 0, nextSpawn = 1.25, coinTimer = 0, nextCoin = 1.8, platformTimer = 0, nextPlatform = 6, animTime = 0, milestone = 0, coinCount = 0;
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
   let audio = null;
-  let menuMusicTimer = null, menuMusicStep = 0, activeMenuSection = 'main';
+  let menuMusicTimer = null, menuMusicStep = 0, gameMusicTimer = null, gameMusicStep = 0, activeMenuSection = 'main';
   let highScore = Number(localStorage.getItem('dino-high-score') || 0);
   let totalCoins = Number(localStorage.getItem('dino-total-coins') || 0);
   const SKINS = [
@@ -157,7 +157,7 @@
 
   function start() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
-    stopMenuMusic();
+    stopMenuMusic(); stopGameMusic();
     reset(); score = devStartDistance; speed = devObstacleFree ? 890 : Math.min(890, 430 + score * .095);
     runSessionPromise = !isDeveloperRun() && window.DinoCloud?.enabled
       ? window.DinoCloud.startRun()
@@ -167,7 +167,7 @@
     document.body.classList.remove('menu-open');
     devJumpControls.classList.toggle('hidden', !devObstacleFree);
     startScreen.classList.add('hidden'); overScreen.classList.add('hidden'); pauseScreen.classList.add('hidden');
-    initAudio(); beep(330, .05, .025); requestNextFrame();
+    initAudio(); beep(330, .05, .025); startGameMusic(); requestNextFrame();
   }
 
   function updateMenuStats() {
@@ -244,6 +244,7 @@
 
   function showMenu() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+    stopGameMusic();
     running = false; paused = false; gameOver = false; setNight(false, true);
     devJumpControls.classList.add('hidden');
     document.body.classList.add('menu-open');
@@ -291,12 +292,13 @@
   function pauseGame() {
     if (!running || paused || gameOver) return;
     paused = true; if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+    stopGameMusic();
     pauseScreen.classList.remove('hidden'); beep(240, .04, .012); draw();
   }
 
   function resumeGame() {
     if (!running || !paused) return;
-    paused = false; pauseScreen.classList.add('hidden'); lastTime = performance.now(); beep(380, .04, .012); requestNextFrame();
+    paused = false; pauseScreen.classList.add('hidden'); lastTime = performance.now(); beep(380, .04, .012); startGameMusic(); requestNextFrame();
   }
 
   function setNight(active, instant = false) {
@@ -470,6 +472,7 @@
   function endGame() {
     if (!running) return;
     running = false; paused = false; gameOver = true;
+    stopGameMusic();
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     makeDust(9); beep(115, .25, .05);
     if (!isDeveloperRun()) {
@@ -787,6 +790,8 @@
   function initAudio() { if (!audio) audio = new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === 'suspended') audio.resume(); }
   const MENU_MELODY = [659, 784, 880, 784, 659, 587, 523, 587, 659, 784, 880, 988, 880, 784, 659, 587, 523, 659, 784, 659, 587, 523, 494, 523, 587, 659, 784, 659, 587, 523, 494, 440];
   const MENU_BASS = [131, 131, 110, 110, 98, 98, 110, 110];
+  const GAME_MELODY = [330, 392, 440, 494, 440, 392, 330, 294, 330, 392, 440, 523, 494, 440, 392, 330];
+  const GAME_BASS = [82, 98, 110, 98, 73, 82, 98, 110];
 
   function playMusicTone(frequency, type, volume, duration) {
     if (!audio || !soundOn) return;
@@ -819,6 +824,27 @@
     menuMusicTimer = null; menuMusicStep = 0;
   }
 
+  function playGameMusicStep() {
+    if (!soundOn || !running || paused || gameOver) { stopGameMusic(); return; }
+    const melody = GAME_MELODY[gameMusicStep % GAME_MELODY.length];
+    playMusicTone(melody, 'square', .006, .17);
+    if (gameMusicStep % 4 === 0) playMusicTone(GAME_BASS[Math.floor(gameMusicStep / 4) % GAME_BASS.length], 'triangle', .013, .48);
+    gameMusicStep = (gameMusicStep + 1) % GAME_MELODY.length;
+    const speedProgress = Math.max(0, Math.min(1, (speed - 430) / 460));
+    const stepDelay = Math.round(285 - speedProgress * 135);
+    gameMusicTimer = window.setTimeout(playGameMusicStep, stepDelay);
+  }
+
+  function startGameMusic() {
+    if (!soundOn || gameMusicTimer || !running || paused || gameOver) return;
+    initAudio(); playGameMusicStep();
+  }
+
+  function stopGameMusic() {
+    if (gameMusicTimer) window.clearTimeout(gameMusicTimer);
+    gameMusicTimer = null; gameMusicStep = 0;
+  }
+
   function updateSoundControls() {
     soundButton.setAttribute('aria-pressed', String(soundOn));
     soundButton.setAttribute('aria-label', soundOn ? 'Выключить звук' : 'Включить звук');
@@ -830,8 +856,11 @@
     soundOn = !soundOn;
     localStorage.setItem('dino-sound', soundOn ? 'on' : 'off');
     updateSoundControls();
-    if (soundOn) { beep(440, .06, .02); if (activeMenuSection === 'main') startMenuMusic(); }
-    else stopMenuMusic();
+    if (soundOn) {
+      beep(440, .06, .02);
+      if (running && !paused) startGameMusic();
+      else if (activeMenuSection === 'main') startMenuMusic();
+    } else { stopMenuMusic(); stopGameMusic(); }
   }
 
   function beep(freq, duration, volume) {
