@@ -25,6 +25,7 @@
   const skinWalletCoins = document.querySelector('#skinWalletCoins');
   const skinGrid = document.querySelector('#skinGrid');
   const devDistanceButtons = document.querySelector('#devDistanceButtons');
+  const devJumpControls = document.querySelector('#devJumpControls');
   const mainMenuScreen = document.querySelector('#mainMenuScreen');
   const skinsMenuScreen = document.querySelector('#skinsMenuScreen');
   const leaderboardMenuScreen = document.querySelector('#leaderboardMenuScreen');
@@ -146,6 +147,7 @@
     updateDayNight(true);
     running = true; lastTime = performance.now();
     document.body.classList.remove('menu-open');
+    devJumpControls.classList.toggle('hidden', !devObstacleFree);
     startScreen.classList.add('hidden'); overScreen.classList.add('hidden'); pauseScreen.classList.add('hidden');
     initAudio(); beep(330, .05, .025); requestNextFrame();
   }
@@ -225,6 +227,7 @@
   function showMenu() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     running = false; paused = false; gameOver = false; setNight(false, true);
+    devJumpControls.classList.add('hidden');
     document.body.classList.add('menu-open');
     overScreen.classList.add('hidden'); pauseScreen.classList.add('hidden'); startScreen.classList.remove('hidden');
     showMenuSection('main'); updateMenuStats(); draw();
@@ -829,6 +832,16 @@
     devObstacleFree = button.hasAttribute('data-obstacle-free');
     devStartDistance = devObstacleFree ? 0 : Number(button.dataset.distance);
     beep(560, .05, .015); start();
+  });
+  devJumpControls.addEventListener('click', e => {
+    const button = e.target.closest('[data-jump-distance]');
+    if (!button || !devObstacleFree || !running) return;
+    score = Number(button.dataset.jumpDistance);
+    speed = 890;
+    milestone = Math.floor(score / 500);
+    updateDayNight(true);
+    beep(640, .045, .014);
+    draw();
   });
   characterMenuButton.addEventListener('click', () => { showMenuSection('skins'); beep(420, .035, .01); });
   leaderboardMenuButton.addEventListener('click', () => { showMenuSection('leaderboard'); beep(470, .035, .01); });
