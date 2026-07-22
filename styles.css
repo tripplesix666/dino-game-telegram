@@ -404,7 +404,7 @@ body.menu-open .menu-screen:not(#mainMenuScreen) .back-button,
 body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 
 .locations-menu > p { margin-inline: auto; max-width: 440px; }
-.location-grid { --location-card-height: 220px; position: relative; display: grid; grid-template-columns: 1fr; gap: 18px; width: min(620px, 100%); margin: 28px auto 24px; }
+.location-grid { --location-card-height: 220px; position: relative; display: grid; grid-template-columns: 1fr; gap: 0; width: min(620px, 100%); margin: 28px auto 24px; }
 .location-record { width: fit-content; margin: 14px auto 0 !important; padding: 8px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; background: rgba(0,0,0,.3); color: #b8cbd6 !important; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
 .location-record strong { color: white; }
 .location-card { position: relative; z-index: 1; display: grid; align-content: end; min-height: var(--location-card-height); overflow: visible; padding: 22px; border: 1px solid rgba(255,255,255,.28); border-radius: 24px; color: white; text-align: left; font: inherit; cursor: pointer; isolation: isolate; box-shadow: inset 0 2px 0 rgba(255,255,255,.2), 0 12px 24px rgba(0,0,0,.32); }
@@ -421,16 +421,21 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 .location-name { font-size: clamp(24px, 5vw, 36px); font-weight: 950; letter-spacing: 1px; }
 .location-range { margin-top: 3px; color: #cde8f1; font-size: 13px; font-weight: 800; letter-spacing: 1px; }
 .location-action { justify-self: start; margin-top: 16px; padding: 8px 14px; border-radius: 999px; background: #22bd44; font-size: 12px; font-weight: 950; letter-spacing: 1px; }
-.location-card.locked { filter: saturate(.55); cursor: default; opacity: .72; }
+.location-card.locked { filter: saturate(.55); cursor: default; opacity: 1; }
+.location-card.locked::after { background: linear-gradient(180deg, rgba(5,15,22,.22) 5%, rgba(2,13,21,.98) 90%); }
 .location-card.locked .location-action { background: #657083; }
-.location-progress-track { position: absolute; z-index: 0; top: calc(var(--location-card-height) / 2); bottom: calc(var(--location-card-height) / 2); left: 50%; width: 8px; overflow: visible; border-radius: 99px; background: rgba(255,255,255,.28); box-shadow: 0 0 0 3px rgba(0,0,0,.18); transform: translateX(-50%); }
-.location-progress-fill { position: absolute; top: 0; left: 0; width: 100%; min-height: 0; max-height: 100%; border-radius: inherit; background: linear-gradient(#65ed58, #19b8e5); box-shadow: 0 0 12px rgba(54,220,179,.75); transition: height .5s ease; }
-.location-progress-fill i { position: absolute; right: 50%; bottom: 0; width: 20px; height: 20px; border: 4px solid white; border-radius: 50%; background: #20c878; box-shadow: 0 3px 12px rgba(0,0,0,.55); transform: translate(50%, 50%); }
+.location-connector { --segment-progress: 0%; position: relative; justify-self: center; width: 28px; height: 92px; background: linear-gradient(90deg, transparent 10px, rgba(255,255,255,.25) 10px 18px, transparent 18px); }
+.location-connector::after { content: ""; position: absolute; inset: 5px 3px; z-index: 2; background: repeating-linear-gradient(to bottom, transparent 0 8px, rgba(218,238,247,.7) 8px 10px); pointer-events: none; }
+.location-connector > span { position: absolute; z-index: 1; top: 0; left: 10px; width: 8px; height: var(--segment-progress); max-height: 100%; background: linear-gradient(#66ef58, #16bde4); box-shadow: 0 0 10px rgba(54,220,179,.72); transition: height .5s ease; }
+.location-connector i { display: none; position: absolute; right: 50%; bottom: 0; width: 18px; height: 18px; border: 4px solid white; border-radius: 50%; background: #20c878; box-shadow: 0 3px 12px rgba(0,0,0,.55); transform: translate(50%, 50%); }
+.location-connector.has-progress i { display: block; }
+.location-connector.complete i { width: 14px; height: 14px; }
 .location-card::marker { display: none; }
 .location-card .location-number { display: grid; place-items: center; top: 15px; left: 17px; z-index: 4; width: 34px; height: 34px; border: 3px solid rgba(255,255,255,.85); border-radius: 50%; background: #26384c; color: white; opacity: 1; transform: none; box-shadow: 0 3px 10px rgba(0,0,0,.45); }
 
 @media (max-width: 720px) {
-  .location-grid { --location-card-height: 170px; gap: 12px; margin-top: 18px; }
+  .location-grid { --location-card-height: 170px; margin-top: 18px; }
+  .location-connector { height: 72px; }
   .location-card .location-number { left: 15px; width: 30px; height: 30px; font-size: 11px; }
 }
 

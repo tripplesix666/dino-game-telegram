@@ -39,7 +39,7 @@
   const leaderboardList = document.querySelector('#leaderboardList');
   const leaderboardStatus = document.querySelector('#leaderboardStatus');
   const menuCharacterPreview = document.querySelector('#menuCharacterPreview');
-  const locationProgressFill = document.querySelector('#locationProgressFill');
+  const locationConnectors = [...document.querySelectorAll('.location-connector')];
   const locationRecord = document.querySelector('#locationRecord');
 
   const C = { ink: '#2f414b', muted: '#83a6b8', cloud: '#ffffff', accent: '#ee5d43', paper: '#dff3ff', platform: '#5f8fa8', platformTop: '#315b70' };
@@ -190,9 +190,13 @@
     skinWalletCoins.textContent = String(totalCoins).padStart(3, '0');
     menuHighScore.textContent = formatScore(highScore);
     locationRecord.textContent = `${formatScore(highScore)} М`;
-    const routeProgress = Math.max(0, Math.min(1, highScore / 18000));
-    locationProgressFill.style.height = `${routeProgress * 100}%`;
-    locationProgressFill.parentElement.setAttribute('aria-label', `Рекорд: ${Math.round(highScore)} из 18000 метров`);
+    for (const connector of locationConnectors) {
+      const from = Number(connector.dataset.from), to = Number(connector.dataset.to);
+      const segmentProgress = Math.max(0, Math.min(1, (highScore - from) / (to - from)));
+      connector.style.setProperty('--segment-progress', `${segmentProgress * 100}%`);
+      connector.classList.toggle('has-progress', segmentProgress > 0);
+      connector.classList.toggle('complete', segmentProgress >= 1);
+    }
     renderSkinShop();
   }
 
