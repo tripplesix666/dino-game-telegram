@@ -73,6 +73,9 @@
   const groundTexture = new Image();
   groundTexture.src = 'assets/desert-ground.png';
   groundTexture.addEventListener('load', draw);
+  const daySkyTexture = new Image();
+  daySkyTexture.src = 'assets/desert-sky-day.png';
+  daySkyTexture.addEventListener('load', draw);
   const CACTUS_VARIANTS = [
     { source: 'assets/obstacles/cactus-1.png', w: 26, h: 40 },
     { source: 'assets/obstacles/cactus-2.png', w: 37, h: 60 },
@@ -629,11 +632,29 @@
     ctx.arc(c.x + 54 * c.s, c.y + 12 * c.s, 8 * c.s, Math.PI, 0); ctx.lineTo(c.x + 70 * c.s, c.y + 13 * c.s); ctx.stroke();
   }
 
+  function drawSkyBackground() {
+    if (!daySkyTexture.complete || !daySkyTexture.naturalWidth) return;
+    const sourceHeight = Math.round(daySkyTexture.naturalHeight * .95);
+    const tileWidth = daySkyTexture.naturalWidth * groundY / sourceHeight;
+    const offset = running ? (elapsed * speed * .035) % tileWidth : 0;
+    ctx.save();
+    ctx.imageSmoothingEnabled = true;
+    for (let x = -offset; x < width; x += tileWidth) {
+      ctx.drawImage(daySkyTexture, 0, 0, daySkyTexture.naturalWidth, sourceHeight, x, 0, tileWidth + 1, groundY);
+    }
+    ctx.restore();
+  }
+
   function draw() {
     ctx.clearRect(0, 0, width, height);
     const sky = mixColor('#dff3ff', '#15233d', nightAmount);
     C.paper = sky; C.ink = mixColor('#2f414b', '#e8f0ff', nightAmount); C.muted = mixColor('#83a6b8', '#7185a9', nightAmount);
     spriteColor = C.ink; rect(0, 0, width, height, sky);
+    drawSkyBackground();
+    if (nightAmount > 0) {
+      ctx.fillStyle = `rgba(7, 18, 40, ${nightAmount * .72})`;
+      ctx.fillRect(0, 0, width, groundY);
+    }
     if (nightAmount > .05) {
       ctx.globalAlpha = nightAmount;
       for (let i = 0; i < 28; i++) rect((i * 97 + 41) % Math.max(width, 1), 48 + (i * 53) % Math.max(80, groundY - 100), i % 4 === 0 ? 3 : 2, i % 4 === 0 ? 3 : 2, '#dce8ff');
