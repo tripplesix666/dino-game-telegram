@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=18" />
+  <link rel="stylesheet" href="styles.css?v=19" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.12.2</span>
+  <span class="app-version" aria-label="Версия приложения">v0.12.3</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -72,6 +72,12 @@
                 <span class="location-number">02</span>
                 <span class="location-name">ЛЕС</span>
                 <span class="location-range">3000–6000 М</span>
+                <span class="location-action">СКОРО</span>
+              </button>
+              <button class="location-card location-jungle locked" type="button" disabled aria-disabled="true">
+                <span class="location-number">03</span>
+                <span class="location-name">ДЖУНГЛИ</span>
+                <span class="location-range">6000–9000 М</span>
                 <span class="location-action">СКОРО</span>
               </button>
             </div>
@@ -161,6 +167,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=47"></script>
+  <script src="game.js?v=48"></script>
 </body>
 </html>
