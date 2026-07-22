@@ -139,7 +139,7 @@
   function start() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     stopMenuMusic();
-    reset(); score = devStartDistance; speed = Math.min(890, 430 + score * .095);
+    reset(); score = devStartDistance; speed = devStartDistance > 0 ? 890 : Math.min(890, 430 + score * .095);
     runSessionPromise = devStartDistance === 0 && window.DinoCloud?.enabled
       ? window.DinoCloud.startRun()
       : null;
@@ -352,7 +352,7 @@
 
   function update(dt) {
     elapsed += dt; animTime += dt; score += dt * speed * .025;
-    speed = Math.min(890, 430 + score * .095);
+    speed = devStartDistance > 0 ? 890 : Math.min(890, 430 + score * .095);
     const nightTarget = updateDayNight();
     nightAmount += (nightTarget - nightAmount) * Math.min(1, dt * 2.2);
     const currentMilestone = Math.floor(score / 500);
@@ -387,21 +387,23 @@
       }
     }
 
-    spawnTimer += dt;
-    if (spawnTimer >= nextSpawn) {
-      spawnTimer = 0; spawnObstacle();
-      const minGap = Math.max(.68, 1.08 - speed / 2600);
-      nextSpawn = minGap + Math.random() * .72;
-    }
+    if (devStartDistance === 0) {
+      spawnTimer += dt;
+      if (spawnTimer >= nextSpawn) {
+        spawnTimer = 0; spawnObstacle();
+        const minGap = Math.max(.68, 1.08 - speed / 2600);
+        nextSpawn = minGap + Math.random() * .72;
+      }
 
-    coinTimer += dt;
-    if (coinTimer >= nextCoin) {
-      coinTimer = 0; spawnCoins(); nextCoin = 1.8 + Math.random() * 2.1;
-    }
+      coinTimer += dt;
+      if (coinTimer >= nextCoin) {
+        coinTimer = 0; spawnCoins(); nextCoin = 1.8 + Math.random() * 2.1;
+      }
 
-    platformTimer += dt;
-    if (platformTimer >= nextPlatform) {
-      platformTimer = 0; spawnPlatformRoute(); nextPlatform = 9 + Math.random() * 5;
+      platformTimer += dt;
+      if (platformTimer >= nextPlatform) {
+        platformTimer = 0; spawnPlatformRoute(); nextPlatform = 9 + Math.random() * 5;
+      }
     }
 
     for (let i = obstacles.length - 1; i >= 0; i--) {
@@ -720,7 +722,7 @@
     ctx.textAlign = 'right'; ctx.font = '700 16px "Courier New"'; ctx.fillStyle = C.ink;
     const hs = highScore ? `HI ${formatScore(highScore)}  ` : '';
     ctx.fillText(`${hs}${formatScore(score)}`, width - 22, 30);
-    if (devStartDistance > 0 && running) { ctx.font = '700 10px "Courier New"'; ctx.fillStyle = C.accent; ctx.fillText('DEV', width - 22, 47); }
+    if (devStartDistance > 0 && running) { ctx.font = '700 10px "Courier New"'; ctx.fillStyle = C.accent; ctx.fillText('DEV · БЕЗ ПРЕГРАД', width - 22, 47); }
     ctx.textAlign = 'center'; ctx.fillStyle = '#d98a22'; ctx.fillText(`● ${String(coinCount).padStart(3, '0')}`, width / 2, 30);
     if (running) { ctx.textAlign = 'left'; ctx.font = '10px "Courier New"'; ctx.fillStyle = C.muted; ctx.fillText(`${Math.round(speed)} PX/S`, 22, 30); }
   }
