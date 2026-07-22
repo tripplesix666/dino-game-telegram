@@ -41,7 +41,7 @@
   const C = { ink: '#2f414b', muted: '#83a6b8', cloud: '#ffffff', accent: '#ee5d43', paper: '#dff3ff', platform: '#5f8fa8', platformTop: '#315b70' };
   let width = 0, height = 0, scale = 1, groundY = 0;
   let running = false, paused = false, gameOver = false, lastTime = 0, elapsed = 0, score = 0, speed = 430;
-  let rafId = 0, devStartDistance = 0;
+  let rafId = 0, devStartDistance = 0, devObstacleFree = false;
   let runSessionPromise = null;
   let spawnTimer = 0, nextSpawn = 1.25, coinTimer = 0, nextCoin = 1.8, platformTimer = 0, nextPlatform = 6, animTime = 0, milestone = 0, coinCount = 0;
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
@@ -139,8 +139,8 @@
   function start() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     stopMenuMusic();
-    reset(); score = devStartDistance; speed = devStartDistance > 0 ? 890 : Math.min(890, 430 + score * .095);
-    runSessionPromise = devStartDistance === 0 && window.DinoCloud?.enabled
+    reset(); score = devStartDistance; speed = devObstacleFree ? 890 : Math.min(890, 430 + score * .095);
+    runSessionPromise = !isDeveloperRun() && window.DinoCloud?.enabled
       ? window.DinoCloud.startRun()
       : null;
     updateDayNight(true);
@@ -283,6 +283,10 @@
     if (instant) nightAmount = active ? 1 : 0;
   }
 
+  function isDeveloperRun() {
+    return devStartDistance > 0 || devObstacleFree;
+  }
+
   function smoothstep(value) {
     const t = Math.max(0, Math.min(1, value));
     return t * t * (3 - 2 * t);
@@ -298,7 +302,7 @@
 
   function jump() {
     if (!running) {
-      if (!gameOver && !startScreen.classList.contains('hidden') && !mainMenuScreen.classList.contains('hidden')) { devStartDistance = 0; start(); }
+      if (!gameOver && !startScreen.classList.contains('hidden') && !mainMenuScreen.classList.contains('hidden')) { devStartDistance = 0; devObstacleFree = false; start(); }
       return;
     }
     if (dino.grounded) {
@@ -352,7 +356,7 @@
 
   function update(dt) {
     elapsed += dt; animTime += dt; score += dt * speed * .025;
-    speed = devStartDistance > 0 ? 890 : Math.min(890, 430 + score * .095);
+    speed = devObstacleFree ? 890 : Math.min(890, 430 + score * .095);
     const nightTarget = updateDayNight();
     nightAmount += (nightTarget - nightAmount) * Math.min(1, dt * 2.2);
     const currentMilestone = Math.floor(score / 500);
@@ -387,7 +391,7 @@
       }
     }
 
-    if (devStartDistance === 0) {
+    if (!devObstacleFree) {
       spawnTimer += dt;
       if (spawnTimer >= nextSpawn) {
         spawnTimer = 0; spawnObstacle();
@@ -440,7 +444,7 @@
     running = false; paused = false; gameOver = true;
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     makeDust(9); beep(115, .25, .05);
-    if (devStartDistance === 0) {
+    if (!isDeveloperRun()) {
       highScore = Math.max(highScore, Math.floor(score));
       totalCoins += coinCount;
       storeProgressLocally();
@@ -448,7 +452,7 @@
     updateMenuStats();
     finalScore.textContent = formatScore(score); finalCoins.textContent = String(coinCount).padStart(3, '0'); finalHighScore.textContent = formatScore(highScore);
     overScreen.classList.remove('hidden');
-    if (devStartDistance === 0) finishCloudRun(Math.floor(score), coinCount);
+    if (!isDeveloperRun()) finishCloudRun(Math.floor(score), coinCount);
   }
 
   function storeProgressLocally() {
@@ -722,7 +726,7 @@
     ctx.textAlign = 'right'; ctx.font = '700 16px "Courier New"'; ctx.fillStyle = C.ink;
     const hs = highScore ? `HI ${formatScore(highScore)}  ` : '';
     ctx.fillText(`${hs}${formatScore(score)}`, width - 22, 30);
-    if (devStartDistance > 0 && running) { ctx.font = '700 10px "Courier New"'; ctx.fillStyle = C.accent; ctx.fillText('DEV · БЕЗ ПРЕГРАД', width - 22, 47); }
+    if (isDeveloperRun() && running) { ctx.font = '700 10px "Courier New"'; ctx.fillStyle = C.accent; ctx.fillText(devObstacleFree ? 'DEV · БЕЗ ПРЕГРАД' : 'DEV', width - 22, 47); }
     ctx.textAlign = 'center'; ctx.fillStyle = '#d98a22'; ctx.fillText(`● ${String(coinCount).padStart(3, '0')}`, width / 2, 30);
     if (running) { ctx.textAlign = 'left'; ctx.font = '10px "Courier New"'; ctx.fillStyle = C.muted; ctx.fillText(`${Math.round(speed)} PX/S`, 22, 30); }
   }
@@ -810,12 +814,13 @@
   jumpButton.addEventListener('pointerdown', e => { e.preventDefault(); jump(); });
   duckButton.addEventListener('pointerdown', e => { e.preventDefault(); setDuck(true); });
   for (const event of ['pointerup', 'pointercancel', 'pointerleave']) duckButton.addEventListener(event, () => setDuck(false));
-  startButton.addEventListener('click', () => { devStartDistance = 0; start(); }); restartButton.addEventListener('click', start); menuButton.addEventListener('click', showMenu);
+  startButton.addEventListener('click', () => { devStartDistance = 0; devObstacleFree = false; start(); }); restartButton.addEventListener('click', start); menuButton.addEventListener('click', showMenu);
   pauseButton.addEventListener('click', () => paused ? resumeGame() : pauseGame()); resumeButton.addEventListener('click', resumeGame); pauseMenuButton.addEventListener('click', showMenu);
   skinGrid.addEventListener('click', e => { const card = e.target.closest('[data-skin]'); if (card) chooseOrBuySkin(card.dataset.skin); });
   devDistanceButtons.addEventListener('click', e => {
-    const button = e.target.closest('[data-distance]'); if (!button) return;
-    devStartDistance = Number(button.dataset.distance);
+    const button = e.target.closest('[data-distance], [data-obstacle-free]'); if (!button) return;
+    devObstacleFree = button.hasAttribute('data-obstacle-free');
+    devStartDistance = devObstacleFree ? 0 : Number(button.dataset.distance);
     beep(560, .05, .015); start();
   });
   characterMenuButton.addEventListener('click', () => { showMenuSection('skins'); beep(420, .035, .01); });

@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=13" />
+  <link rel="stylesheet" href="styles.css?v=14" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.10.7</span>
+  <span class="app-version" aria-label="Версия приложения">v0.10.8</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <div class="brand"><span class="brand-mark">D</span><span>DINO RUN</span></div>
@@ -73,11 +73,12 @@
             <div class="settings-developer">
               <p class="eyebrow">ТЕСТОВЫЙ ЗАБЕГ</p>
               <h3>РЕЖИМ РАЗРАБОТЧИКА</h3>
-              <p>Выбери расстояние — игра запустится сразу. Рекорд не сохраняется.</p>
+              <p>Выбери расстояние или отдельный безопасный забег. Рекорд не сохраняется.</p>
               <div id="devDistanceButtons" class="dev-distances dev-start-distances">
                 <button type="button" data-distance="1000">1000</button>
                 <button type="button" data-distance="2000">2000</button>
                 <button type="button" data-distance="5000">5000</button>
+                <button type="button" data-obstacle-free>БЕЗ ПРЕГРАД</button>
               </div>
             </div>
           </div>
@@ -123,6 +124,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=29"></script>
+  <script src="game.js?v=30"></script>
 </body>
 </html>
