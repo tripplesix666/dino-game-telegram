@@ -717,12 +717,11 @@
       ? -size + linearJourney * (width + size * 2)
       : width * (.1 + journey * 1.08) - size / 2;
     const startCenterY = groundY * .52;
-    const highCenterY = Math.max(size * .62, 72);
     const endCenterY = groundY * .76;
-    const inverseJourney = 1 - journey;
-    const centerY = inverseJourney * inverseJourney * startCenterY
-      + 2 * inverseJourney * journey * highCenterY
-      + journey * journey * endCenterY;
+    const desiredHighCenterY = size / 2 + 14;
+    const linearCenterY = startCenterY + (endCenterY - startCenterY) * journey;
+    const arcLift = Math.max(0, (startCenterY + endCenterY) / 2 - desiredHighCenterY);
+    const centerY = linearCenterY - arcLift * Math.sin(journey * Math.PI);
     const y = centerY - size / 2;
     ctx.save();
     ctx.imageSmoothingEnabled = true;
