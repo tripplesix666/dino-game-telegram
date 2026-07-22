@@ -411,13 +411,37 @@ body.menu-open .menu-screen:not(#mainMenuScreen) .back-button,
 body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 
 .locations-menu > p { margin-inline: auto; max-width: 440px; }
-.new-location-view { display: none; place-items: center; width: min(520px, 100%); min-height: 430px; margin: 28px auto 20px; padding: 34px; border: 1px dashed rgba(255,255,255,.28); border-radius: 28px; background: rgba(4,18,28,.84); text-align: center; }
-.new-location-view h3 { margin: 14px 0 6px; font-size: 28px; }
-.new-location-view p { max-width: 360px; color: #c4d2dc; }
-.new-location-view small { color: #8095a3; }
-.new-location-icon { display: grid; place-items: center; width: 76px; height: 76px; border-radius: 24px; background: linear-gradient(145deg, #23c9f2, #6c3ce2); font-size: 34px; box-shadow: 0 12px 30px rgba(40,123,218,.34); }
+.new-location-view { display: none; width: min(680px, 100%); margin: 22px auto 24px; }
+.new-location-record { width: fit-content; margin: 0 auto 18px; padding: 8px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; background: rgba(0,0,0,.32); color: #b8cbd6; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+.new-location-record strong { color: white; }
+.new-location-grid { display: grid; gap: 14px; }
+.new-location-card { --card-progress: 0%; position: relative; display: grid; grid-template-columns: 58% 42%; min-height: 154px; overflow: hidden; padding: 0; border: 1px solid rgba(255,255,255,.27); border-radius: 22px; background: #0b2433; color: white; text-align: left; cursor: pointer; box-shadow: inset 0 2px 0 rgba(255,255,255,.12), 0 10px 22px rgba(0,0,0,.3); }
+.new-location-copy { position: relative; z-index: 2; display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 22px 18px 28px 22px; background: linear-gradient(90deg, #0b2433 78%, rgba(11,36,51,.75)); }
+.new-location-copy small { color: #ff7056; font-size: 9px; font-weight: 900; letter-spacing: 1.5px; }
+.new-location-copy strong { margin-top: 8px; font-size: clamp(18px, 4vw, 27px); line-height: 1.05; }
+.new-location-copy em { margin-top: 8px; color: #a9c1ce; font-size: 10px; font-style: normal; font-weight: 800; letter-spacing: 1px; }
+.new-location-art { position: relative; display: grid; place-items: center; min-width: 0; background-position: center; background-size: cover; }
+.new-location-art::after { content: ""; position: absolute; inset: 0; background: rgba(3,13,20,.18); }
+.new-location-art b { position: relative; z-index: 2; display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid rgba(255,255,255,.3); border-radius: 50%; background: rgba(4,13,20,.7); font-size: 20px; }
+.new-location-card.locked .new-location-art { filter: saturate(.5) brightness(.48); }
+.new-art-desert { background-image: url("assets/desert-sky-day.png"); }
+.new-art-forest { background: linear-gradient(145deg, #4f8053, #132d23); }
+.new-art-jungle { background: radial-gradient(circle at 70% 28%, #6bd35e, transparent 24%), linear-gradient(145deg, #16755b, #082a21); }
+.new-art-meteor { background: radial-gradient(circle at 68% 28%, #ff8739, transparent 10%), linear-gradient(145deg, #5a294d, #171027); }
+.new-art-ice { background: linear-gradient(145deg, #a8edf4, #245589); }
+.new-art-scorched { background: radial-gradient(circle at 65% 45%, #ff5b23, transparent 22%), linear-gradient(145deg, #78331f, #211015); }
+.new-card-progress { position: absolute; z-index: 5; right: 0; bottom: 0; left: 0; height: 10px; background: rgba(255,255,255,.12); }
+.new-card-progress::before { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--card-progress); background: linear-gradient(90deg, #33d36d, #28bfe4); box-shadow: 0 0 11px rgba(43,209,177,.72); transition: width .45s ease; }
+.new-card-progress i { position: absolute; top: 50%; left: var(--card-progress); display: none; width: 17px; height: 17px; border: 3px solid white; border-radius: 50%; background: #28ca7a; transform: translate(-50%, -50%); }
+.new-location-card.current .new-card-progress i { display: block; }
 body.location-view-new .legacy-location-view { display: none; }
-body.location-view-new .new-location-view { display: grid; }
+body.location-view-new .new-location-view { display: block; }
+
+@media (max-width: 520px) {
+  .new-location-card { grid-template-columns: 62% 38%; min-height: 136px; }
+  .new-location-copy { padding: 18px 12px 24px 16px; }
+  .new-location-copy strong { font-size: 18px; }
+}
 .location-grid { --location-card-height: 220px; position: relative; display: grid; grid-template-columns: 1fr; gap: 0; width: min(620px, 100%); margin: 28px auto 24px; }
 .location-record { width: fit-content; margin: 14px auto 0 !important; padding: 8px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; background: rgba(0,0,0,.3); color: #b8cbd6 !important; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
 .location-record strong { color: white; }

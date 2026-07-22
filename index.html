@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=27" />
+  <link rel="stylesheet" href="styles.css?v=28" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.13.1</span>
+  <span class="app-version" aria-label="Версия приложения">v0.13.2</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -107,11 +107,40 @@
               </button>
               </div>
             </div>
-            <div class="new-location-view" aria-live="polite">
-              <span class="new-location-icon" aria-hidden="true">✦</span>
-              <h3>НОВЫЙ ВИД</h3>
-              <p>Новая версия выбора локаций готова к разработке.</p>
-              <small>Переключиться обратно можно в режиме разработчика.</small>
+            <div class="new-location-view">
+              <p class="new-location-record">ТВОЙ РЕКОРД: <strong id="newLocationRecord">00000 М</strong></p>
+              <div id="newLocationGrid" class="new-location-grid" aria-label="Новый выбор локаций">
+                <button class="new-location-card" type="button" data-location-start="0" data-from="0" data-to="3000">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 01</small><strong>ПУСТЫНЯ</strong><em>0–3000 М</em></span>
+                  <span class="new-location-art new-art-desert" aria-hidden="true"></span>
+                  <span class="new-card-progress"><i></i></span>
+                </button>
+                <button class="new-location-card locked" type="button" data-from="3000" data-to="6000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 02</small><strong>ЛЕС</strong><em>3000–6000 М</em></span>
+                  <span class="new-location-art new-art-forest" aria-hidden="true"><b>🔒</b></span>
+                  <span class="new-card-progress"><i></i></span>
+                </button>
+                <button class="new-location-card locked" type="button" data-from="6000" data-to="9000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 03</small><strong>ДЖУНГЛИ</strong><em>6000–9000 М</em></span>
+                  <span class="new-location-art new-art-jungle" aria-hidden="true"><b>🔒</b></span>
+                  <span class="new-card-progress"><i></i></span>
+                </button>
+                <button class="new-location-card locked" type="button" data-from="9000" data-to="12000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 04</small><strong>МЕТЕОРИТНЫЙ ДОЖДЬ</strong><em>9000–12000 М</em></span>
+                  <span class="new-location-art new-art-meteor" aria-hidden="true"><b>🔒</b></span>
+                  <span class="new-card-progress"><i></i></span>
+                </button>
+                <button class="new-location-card locked" type="button" data-from="12000" data-to="15000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 05</small><strong>ЛЕДНИКОВЫЙ ПЕРИОД</strong><em>12000–15000 М</em></span>
+                  <span class="new-location-art new-art-ice" aria-hidden="true"><b>🔒</b></span>
+                  <span class="new-card-progress"><i></i></span>
+                </button>
+                <button class="new-location-card locked" type="button" data-from="15000" data-to="18000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 06</small><strong>ИСПЕПЕЛЁННАЯ ЗЕМЛЯ</strong><em>15000–18000 М</em></span>
+                  <span class="new-location-art new-art-scorched" aria-hidden="true"><b>🔒</b></span>
+                  <span class="new-card-progress"><i></i></span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -207,6 +236,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=52"></script>
+  <script src="game.js?v=53"></script>
 </body>
 </html>

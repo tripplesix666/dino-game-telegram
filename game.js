@@ -42,6 +42,9 @@
   const menuCharacterPreview = document.querySelector('#menuCharacterPreview');
   const locationConnectors = [...document.querySelectorAll('.location-connector')];
   const locationRecord = document.querySelector('#locationRecord');
+  const newLocationRecord = document.querySelector('#newLocationRecord');
+  const newLocationGrid = document.querySelector('#newLocationGrid');
+  const newLocationCards = [...document.querySelectorAll('.new-location-card')];
 
   const C = { ink: '#2f414b', muted: '#83a6b8', cloud: '#ffffff', accent: '#ee5d43', paper: '#dff3ff', platform: '#5f8fa8', platformTop: '#315b70' };
   const DINO_STAND_HEIGHT = 60;
@@ -192,6 +195,7 @@
     skinWalletCoins.textContent = String(totalCoins).padStart(3, '0');
     menuHighScore.textContent = formatScore(highScore);
     locationRecord.textContent = `${formatScore(highScore)} М`;
+    newLocationRecord.textContent = `${formatScore(highScore)} М`;
     for (const connector of locationConnectors) {
       const from = Number(connector.dataset.from), to = Number(connector.dataset.to);
       const segmentProgress = Math.max(0, Math.min(1, (highScore - from) / (to - from)));
@@ -201,6 +205,13 @@
       const isCurrent = highScore >= from && highScore < to;
       connector.classList.toggle('current', isCurrent);
       connector.querySelector('b').textContent = isCurrent ? `${formatScore(highScore)} М` : '';
+    }
+    for (const card of newLocationCards) {
+      const from = Number(card.dataset.from), to = Number(card.dataset.to);
+      const cardProgress = Math.max(0, Math.min(1, (highScore - from) / (to - from)));
+      card.style.setProperty('--card-progress', `${cardProgress * 100}%`);
+      card.classList.toggle('complete', cardProgress >= 1);
+      card.classList.toggle('current', highScore >= from && highScore < to);
     }
     renderSkinShop();
   }
@@ -925,6 +936,10 @@
   for (const event of ['pointerup', 'pointercancel', 'pointerleave']) duckButton.addEventListener(event, () => setDuck(false));
   startButton.addEventListener('click', () => { showMenuSection('locations'); beep(420, .035, .01); });
   desertLocationButton.addEventListener('click', () => { devStartDistance = 0; devObstacleFree = false; start(); });
+  newLocationGrid.addEventListener('click', e => {
+    const card = e.target.closest('[data-location-start]'); if (!card) return;
+    devStartDistance = Number(card.dataset.locationStart); devObstacleFree = false; start();
+  });
   restartButton.addEventListener('click', start); menuButton.addEventListener('click', showMenu);
   pauseButton.addEventListener('click', () => paused ? resumeGame() : pauseGame()); resumeButton.addEventListener('click', resumeGame); pauseMenuButton.addEventListener('click', showMenu);
   skinGrid.addEventListener('click', e => { const card = e.target.closest('[data-skin]'); if (card) chooseOrBuySkin(card.dataset.skin); });
