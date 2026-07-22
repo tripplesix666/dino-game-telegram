@@ -49,7 +49,9 @@
   const thirdLocationNumber = document.querySelector('#thirdLocationNumber');
   const thirdLocationName = document.querySelector('#thirdLocationName');
   const thirdLocationRange = document.querySelector('#thirdLocationRange');
-  const thirdDinoRecord = document.querySelector('#thirdDinoRecord');
+  const thirdFlagRecord = document.querySelector('#thirdFlagRecord');
+  const thirdRouteStart = document.querySelector('#thirdRouteStart');
+  const thirdRouteEnd = document.querySelector('#thirdRouteEnd');
   const thirdDistanceLeft = document.querySelector('#thirdDistanceLeft');
   const thirdLocationPlay = document.querySelector('#thirdLocationPlay');
 
@@ -238,7 +240,9 @@
     thirdLocationNumber.textContent = `ЛОКАЦИЯ ${String(locationIndex + 1).padStart(2, '0')}`;
     thirdLocationName.textContent = currentLocation.name;
     thirdLocationRange.textContent = `${currentLocation.from}–${currentLocation.to} М`;
-    thirdDinoRecord.textContent = `${formatScore(highScore)} М`;
+    thirdFlagRecord.textContent = `${formatScore(highScore)} М`;
+    thirdRouteStart.textContent = String(currentLocation.from);
+    thirdRouteEnd.textContent = `${currentLocation.to} М`;
     thirdDistanceLeft.textContent = `${Math.max(0, Math.ceil(currentLocation.to - highScore))} М`;
     thirdLocationPlay.dataset.locationStart = String(currentLocation.from);
     thirdLocationPlay.disabled = currentLocation.from !== 0;
