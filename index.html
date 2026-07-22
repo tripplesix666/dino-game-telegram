@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=30" />
+  <link rel="stylesheet" href="styles.css?v=31" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.13.4</span>
+  <span class="app-version" aria-label="Версия приложения">v0.13.5</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -136,6 +136,12 @@
                 </button>
               </div>
             </div>
+            <div class="third-location-view">
+              <span class="third-location-icon" aria-hidden="true">03</span>
+              <h3>ВАРИАНТ 3</h3>
+              <p>Отдельный экран готов для нового дизайна выбора локаций.</p>
+              <small>Переключение находится в режиме разработчика.</small>
+            </div>
           </div>
 
           <div id="skinsMenuScreen" class="menu-screen skins-menu hidden">
@@ -174,6 +180,7 @@
               <div id="locationViewButtons" class="location-view-switch" role="group" aria-label="Вид выбора локаций">
                 <button type="button" data-location-view="legacy" aria-pressed="true">ЛЕГАСИ</button>
                 <button type="button" data-location-view="new" aria-pressed="false">НОВАЯ</button>
+                <button type="button" data-location-view="third" aria-pressed="false">ВАРИАНТ 3</button>
               </div>
               <p class="eyebrow dev-run-title">ТЕСТОВЫЙ ЗАБЕГ</p>
               <p>Быстро запусти игру с начала нужной локации. Рекорд не сохраняется.</p>
@@ -230,6 +237,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=53"></script>
+  <script src="game.js?v=54"></script>
 </body>
 </html>

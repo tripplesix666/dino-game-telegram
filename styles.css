@@ -402,7 +402,7 @@ body.menu-open .menu-screen:not(#mainMenuScreen) {
 .settings-developer { margin-top: 30px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.18); }
 .settings-developer h3 { margin: 6px 0 8px; font-size: clamp(18px, 5vw, 26px); }
 .settings-developer .dev-start-distances { margin-top: 18px; }
-.location-view-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0 26px; padding: 5px; border: 1px solid rgba(255,255,255,.18); border-radius: 16px; background: rgba(0,0,0,.24); }
+.location-view-switch { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0 26px; padding: 5px; border: 1px solid rgba(255,255,255,.18); border-radius: 16px; background: rgba(0,0,0,.24); }
 .location-view-switch button { min-height: 44px; border: 0; border-radius: 11px; background: transparent; color: #9babb8; font: 900 12px/1 system-ui, sans-serif; letter-spacing: 1px; cursor: pointer; }
 .location-view-switch button[aria-pressed="true"] { background: linear-gradient(#25cbe3, #1577be); color: white; box-shadow: inset 0 2px 0 rgba(255,255,255,.22), 0 5px 12px rgba(0,0,0,.28); }
 .dev-run-title { margin-top: 8px; }
@@ -432,6 +432,13 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 .new-theme-scorched { --location-bg: radial-gradient(circle at 65% 45%, #ff5b23, transparent 22%), linear-gradient(145deg, #78331f, #211015); }
 body.location-view-new .legacy-location-view { display: none; }
 body.location-view-new .new-location-view { display: block; }
+.third-location-view { display: none; place-items: center; width: min(560px, 100%); min-height: 430px; margin: 24px auto; padding: 34px; border: 1px dashed rgba(255,255,255,.3); border-radius: 28px; background: linear-gradient(145deg, rgba(18,31,53,.94), rgba(22,15,43,.94)); text-align: center; }
+.third-location-view h3 { margin: 16px 0 7px; font-size: 28px; }
+.third-location-view p { max-width: 390px; color: #c6cfdd; }
+.third-location-view small { color: #8491a6; }
+.third-location-icon { display: grid; place-items: center; width: 74px; height: 74px; border-radius: 50%; background: linear-gradient(145deg, #ff7857, #794ee6); color: white; font-size: 23px; font-weight: 950; box-shadow: 0 12px 28px rgba(82,53,177,.38); }
+body.location-view-third .legacy-location-view { display: none; }
+body.location-view-third .third-location-view { display: grid; }
 
 @media (max-width: 520px) {
   .new-location-card { grid-template-columns: 62% 38%; min-height: 136px; }

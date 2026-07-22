@@ -55,7 +55,8 @@
   let runSessionPromise = null;
   let spawnTimer = 0, nextSpawn = 1.25, coinTimer = 0, nextCoin = 1.8, platformTimer = 0, nextPlatform = 6, animTime = 0, milestone = 0, coinCount = 0;
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
-  let locationView = localStorage.getItem('dino-location-view') === 'new' ? 'new' : 'legacy';
+  const savedLocationView = localStorage.getItem('dino-location-view');
+  let locationView = ['legacy', 'new', 'third'].includes(savedLocationView) ? savedLocationView : 'legacy';
   let audio = null;
   let menuMusicTimer = null, menuMusicStep = 0, gameMusicTimer = null, gameMusicStep = 0, activeMenuSection = 'main';
   let highScore = Number(localStorage.getItem('dino-high-score') || 0);
@@ -218,6 +219,7 @@
 
   function updateLocationView() {
     document.body.classList.toggle('location-view-new', locationView === 'new');
+    document.body.classList.toggle('location-view-third', locationView === 'third');
     for (const button of locationViewButtons.querySelectorAll('[data-location-view]')) {
       button.setAttribute('aria-pressed', String(button.dataset.locationView === locationView));
     }
