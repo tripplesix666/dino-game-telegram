@@ -39,6 +39,8 @@
   const menuCharacterPreview = document.querySelector('#menuCharacterPreview');
 
   const C = { ink: '#2f414b', muted: '#83a6b8', cloud: '#ffffff', accent: '#ee5d43', paper: '#dff3ff', platform: '#5f8fa8', platformTop: '#315b70' };
+  const DINO_STAND_HEIGHT = 60;
+  const DINO_DUCK_HEIGHT = 36;
   let width = 0, height = 0, scale = 1, groundY = 0;
   let running = false, paused = false, gameOver = false, lastTime = 0, elapsed = 0, score = 0, speed = 430;
   let rafId = 0, devStartDistance = 0, devObstacleFree = false;
@@ -89,12 +91,12 @@
     return image;
   });
   const CACTUS_VARIANTS = [
-    { source: 'assets/obstacles/cactus-1.png', w: 26, h: 40 },
-    { source: 'assets/obstacles/cactus-2.png', w: 37, h: 60 },
-    { source: 'assets/obstacles/cactus-3.png', w: 46, h: 42 },
-    { source: 'assets/obstacles/cactus-4.png', w: 51, h: 46 },
-    { source: 'assets/obstacles/cactus-5.png', w: 46, h: 64 },
-    { source: 'assets/obstacles/cactus-6.png', w: 33, h: 60 }
+    { source: 'assets/obstacles/cactus-1.png', w: 33, h: 50 },
+    { source: 'assets/obstacles/cactus-2.png', w: 46, h: 75 },
+    { source: 'assets/obstacles/cactus-3.png', w: 58, h: 53 },
+    { source: 'assets/obstacles/cactus-4.png', w: 64, h: 58 },
+    { source: 'assets/obstacles/cactus-5.png', w: 58, h: 80 },
+    { source: 'assets/obstacles/cactus-6.png', w: 41, h: 75 }
   ].map(variant => {
     const image = new Image();
     image.src = variant.source;
@@ -111,7 +113,7 @@
   let spriteColor = C.ink;
   let isNight = false, nightAmount = 0;
 
-  const dino = { x: 90, y: 0, w: 46, h: 50, vy: 0, grounded: true, ducking: false, support: null, surfaceY: 0 };
+  const dino = { x: 90, y: 0, w: 54, h: DINO_STAND_HEIGHT, vy: 0, grounded: true, ducking: false, support: null, surfaceY: 0 };
 
   function configureCloud(cloud, x, variant) {
     cloud.variant = variant ?? Math.floor(Math.random() * cloudSprites.length);
@@ -151,7 +153,7 @@
   function reset() {
     obstacles.length = 0; coins.length = 0; platforms.length = 0; dust.length = 0; elapsed = 0; score = 0; speed = 430; coinCount = 0;
     spawnTimer = 0; nextSpawn = 1.15; coinTimer = 0; nextCoin = 1.5; platformTimer = 0; nextPlatform = 5 + Math.random() * 3; milestone = 0; gameOver = false; paused = false;
-    Object.assign(dino, { y: groundY - 50, h: 50, vy: 0, grounded: true, ducking: false, support: null, surfaceY: groundY });
+    Object.assign(dino, { y: groundY - DINO_STAND_HEIGHT, h: DINO_STAND_HEIGHT, vy: 0, grounded: true, ducking: false, support: null, surfaceY: groundY });
     setNight(false, true);
   }
 
@@ -333,7 +335,7 @@
       return;
     }
     if (dino.grounded) {
-      dino.ducking = false; dino.h = 50; dino.y = dino.surfaceY - 50;
+      dino.ducking = false; dino.h = DINO_STAND_HEIGHT; dino.y = dino.surfaceY - DINO_STAND_HEIGHT;
       dino.vy = -780; dino.grounded = false; dino.support = null; beep(520, .055, .018);
     }
   }
@@ -342,14 +344,14 @@
     if (!running) return;
     dino.ducking = active;
     if (!dino.grounded && active) dino.vy += 620;
-    if (dino.grounded) { dino.h = active ? 30 : 50; dino.y = dino.surfaceY - dino.h; }
+    if (dino.grounded) { dino.h = active ? DINO_DUCK_HEIGHT : DINO_STAND_HEIGHT; dino.y = dino.surfaceY - dino.h; }
   }
 
   function spawnObstacle() {
     const birdAllowed = score > 350 && Math.random() < .28;
     if (birdAllowed) {
-      const levels = [groundY - 42, groundY - 72, groundY - 102];
-      obstacles.push({ type: 'bird', x: width + 30, y: levels[Math.floor(Math.random() * levels.length)], w: 48, h: 28, frame: 0 });
+      const levels = [groundY - 54, groundY - 88, groundY - 122];
+      obstacles.push({ type: 'bird', x: width + 30, y: levels[Math.floor(Math.random() * levels.length)], w: 66, h: 48, frame: 0 });
     } else {
       const variant = CACTUS_VARIANTS[Math.floor(Math.random() * CACTUS_VARIANTS.length)];
       obstacles.push({ type: 'cactus', x: width + 30, y: groundY - variant.h, w: variant.w, h: variant.h, variant });
@@ -372,8 +374,8 @@
     let level = Math.floor(Math.random() * 2);
     for (let i = 0; i < count; i++) {
       if (i) level = Math.max(0, Math.min(2, level + (Math.random() < .5 ? -1 : 1)));
-      const w = 150 + Math.random() * 100;
-      const platform = { x, y: levels[level], w, h: 14 };
+      const w = 185 + Math.random() * 125;
+      const platform = { x, y: levels[level], w, h: 20 };
       platforms.push(platform);
       const coinAmount = 2 + Math.floor(w / 70);
       for (let c = 0; c < coinAmount; c++) coins.push({ x: x + 28 + c * 34, y: platform.y - 30, size: 18, phase: c * .8 });
@@ -410,10 +412,10 @@
         }
       }
       if (landing) {
-        if (dino.ducking) dino.h = 30;
+        if (dino.ducking) dino.h = DINO_DUCK_HEIGHT;
         dino.surfaceY = landing.y; dino.y = landing.y - dino.h; dino.vy = 0; dino.grounded = true; dino.support = landing; makeDust(4); beep(280, .035, .01);
       } else if (dino.y >= groundY - dino.h) {
-        if (dino.ducking) dino.h = 30;
+        if (dino.ducking) dino.h = DINO_DUCK_HEIGHT;
         dino.surfaceY = groundY; dino.y = groundY - dino.h; dino.vy = 0; dino.grounded = true; dino.support = null; makeDust(5);
       }
     }
@@ -591,12 +593,12 @@
     const rasterSprite = rasterFrames?.[runningFrame] || rasterFrames?.[0];
     if (rasterSprite?.complete && rasterSprite.naturalWidth) {
       const ducking = dino.ducking && dino.grounded;
-      const spriteW = ducking ? 104 : 112;
-      const spriteH = ducking ? 70 : 106;
-      const spriteX = x - 28;
+      const spriteW = ducking ? 125 : 134;
+      const spriteH = ducking ? 84 : 127;
+      const spriteX = x - 34;
       // Generated frames have equal transparent padding below the feet.
       // Keep that padding outside the collision box so both poses touch the ground.
-      const spriteY = y + dino.h - spriteH + 13;
+      const spriteY = y + dino.h - spriteH + 16;
       ctx.save();
       ctx.imageSmoothingEnabled = true;
       if (dead) ctx.globalAlpha = .62;
@@ -651,14 +653,15 @@
 
   function drawBird(o) {
     const up = Math.floor(o.frame * 9) % 2 === 0;
+    const birdScale = 1.18;
     spriteColor = C.ink;
-    ctx.save(); ctx.translate(o.x * 2 + 56, 0); ctx.scale(-1, 1);
-    rect(o.x + 13, o.y + 10, 29, 12); rect(o.x + 36, o.y + 6, 13, 13); rect(o.x + 47, o.y + 10, 9, 4);
-    rect(o.x + 3, o.y + 13, 15, 6); rect(o.x, o.y + 10, 7, 4); rect(o.x + 40, o.y + 9, 3, 3, C.paper);
+    ctx.save(); ctx.translate(o.x + 56 * birdScale, o.y + 5); ctx.scale(-birdScale, birdScale);
+    rect(13, 10, 29, 12); rect(36, 6, 13, 13); rect(47, 10, 9, 4);
+    rect(3, 13, 15, 6); rect(0, 10, 7, 4); rect(40, 9, 3, 3, C.paper);
     if (up) {
-      rect(o.x + 14, o.y + 4, 23, 8); rect(o.x + 18, o.y, 17, 5); rect(o.x + 22, o.y - 4, 11, 5);
+      rect(14, 4, 23, 8); rect(18, 0, 17, 5); rect(22, -4, 11, 5);
     } else {
-      rect(o.x + 12, o.y + 20, 26, 7); rect(o.x + 17, o.y + 27, 20, 5); rect(o.x + 24, o.y + 32, 12, 4);
+      rect(12, 20, 26, 7); rect(17, 27, 20, 5); rect(24, 32, 12, 4);
     }
     ctx.restore();
   }
@@ -671,10 +674,10 @@
   }
 
   function drawPlatform(platform) {
-    rect(platform.x, platform.y, platform.w, 5, C.platformTop);
-    rect(platform.x + 3, platform.y + 5, platform.w - 6, platform.h - 5, C.platform);
+    rect(platform.x, platform.y, platform.w, 7, C.platformTop);
+    rect(platform.x + 3, platform.y + 7, platform.w - 6, platform.h - 7, C.platform);
     ctx.fillStyle = 'rgba(255,255,255,.28)';
-    for (let x = platform.x + 14; x < platform.x + platform.w - 8; x += 28) ctx.fillRect(Math.round(x), Math.round(platform.y + 8), 12, 2);
+    for (let x = platform.x + 14; x < platform.x + platform.w - 8; x += 28) ctx.fillRect(Math.round(x), Math.round(platform.y + 11), 12, 3);
   }
 
   function drawCloud(c) {
