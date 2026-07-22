@@ -430,9 +430,6 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 .new-theme-meteor { --location-bg: radial-gradient(circle at 68% 28%, #ff8739, transparent 10%), linear-gradient(145deg, #5a294d, #171027); }
 .new-theme-ice { --location-bg: linear-gradient(145deg, #a8edf4, #245589); }
 .new-theme-scorched { --location-bg: radial-gradient(circle at 65% 45%, #ff5b23, transparent 22%), linear-gradient(145deg, #78331f, #211015); }
-.new-card-progress { position: absolute; z-index: 5; top: 0; bottom: 0; left: var(--card-progress); width: 4px; background: #58ef72; box-shadow: 0 0 12px #37d8a0, -2px 0 6px rgba(255,255,255,.5); transform: translateX(-50%); transition: left .45s ease; }
-.new-card-progress::before { content: ""; position: absolute; top: 50%; left: 50%; width: 13px; height: 34px; border: 2px solid white; border-radius: 8px; background: #25c77c; transform: translate(-50%, -50%); }
-.new-card-progress i { display: none; }
 body.location-view-new .legacy-location-view { display: none; }
 body.location-view-new .new-location-view { display: block; }
 
