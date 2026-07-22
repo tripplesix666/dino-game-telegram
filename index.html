@@ -6,17 +6,21 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=15" />
+  <link rel="stylesheet" href="styles.css?v=16" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.10.12</span>
+  <span class="app-version" aria-label="Версия приложения">v0.10.13</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
-      <div class="brand"><span class="brand-mark">D</span><span>DINO RUN</span></div>
-      <div class="header-actions">
-        <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">Ⅱ</button>
-        <button id="soundButton" class="icon-button" type="button" aria-label="Выключить звук" aria-pressed="true"><span id="soundIcon">♪</span></button>
-      </div>
+      <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1"></rect><rect x="14" y="4" width="5" height="16" rx="1"></rect></svg>
+      </button>
+      <button id="soundButton" class="icon-button" type="button" aria-label="Выключить звук" aria-pressed="true">
+        <span id="soundIcon" aria-hidden="true">
+          <svg class="sound-on-icon" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"></path><path d="M16 8c1.2 1 1.2 7 0 8M19 5c3 3 3 11 0 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+          <svg class="sound-off-icon" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"></path><path d="m17 9 5 5m0-5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+        </span>
+      </button>
     </header>
 
     <section id="gameWrap" class="game-wrap">
@@ -136,6 +140,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=34"></script>
+  <script src="game.js?v=35"></script>
 </body>
 </html>

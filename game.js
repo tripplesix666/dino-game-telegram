@@ -16,7 +16,6 @@
   const jumpButton = document.querySelector('#jumpButton');
   const duckButton = document.querySelector('#duckButton');
   const soundButton = document.querySelector('#soundButton');
-  const soundIcon = document.querySelector('#soundIcon');
   const finalScore = document.querySelector('#finalScore');
   const finalCoins = document.querySelector('#finalCoins');
   const finalHighScore = document.querySelector('#finalHighScore');
@@ -789,7 +788,6 @@
   }
 
   function updateSoundControls() {
-    soundIcon.textContent = soundOn ? '♪' : '×';
     soundButton.setAttribute('aria-pressed', String(soundOn));
     soundButton.setAttribute('aria-label', soundOn ? 'Выключить звук' : 'Включить звук');
     menuSoundToggle.setAttribute('aria-pressed', String(soundOn));
