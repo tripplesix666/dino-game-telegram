@@ -741,10 +741,10 @@
 
     ctx.textAlign = 'right'; ctx.font = '700 16px "Courier New"'; ctx.fillStyle = C.ink;
     const hs = highScore ? `HI ${formatScore(highScore)}  ` : '';
-    ctx.fillText(`${hs}${formatScore(score)}`, width - 22, 30);
-    if (isDeveloperRun() && running) { ctx.font = '700 10px "Courier New"'; ctx.fillStyle = C.accent; ctx.fillText(devObstacleFree ? 'DEV · БЕЗ ПРЕГРАД' : 'DEV', width - 22, 47); }
+    ctx.fillText(`${hs}${formatScore(score)}`, width - 18, 82);
+    if (isDeveloperRun() && running) { ctx.font = '700 10px "Courier New"'; ctx.fillStyle = C.accent; ctx.fillText(devObstacleFree ? 'DEV · БЕЗ ПРЕГРАД' : 'DEV', width - 18, 99); }
     ctx.textAlign = 'center'; ctx.fillStyle = '#d98a22'; ctx.fillText(`● ${String(coinCount).padStart(3, '0')}`, width / 2, 30);
-    if (running) { ctx.textAlign = 'left'; ctx.font = '10px "Courier New"'; ctx.fillStyle = C.muted; ctx.fillText(`${Math.round(speed)} PX/S`, 22, 30); }
+    if (running) { ctx.textAlign = 'left'; ctx.font = '10px "Courier New"'; ctx.fillStyle = C.muted; ctx.fillText(`${Math.round(speed)} PX/S`, 18, 82); }
   }
 
   function requestNextFrame() {
