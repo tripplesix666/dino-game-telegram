@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=17" />
+  <link rel="stylesheet" href="styles.css?v=18" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.12.1</span>
+  <span class="app-version" aria-label="Версия приложения">v0.12.2</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -53,6 +53,27 @@
               <button id="startButton" class="primary-button" type="button"><span class="button-icon play-icon" aria-hidden="true"></span><span>НАЧАТЬ ИГРУ</span></button>
               <button id="characterMenuButton" class="menu-nav-button character-button" type="button"><span class="button-icon" aria-hidden="true">◆</span><span>СКИНЫ</span></button>
               <button id="leaderboardMenuButton" class="menu-nav-button leaderboard-button" type="button"><span class="button-icon" aria-hidden="true">♛</span><span>ТАБЛИЦА ЛИДЕРОВ</span></button>
+            </div>
+          </div>
+
+          <div id="locationsMenuScreen" class="menu-screen locations-menu hidden">
+            <button class="back-button" type="button" data-menu-back>← НАЗАД</button>
+            <p class="eyebrow">ВЫБЕРИ МАРШРУТ</p>
+            <h2>ЛОКАЦИИ</h2>
+            <p>Каждая следующая локация продолжает общий забег.</p>
+            <div class="location-grid" aria-label="Выбор локации">
+              <button id="desertLocationButton" class="location-card location-desert" type="button">
+                <span class="location-number">01</span>
+                <span class="location-name">ПУСТЫНЯ</span>
+                <span class="location-range">0–3000 М</span>
+                <span class="location-action">ИГРАТЬ</span>
+              </button>
+              <button class="location-card location-forest locked" type="button" disabled aria-disabled="true">
+                <span class="location-number">02</span>
+                <span class="location-name">ЛЕС</span>
+                <span class="location-range">3000–6000 М</span>
+                <span class="location-action">СКОРО</span>
+              </button>
             </div>
           </div>
 
@@ -140,6 +161,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=46"></script>
+  <script src="game.js?v=47"></script>
 </body>
 </html>

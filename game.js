@@ -26,12 +26,14 @@
   const devDistanceButtons = document.querySelector('#devDistanceButtons');
   const devJumpControls = document.querySelector('#devJumpControls');
   const mainMenuScreen = document.querySelector('#mainMenuScreen');
+  const locationsMenuScreen = document.querySelector('#locationsMenuScreen');
   const skinsMenuScreen = document.querySelector('#skinsMenuScreen');
   const leaderboardMenuScreen = document.querySelector('#leaderboardMenuScreen');
   const settingsMenuScreen = document.querySelector('#settingsMenuScreen');
   const characterMenuButton = document.querySelector('#characterMenuButton');
   const leaderboardMenuButton = document.querySelector('#leaderboardMenuButton');
   const developerMenuButton = document.querySelector('#developerMenuButton');
+  const desertLocationButton = document.querySelector('#desertLocationButton');
   const menuSoundToggle = document.querySelector('#menuSoundToggle');
   const menuSoundLabel = document.querySelector('#menuSoundLabel');
   const leaderboardList = document.querySelector('#leaderboardList');
@@ -267,6 +269,7 @@
     activeMenuSection = section;
     document.body.classList.toggle('skins-open', section === 'skins');
     mainMenuScreen.classList.toggle('hidden', section !== 'main');
+    locationsMenuScreen.classList.toggle('hidden', section !== 'locations');
     skinsMenuScreen.classList.toggle('hidden', section !== 'skins');
     leaderboardMenuScreen.classList.toggle('hidden', section !== 'leaderboard');
     settingsMenuScreen.classList.toggle('hidden', section !== 'settings');
@@ -898,7 +901,9 @@
   jumpButton.addEventListener('pointerdown', e => { e.preventDefault(); jump(); });
   duckButton.addEventListener('pointerdown', e => { e.preventDefault(); setDuck(true); });
   for (const event of ['pointerup', 'pointercancel', 'pointerleave']) duckButton.addEventListener(event, () => setDuck(false));
-  startButton.addEventListener('click', () => { devStartDistance = 0; devObstacleFree = false; start(); }); restartButton.addEventListener('click', start); menuButton.addEventListener('click', showMenu);
+  startButton.addEventListener('click', () => { showMenuSection('locations'); beep(420, .035, .01); });
+  desertLocationButton.addEventListener('click', () => { devStartDistance = 0; devObstacleFree = false; start(); });
+  restartButton.addEventListener('click', start); menuButton.addEventListener('click', showMenu);
   pauseButton.addEventListener('click', () => paused ? resumeGame() : pauseGame()); resumeButton.addEventListener('click', resumeGame); pauseMenuButton.addEventListener('click', showMenu);
   skinGrid.addEventListener('click', e => { const card = e.target.closest('[data-skin]'); if (card) chooseOrBuySkin(card.dataset.skin); });
   devDistanceButtons.addEventListener('click', e => {

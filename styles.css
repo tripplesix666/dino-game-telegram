@@ -403,6 +403,26 @@ body.menu-open .menu-screen:not(#mainMenuScreen) {
 body.menu-open .menu-screen:not(#mainMenuScreen) .back-button,
 body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 
+.locations-menu > p { margin-inline: auto; max-width: 440px; }
+.location-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; width: min(640px, 100%); margin: 28px auto 0; }
+.location-card { position: relative; display: grid; align-content: end; min-height: 280px; overflow: hidden; padding: 22px; border: 1px solid rgba(255,255,255,.28); border-radius: 24px; color: white; text-align: left; font: inherit; cursor: pointer; isolation: isolate; box-shadow: inset 0 2px 0 rgba(255,255,255,.2), 0 12px 24px rgba(0,0,0,.32); }
+.location-card::before { content: ""; position: absolute; inset: 0; z-index: -2; background-position: center; background-size: cover; transition: transform .2s ease; }
+.location-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(2,16,25,.05) 15%, rgba(2,16,25,.92) 88%); }
+.location-card:not(:disabled):hover::before { transform: scale(1.04); }
+.location-desert::before { background-image: url("assets/desert-sky-day.png"); background-color: #e5a93e; }
+.location-forest::before { background: linear-gradient(155deg, #29683d, #082b25 70%); }
+.location-number { position: absolute; top: 15px; left: 17px; font-size: 13px; font-weight: 900; opacity: .8; }
+.location-name { font-size: clamp(24px, 5vw, 36px); font-weight: 950; letter-spacing: 1px; }
+.location-range { margin-top: 3px; color: #cde8f1; font-size: 13px; font-weight: 800; letter-spacing: 1px; }
+.location-action { justify-self: start; margin-top: 16px; padding: 8px 14px; border-radius: 999px; background: #22bd44; font-size: 12px; font-weight: 950; letter-spacing: 1px; }
+.location-card.locked { filter: saturate(.55); cursor: default; opacity: .72; }
+.location-card.locked .location-action { background: #657083; }
+
+@media (max-width: 580px) {
+  .location-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 18px; }
+  .location-card { min-height: 170px; }
+}
+
 @media (min-width: 720px) {
   body.menu-open #startScreen { background-size: auto max(100%, 900px); background-color: #061d2b; }
   body.menu-open .start-card { border-inline: 1px solid rgba(255,255,255,.08); box-shadow: 0 0 70px rgba(0,0,0,.45); }
