@@ -76,6 +76,9 @@
   const daySkyTexture = new Image();
   daySkyTexture.src = 'assets/desert-sky-day.png';
   daySkyTexture.addEventListener('load', draw);
+  const sunTexture = new Image();
+  sunTexture.src = 'assets/voxel-sun.png';
+  sunTexture.addEventListener('load', draw);
   const CACTUS_VARIANTS = [
     { source: 'assets/obstacles/cactus-1.png', w: 26, h: 40 },
     { source: 'assets/obstacles/cactus-2.png', w: 37, h: 60 },
@@ -140,7 +143,7 @@
     runSessionPromise = devStartDistance === 0 && window.DinoCloud?.enabled
       ? window.DinoCloud.startRun()
       : null;
-    setNight(Math.floor(score / 1000) % 2 === 1, true);
+    updateDayNight(true);
     running = true; lastTime = performance.now();
     document.body.classList.remove('menu-open');
     startScreen.classList.add('hidden'); overScreen.classList.add('hidden'); pauseScreen.classList.add('hidden');
@@ -280,6 +283,19 @@
     if (instant) nightAmount = active ? 1 : 0;
   }
 
+  function smoothstep(value) {
+    const t = Math.max(0, Math.min(1, value));
+    return t * t * (3 - 2 * t);
+  }
+
+  function updateDayNight(instant = false) {
+    const target = smoothstep((score - 1700) / 400);
+    isNight = target >= .55;
+    document.body.classList.toggle('night', isNight);
+    if (instant) nightAmount = target;
+    return target;
+  }
+
   function jump() {
     if (!running) {
       if (!gameOver && !startScreen.classList.contains('hidden') && !mainMenuScreen.classList.contains('hidden')) { devStartDistance = 0; start(); }
@@ -337,8 +353,8 @@
   function update(dt) {
     elapsed += dt; animTime += dt; score += dt * speed * .025;
     speed = Math.min(890, 430 + score * .095);
-    setNight(Math.floor(score / 1000) % 2 === 1);
-    nightAmount += ((isNight ? 1 : 0) - nightAmount) * Math.min(1, dt * 2.2);
+    const nightTarget = updateDayNight();
+    nightAmount += (nightTarget - nightAmount) * Math.min(1, dt * 2.2);
     const currentMilestone = Math.floor(score / 500);
     if (currentMilestone > milestone) { milestone = currentMilestone; beep(760, .08, .025); }
 
@@ -646,12 +662,26 @@
     ctx.restore();
   }
 
+  function drawSun() {
+    if (!sunTexture.complete || !sunTexture.naturalWidth) return;
+    const sunset = smoothstep((score - 1450) / 650);
+    const size = Math.min(116, Math.max(72, width * .18));
+    const x = width * (.78 - sunset * .18) - size / 2;
+    const y = 54 + sunset * Math.max(0, groundY - 34) - size / 2;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, 1 - nightAmount * 1.15);
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(sunTexture, x, y, size, size);
+    ctx.restore();
+  }
+
   function draw() {
     ctx.clearRect(0, 0, width, height);
     const sky = mixColor('#dff3ff', '#15233d', nightAmount);
     C.paper = sky; C.ink = mixColor('#2f414b', '#e8f0ff', nightAmount); C.muted = mixColor('#83a6b8', '#7185a9', nightAmount);
     spriteColor = C.ink; rect(0, 0, width, height, sky);
     drawSkyBackground();
+    drawSun();
     if (nightAmount > 0) {
       ctx.fillStyle = `rgba(7, 18, 40, ${nightAmount * .72})`;
       ctx.fillRect(0, 0, width, groundY);
