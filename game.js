@@ -45,10 +45,25 @@
   const newLocationRecord = document.querySelector('#newLocationRecord');
   const newLocationGrid = document.querySelector('#newLocationGrid');
   const newLocationCards = [...document.querySelectorAll('.new-location-card')];
+  const thirdLocationStage = document.querySelector('#thirdLocationStage');
+  const thirdLocationNumber = document.querySelector('#thirdLocationNumber');
+  const thirdLocationName = document.querySelector('#thirdLocationName');
+  const thirdLocationRange = document.querySelector('#thirdLocationRange');
+  const thirdDinoRecord = document.querySelector('#thirdDinoRecord');
+  const thirdDistanceLeft = document.querySelector('#thirdDistanceLeft');
+  const thirdLocationPlay = document.querySelector('#thirdLocationPlay');
 
   const C = { ink: '#2f414b', muted: '#83a6b8', cloud: '#ffffff', accent: '#ee5d43', paper: '#dff3ff', platform: '#5f8fa8', platformTop: '#315b70' };
   const DINO_STAND_HEIGHT = 60;
   const DINO_DUCK_HEIGHT = 36;
+  const LOCATIONS = [
+    { name: 'ПУСТЫНЯ', from: 0, to: 3000, theme: 'desert' },
+    { name: 'ЛЕС', from: 3000, to: 6000, theme: 'forest' },
+    { name: 'ДЖУНГЛИ', from: 6000, to: 9000, theme: 'jungle' },
+    { name: 'МЕТЕОРИТНЫЙ ДОЖДЬ', from: 9000, to: 12000, theme: 'meteor' },
+    { name: 'ЛЕДНИКОВЫЙ ПЕРИОД', from: 12000, to: 15000, theme: 'ice' },
+    { name: 'ИСПЕПЕЛЁННАЯ ЗЕМЛЯ', from: 15000, to: 18000, theme: 'scorched' }
+  ];
   let width = 0, height = 0, scale = 1, groundY = 0;
   let running = false, paused = false, gameOver = false, lastTime = 0, elapsed = 0, score = 0, speed = 430;
   let rafId = 0, devStartDistance = 0, devObstacleFree = false;
@@ -214,6 +229,20 @@
       card.classList.toggle('complete', cardProgress >= 1);
       card.classList.toggle('current', highScore >= from && highScore < to);
     }
+    const locationIndex = Math.min(LOCATIONS.length - 1, Math.floor(Math.max(0, highScore) / 3000));
+    const currentLocation = LOCATIONS[locationIndex];
+    const locationProgress = Math.max(0, Math.min(1, (highScore - currentLocation.from) / (currentLocation.to - currentLocation.from)));
+    thirdLocationStage.className = `third-location-stage third-theme-${currentLocation.theme}`;
+    thirdLocationStage.style.setProperty('--third-progress', `${locationProgress * 100}%`);
+    thirdLocationStage.style.setProperty('--third-marker', `${7 + locationProgress * 86}%`);
+    thirdLocationNumber.textContent = `ЛОКАЦИЯ ${String(locationIndex + 1).padStart(2, '0')}`;
+    thirdLocationName.textContent = currentLocation.name;
+    thirdLocationRange.textContent = `${currentLocation.from}–${currentLocation.to} М`;
+    thirdDinoRecord.textContent = `${formatScore(highScore)} М`;
+    thirdDistanceLeft.textContent = `${Math.max(0, Math.ceil(currentLocation.to - highScore))} М`;
+    thirdLocationPlay.dataset.locationStart = String(currentLocation.from);
+    thirdLocationPlay.disabled = currentLocation.from !== 0;
+    thirdLocationPlay.textContent = currentLocation.from === 0 ? 'ИГРАТЬ' : 'СКОРО';
     renderSkinShop();
   }
 
@@ -941,6 +970,10 @@
   newLocationGrid.addEventListener('click', e => {
     const card = e.target.closest('[data-location-start]'); if (!card) return;
     devStartDistance = Number(card.dataset.locationStart); devObstacleFree = false; start();
+  });
+  thirdLocationPlay.addEventListener('click', () => {
+    if (thirdLocationPlay.disabled) return;
+    devStartDistance = Number(thirdLocationPlay.dataset.locationStart || 0); devObstacleFree = false; start();
   });
   restartButton.addEventListener('click', start); menuButton.addEventListener('click', showMenu);
   pauseButton.addEventListener('click', () => paused ? resumeGame() : pauseGame()); resumeButton.addEventListener('click', resumeGame); pauseMenuButton.addEventListener('click', showMenu);

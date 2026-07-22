@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=31" />
+  <link rel="stylesheet" href="styles.css?v=32" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.13.5</span>
+  <span class="app-version" aria-label="Версия приложения">v0.14.0</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -137,10 +137,24 @@
               </div>
             </div>
             <div class="third-location-view">
-              <span class="third-location-icon" aria-hidden="true">03</span>
-              <h3>ВАРИАНТ 3</h3>
-              <p>Отдельный экран готов для нового дизайна выбора локаций.</p>
-              <small>Переключение находится в режиме разработчика.</small>
+              <div id="thirdLocationStage" class="third-location-stage third-theme-desert">
+                <div class="third-stage-heading">
+                  <small id="thirdLocationNumber">ЛОКАЦИЯ 01</small>
+                  <h3 id="thirdLocationName">ПУСТЫНЯ</h3>
+                  <span id="thirdLocationRange">0–3000 М</span>
+                </div>
+                <div id="thirdLocationFog" class="third-location-fog" aria-hidden="true"></div>
+                <div class="third-route" aria-hidden="true"><span></span></div>
+                <div id="thirdDinoMarker" class="third-dino-marker">
+                  <img src="assets/game-skins/classic-run-4.png" alt="" aria-hidden="true">
+                  <strong id="thirdDinoRecord">00531 М</strong>
+                </div>
+                <div class="third-stage-footer">
+                  <p>ДО КОНЦА ЛОКАЦИИ</p>
+                  <strong id="thirdDistanceLeft">2469 М</strong>
+                  <button id="thirdLocationPlay" type="button">ИГРАТЬ</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -237,6 +251,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=54"></script>
+  <script src="game.js?v=55"></script>
 </body>
 </html>
