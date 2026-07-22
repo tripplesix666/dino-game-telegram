@@ -24,6 +24,7 @@
   const skinWalletCoins = document.querySelector('#skinWalletCoins');
   const skinGrid = document.querySelector('#skinGrid');
   const devDistanceButtons = document.querySelector('#devDistanceButtons');
+  const locationViewButtons = document.querySelector('#locationViewButtons');
   const devJumpControls = document.querySelector('#devJumpControls');
   const mainMenuScreen = document.querySelector('#mainMenuScreen');
   const locationsMenuScreen = document.querySelector('#locationsMenuScreen');
@@ -51,6 +52,7 @@
   let runSessionPromise = null;
   let spawnTimer = 0, nextSpawn = 1.25, coinTimer = 0, nextCoin = 1.8, platformTimer = 0, nextPlatform = 6, animTime = 0, milestone = 0, coinCount = 0;
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
+  let locationView = localStorage.getItem('dino-location-view') === 'new' ? 'new' : 'legacy';
   let audio = null;
   let menuMusicTimer = null, menuMusicStep = 0, gameMusicTimer = null, gameMusicStep = 0, activeMenuSection = 'main';
   let highScore = Number(localStorage.getItem('dino-high-score') || 0);
@@ -201,6 +203,13 @@
       connector.querySelector('b').textContent = isCurrent ? `${formatScore(highScore)} М` : '';
     }
     renderSkinShop();
+  }
+
+  function updateLocationView() {
+    document.body.classList.toggle('location-view-new', locationView === 'new');
+    for (const button of locationViewButtons.querySelectorAll('[data-location-view]')) {
+      button.setAttribute('aria-pressed', String(button.dataset.locationView === locationView));
+    }
   }
 
   function renderSkinShop() {
@@ -925,6 +934,12 @@
     devStartDistance = devObstacleFree ? 0 : Number(button.dataset.distance);
     beep(560, .05, .015); start();
   });
+  locationViewButtons.addEventListener('click', e => {
+    const button = e.target.closest('[data-location-view]'); if (!button) return;
+    locationView = button.dataset.locationView;
+    localStorage.setItem('dino-location-view', locationView);
+    updateLocationView(); beep(430, .04, .012);
+  });
   devJumpControls.addEventListener('click', e => {
     const button = e.target.closest('[data-jump-distance]');
     if (!button || !devObstacleFree || !running) return;
@@ -949,5 +964,5 @@
     if (document.hidden) { stopMenuMusic(); if (running && !paused) pauseGame(); }
     else if (!running && activeMenuSection === 'main') startMenuMusic();
   });
-  updateSoundControls(); updateMenuStats(); resize(); loadCloudProgress();
+  updateSoundControls(); updateLocationView(); updateMenuStats(); resize(); loadCloudProgress();
 })();

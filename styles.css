@@ -402,11 +402,22 @@ body.menu-open .menu-screen:not(#mainMenuScreen) {
 .settings-developer { margin-top: 30px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.18); }
 .settings-developer h3 { margin: 6px 0 8px; font-size: clamp(18px, 5vw, 26px); }
 .settings-developer .dev-start-distances { margin-top: 18px; }
+.location-view-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0 26px; padding: 5px; border: 1px solid rgba(255,255,255,.18); border-radius: 16px; background: rgba(0,0,0,.24); }
+.location-view-switch button { min-height: 44px; border: 0; border-radius: 11px; background: transparent; color: #9babb8; font: 900 12px/1 system-ui, sans-serif; letter-spacing: 1px; cursor: pointer; }
+.location-view-switch button[aria-pressed="true"] { background: linear-gradient(#25cbe3, #1577be); color: white; box-shadow: inset 0 2px 0 rgba(255,255,255,.22), 0 5px 12px rgba(0,0,0,.28); }
+.dev-run-title { margin-top: 8px; }
 
 body.menu-open .menu-screen:not(#mainMenuScreen) .back-button,
 body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 
 .locations-menu > p { margin-inline: auto; max-width: 440px; }
+.new-location-view { display: none; place-items: center; width: min(520px, 100%); min-height: 430px; margin: 28px auto 20px; padding: 34px; border: 1px dashed rgba(255,255,255,.28); border-radius: 28px; background: rgba(4,18,28,.84); text-align: center; }
+.new-location-view h3 { margin: 14px 0 6px; font-size: 28px; }
+.new-location-view p { max-width: 360px; color: #c4d2dc; }
+.new-location-view small { color: #8095a3; }
+.new-location-icon { display: grid; place-items: center; width: 76px; height: 76px; border-radius: 24px; background: linear-gradient(145deg, #23c9f2, #6c3ce2); font-size: 34px; box-shadow: 0 12px 30px rgba(40,123,218,.34); }
+body.location-view-new .legacy-location-view { display: none; }
+body.location-view-new .new-location-view { display: grid; }
 .location-grid { --location-card-height: 220px; position: relative; display: grid; grid-template-columns: 1fr; gap: 0; width: min(620px, 100%); margin: 28px auto 24px; }
 .location-record { width: fit-content; margin: 14px auto 0 !important; padding: 8px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; background: rgba(0,0,0,.3); color: #b8cbd6 !important; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
 .location-record strong { color: white; }
