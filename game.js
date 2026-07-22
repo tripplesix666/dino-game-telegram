@@ -673,9 +673,14 @@
     const journey = smoothstep(score / 2000);
     const size = Math.min(116, Math.max(72, width * .18));
     const x = width * (.1 + journey * .8) - size / 2;
-    const horizonY = groundY - size * .12;
-    const arcHeight = Math.max(0, groundY - 92) * Math.sin(journey * Math.PI);
-    const y = horizonY - arcHeight - size / 2;
+    const startCenterY = groundY * .52;
+    const highCenterY = Math.max(size * .62, 72);
+    const endCenterY = groundY + size * .18;
+    const inverseJourney = 1 - journey;
+    const centerY = inverseJourney * inverseJourney * startCenterY
+      + 2 * inverseJourney * journey * highCenterY
+      + journey * journey * endCenterY;
+    const y = centerY - size / 2;
     ctx.save();
     ctx.globalAlpha = Math.max(0, 1 - nightAmount * 1.15);
     ctx.imageSmoothingEnabled = true;
