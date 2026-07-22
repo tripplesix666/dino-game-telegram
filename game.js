@@ -635,7 +635,7 @@
   function drawSkyBackground() {
     if (!daySkyTexture.complete || !daySkyTexture.naturalWidth) return;
     const sourceHeight = Math.round(daySkyTexture.naturalHeight * .95);
-    const skyHeight = groundY + Math.min(28, Math.max(18, height * .035));
+    const skyHeight = groundY + 2;
     const tileWidth = daySkyTexture.naturalWidth * skyHeight / sourceHeight;
     const offset = running ? (elapsed * speed * .035) % tileWidth : 0;
     ctx.save();
