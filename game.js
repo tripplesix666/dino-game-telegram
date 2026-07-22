@@ -39,6 +39,8 @@
   const leaderboardList = document.querySelector('#leaderboardList');
   const leaderboardStatus = document.querySelector('#leaderboardStatus');
   const menuCharacterPreview = document.querySelector('#menuCharacterPreview');
+  const locationProgressFill = document.querySelector('#locationProgressFill');
+  const locationRecord = document.querySelector('#locationRecord');
 
   const C = { ink: '#2f414b', muted: '#83a6b8', cloud: '#ffffff', accent: '#ee5d43', paper: '#dff3ff', platform: '#5f8fa8', platformTop: '#315b70' };
   const DINO_STAND_HEIGHT = 60;
@@ -187,6 +189,10 @@
     menuCoins.textContent = String(totalCoins).padStart(3, '0');
     skinWalletCoins.textContent = String(totalCoins).padStart(3, '0');
     menuHighScore.textContent = formatScore(highScore);
+    locationRecord.textContent = `${formatScore(highScore)} М`;
+    const routeProgress = Math.max(0, Math.min(1, highScore / 18000));
+    locationProgressFill.style.height = `${routeProgress * 100}%`;
+    locationProgressFill.parentElement.setAttribute('aria-label', `Рекорд: ${Math.round(highScore)} из 18000 метров`);
     renderSkinShop();
   }
 

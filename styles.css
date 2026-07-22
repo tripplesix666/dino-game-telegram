@@ -404,10 +404,12 @@ body.menu-open .menu-screen:not(#mainMenuScreen) .back-button,
 body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 
 .locations-menu > p { margin-inline: auto; max-width: 440px; }
-.location-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; width: min(860px, 100%); margin: 28px auto 0; }
-.location-card { position: relative; display: grid; align-content: end; min-height: 280px; overflow: hidden; padding: 22px; border: 1px solid rgba(255,255,255,.28); border-radius: 24px; color: white; text-align: left; font: inherit; cursor: pointer; isolation: isolate; box-shadow: inset 0 2px 0 rgba(255,255,255,.2), 0 12px 24px rgba(0,0,0,.32); }
-.location-card::before { content: ""; position: absolute; inset: 0; z-index: -2; background-position: center; background-size: cover; transition: transform .2s ease; }
-.location-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(2,16,25,.05) 15%, rgba(2,16,25,.92) 88%); }
+.location-grid { position: relative; display: grid; grid-template-columns: 1fr; gap: 18px; width: min(620px, 100%); margin: 28px auto 24px; padding-left: 50px; }
+.location-record { width: fit-content; margin: 14px auto 0 !important; padding: 8px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; background: rgba(0,0,0,.3); color: #b8cbd6 !important; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+.location-record strong { color: white; }
+.location-card { position: relative; display: grid; align-content: end; min-height: 220px; overflow: visible; padding: 22px; border: 1px solid rgba(255,255,255,.28); border-radius: 24px; color: white; text-align: left; font: inherit; cursor: pointer; isolation: isolate; box-shadow: inset 0 2px 0 rgba(255,255,255,.2), 0 12px 24px rgba(0,0,0,.32); }
+.location-card::before { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background-position: center; background-size: cover; clip-path: inset(0 round 24px); transition: transform .2s ease; }
+.location-card::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: linear-gradient(180deg, rgba(2,16,25,.05) 15%, rgba(2,16,25,.92) 88%); }
 .location-card:not(:disabled):hover::before { transform: scale(1.04); }
 .location-desert::before { background-image: url("assets/desert-sky-day.png"); background-color: #e5a93e; }
 .location-forest::before { background: linear-gradient(155deg, #29683d, #082b25 70%); }
@@ -421,10 +423,17 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 .location-action { justify-self: start; margin-top: 16px; padding: 8px 14px; border-radius: 999px; background: #22bd44; font-size: 12px; font-weight: 950; letter-spacing: 1px; }
 .location-card.locked { filter: saturate(.55); cursor: default; opacity: .72; }
 .location-card.locked .location-action { background: #657083; }
+.location-progress-track { position: absolute; z-index: 2; top: 24px; bottom: 24px; left: 18px; width: 8px; overflow: visible; border-radius: 99px; background: rgba(255,255,255,.18); box-shadow: 0 0 0 3px rgba(0,0,0,.18); }
+.location-progress-fill { position: absolute; top: 0; left: 0; width: 100%; min-height: 0; max-height: 100%; border-radius: inherit; background: linear-gradient(#65ed58, #19b8e5); box-shadow: 0 0 12px rgba(54,220,179,.75); transition: height .5s ease; }
+.location-progress-fill i { position: absolute; right: 50%; bottom: 0; width: 20px; height: 20px; border: 4px solid white; border-radius: 50%; background: #20c878; box-shadow: 0 3px 12px rgba(0,0,0,.55); transform: translate(50%, 50%); }
+.location-card::marker { display: none; }
+.location-card .location-number { display: grid; place-items: center; top: 50%; left: -49px; z-index: 4; width: 34px; height: 34px; border: 3px solid rgba(255,255,255,.85); border-radius: 50%; background: #26384c; color: white; opacity: 1; transform: translateY(-50%); box-shadow: 0 3px 10px rgba(0,0,0,.45); }
 
 @media (max-width: 720px) {
-  .location-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 18px; }
+  .location-grid { gap: 12px; margin-top: 18px; padding-left: 42px; }
   .location-card { min-height: 170px; }
+  .location-progress-track { left: 14px; }
+  .location-card .location-number { left: -42px; width: 30px; height: 30px; font-size: 11px; }
 }
 
 @media (min-width: 720px) {
