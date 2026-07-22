@@ -635,12 +635,13 @@
   function drawSkyBackground() {
     if (!daySkyTexture.complete || !daySkyTexture.naturalWidth) return;
     const sourceHeight = Math.round(daySkyTexture.naturalHeight * .95);
-    const tileWidth = daySkyTexture.naturalWidth * groundY / sourceHeight;
+    const skyHeight = groundY + Math.min(28, Math.max(18, height * .035));
+    const tileWidth = daySkyTexture.naturalWidth * skyHeight / sourceHeight;
     const offset = running ? (elapsed * speed * .035) % tileWidth : 0;
     ctx.save();
     ctx.imageSmoothingEnabled = true;
     for (let x = -offset; x < width; x += tileWidth) {
-      ctx.drawImage(daySkyTexture, 0, 0, daySkyTexture.naturalWidth, sourceHeight, x, 0, tileWidth + 1, groundY);
+      ctx.drawImage(daySkyTexture, 0, 0, daySkyTexture.naturalWidth, sourceHeight, x, 0, tileWidth + 1, skyHeight);
     }
     ctx.restore();
   }
