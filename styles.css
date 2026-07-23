@@ -561,16 +561,43 @@ body.location-view-third .third-location-view { display: block; }
 }
 
 /* Skin collection */
-body.skins-open .start-card { max-width: 1180px; }
-body.skins-open #startScreen { place-items: start center; }
+body.skins-open {
+  background: #041724;
+}
+
+body.skins-open .game-shell { grid-template-rows: 1fr; }
+body.skins-open footer { display: none; }
+
+body.skins-open #startScreen {
+  place-items: stretch;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(39, 181, 224, .2), transparent 31%),
+    radial-gradient(circle at 12% 70%, rgba(54, 184, 117, .1), transparent 28%),
+    linear-gradient(180deg, #0a3d56 0%, #06283d 45%, #031521 100%);
+}
+
+body.skins-open .start-card {
+  width: 100%;
+  max-width: none;
+  min-height: 100%;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
 
 body.menu-open .menu-screen.skins-menu:not(#mainMenuScreen) {
   width: 100%;
   min-height: 100%;
-  padding: 20px;
-  border-radius: 26px;
-  background: linear-gradient(180deg, rgba(3, 55, 78, .96), rgba(3, 22, 35, .97));
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
+
+body.skins-open .skins-toolbar,
+body.skins-open .skins-title,
+body.skins-open .skin-shop { width: min(920px, 100%); margin-inline: auto; }
 
 .skins-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
 .skins-toolbar .back-button { margin: 0 !important; color: #dff6ff !important; font-size: 15px; }
