@@ -486,6 +486,74 @@ body.location-view-new .new-location-view { display: block; }
 body.location-view-third .legacy-location-view { display: none; }
 body.location-view-third .third-location-view { display: block; }
 
+body.locations-open {
+  background: #041724;
+}
+
+body.locations-open .game-shell {
+  width: min(100%, 560px);
+  max-width: 560px;
+  grid-template-rows: 1fr;
+}
+
+body.locations-open footer { display: none; }
+
+body.locations-open #startScreen {
+  place-items: start center;
+  padding: 0;
+  background: #0b79c4;
+  backdrop-filter: none;
+}
+
+body.locations-open .start-card {
+  width: 100%;
+  max-width: 560px;
+  min-height: 100%;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+body.locations-open .locations-menu {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.locations-open .locations-menu > .back-button {
+  position: absolute;
+  z-index: 20;
+  top: max(20px, env(safe-area-inset-top));
+  left: max(20px, env(safe-area-inset-left));
+  margin: 0;
+  color: white;
+}
+
+body.locations-open .locations-menu > .eyebrow,
+body.locations-open .locations-menu > h2 { display: none; }
+
+body.locations-open .third-location-view {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body.locations-open .third-location-stage {
+  min-height: var(--tg-viewport-stable-height, 100dvh);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body.locations-open .third-stage-heading {
+  padding-top: max(96px, calc(env(safe-area-inset-top) + 88px));
+}
+
 @media (max-width: 520px) {
   .third-location-stage { min-height: min(570px, calc(100vh - 205px)); }
   .third-stage-heading { padding: 22px; }

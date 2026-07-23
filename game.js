@@ -362,6 +362,7 @@
   function showMenuSection(section) {
     activeMenuSection = section;
     document.body.classList.toggle('skins-open', section === 'skins');
+    document.body.classList.toggle('locations-open', section === 'locations');
     mainMenuScreen.classList.toggle('hidden', section !== 'main');
     locationsMenuScreen.classList.toggle('hidden', section !== 'locations');
     skinsMenuScreen.classList.toggle('hidden', section !== 'skins');
