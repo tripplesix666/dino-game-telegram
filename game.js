@@ -282,7 +282,7 @@
         <div class="skin-carousel-scene">
           <span class="skin-carousel-count">${String(skinCarouselIndex + 1).padStart(2, '0')} / ${String(SKINS.length).padStart(2, '0')}</span>
           <img class="skin-carousel-dino${skin.gameSprites ? ' sprite-preview' : ''}" src="${previewSource}" alt="${skin.name}">
-          <div class="skin-carousel-platform" aria-hidden="true"></div>
+          <img class="skin-carousel-island" src="assets/skin-carousel-island.png" alt="" aria-hidden="true">
         </div>
         <button class="skin-carousel-arrow skin-carousel-next" type="button" data-skin-nav="1" aria-label="Следующий скин">›</button>
       </div>
