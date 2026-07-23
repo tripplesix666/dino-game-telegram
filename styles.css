@@ -565,7 +565,11 @@ body.skins-open {
   background: #041724;
 }
 
-body.skins-open .game-shell { grid-template-rows: 1fr; }
+body.skins-open .game-shell {
+  width: min(100%, 560px);
+  max-width: 560px;
+  grid-template-rows: 1fr;
+}
 body.skins-open footer { display: none; }
 
 body.skins-open #startScreen {
@@ -584,7 +588,7 @@ body.skins-open .start-card {
   min-height: 100%;
   padding: 0;
   border: 0;
-  box-shadow: 0 0 70px rgba(0, 0, 0, .28);
+  box-shadow: none;
 }
 
 body.menu-open .menu-screen.skins-menu:not(#mainMenuScreen) {
