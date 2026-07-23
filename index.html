@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css?v=40" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.14.9</span>
+  <span class="app-version" aria-label="Версия приложения">v0.15.0</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -177,7 +177,9 @@
               <span class="skins-title-dino" aria-hidden="true">◆</span>
               <div><h2>СКИНЫ</h2><p>Собирай коллекцию и беги к рекорду!</p></div>
             </div>
-            <section class="skin-shop" aria-label="Скины"><div id="skinGrid" class="skin-grid"></div></section>
+            <section class="skin-shop" aria-label="Карусель скинов">
+              <div id="skinGrid" class="skin-carousel" aria-live="polite"></div>
+            </section>
           </div>
 
           <div id="leaderboardMenuScreen" class="menu-screen hidden">
@@ -261,6 +263,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=58"></script>
+  <script src="game.js?v=59"></script>
 </body>
 </html>

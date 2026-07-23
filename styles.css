@@ -617,6 +617,33 @@ body.skins-open .skin-card.coming-soon .skin-card-art { filter: grayscale(.28) s
 body.skins-open .skin-card.coming-soon .skin-action { color: #d6e0e7; letter-spacing: .14em; }
 .skin-check { position: absolute; z-index: 3; top: 10px; right: 10px; display: grid; place-items: center; width: 29px; height: 29px; border-radius: 50%; background: #61d64b; color: white; font-family: system-ui, sans-serif; font-size: 18px; font-weight: 900; box-shadow: 0 3px 9px rgba(0,0,0,.3); }
 
+/* Skin carousel */
+body.skins-open .skin-carousel { display: block; width: min(620px, 100%); margin: 0 auto; }
+.skin-carousel-stage { position: relative; display: grid; grid-template-columns: 58px minmax(0, 1fr) 58px; align-items: center; min-height: min(470px, 54vh); overflow: hidden; border: 1px solid rgba(122,220,255,.42); border-radius: 28px; background: radial-gradient(circle at 50% 28%, rgba(103,211,239,.42), transparent 34%), linear-gradient(180deg, #0b6b8e 0%, #074c69 56%, #05273b 100%); box-shadow: inset 0 0 45px rgba(2,20,32,.38), 0 20px 40px rgba(0,0,0,.32); }
+.skin-carousel-stage::before { content: ""; position: absolute; inset: 0; opacity: .22; background-image: linear-gradient(rgba(255,255,255,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.09) 1px, transparent 1px); background-size: 22px 22px; pointer-events: none; }
+.skin-carousel-scene { position: relative; z-index: 1; display: grid; place-items: end center; align-self: stretch; min-width: 0; padding: 42px 0 46px; }
+.skin-carousel-count { position: absolute; top: 18px; left: 50%; color: rgba(226,246,255,.72); font-family: system-ui, sans-serif; font-size: 10px; font-weight: 900; letter-spacing: 2px; transform: translateX(-50%); }
+.skin-carousel-dino { position: relative; z-index: 2; display: block; width: min(330px, 90%); height: min(330px, 37vh); object-fit: contain; filter: drop-shadow(0 16px 11px rgba(0,0,0,.48)); }
+.skin-carousel-dino.sprite-preview { width: min(360px, 100%); height: min(315px, 36vh); transform: translateY(12px); }
+.skin-carousel-stage.coming-soon .skin-carousel-dino { filter: grayscale(.25) saturate(.72) brightness(.72) drop-shadow(0 16px 11px rgba(0,0,0,.48)); }
+.skin-carousel-platform { position: absolute; z-index: 1; right: 2%; bottom: 34px; left: 2%; height: 52px; border-radius: 50%; background: radial-gradient(ellipse at 50% 10%, #7bd847 0 38%, #3d8d3e 39% 52%, #193e2d 53% 70%, transparent 71%); filter: drop-shadow(0 14px 7px rgba(0,0,0,.45)); }
+.skin-carousel-arrow { position: relative; z-index: 4; display: grid; place-items: center; width: 52px; height: 76px; margin: 0 3px; border: 1px solid rgba(255,255,255,.45); border-radius: 19px; background: rgba(2,22,35,.72); color: white; font: 700 48px/1 system-ui, sans-serif; box-shadow: inset 0 2px 0 rgba(255,255,255,.12), 0 10px 20px rgba(0,0,0,.32); cursor: pointer; backdrop-filter: blur(6px); }
+.skin-carousel-arrow:active { transform: scale(.92); }
+.skin-carousel-info { display: grid; justify-items: center; gap: 5px; padding: 17px 14px 4px; text-align: center; }
+.skin-carousel-info small { color: #82cbe7; font-family: system-ui, sans-serif; font-size: 9px; font-weight: 900; letter-spacing: 1.8px; }
+.skin-carousel-info h3 { margin: 0 0 7px; color: white; font-family: Impact, "Arial Black", sans-serif; font-size: clamp(28px, 6vw, 46px); letter-spacing: .05em; text-shadow: 0 4px 0 rgba(0,0,0,.28); }
+.skin-carousel-select { min-width: min(310px, 90%); min-height: 52px; border: 1px solid rgba(255,255,255,.45); border-radius: 17px; background: linear-gradient(#6ce74e, #1ab63d); color: white; font: 950 15px/1 system-ui, sans-serif; letter-spacing: 1px; box-shadow: inset 0 2px 0 rgba(255,255,255,.28), 0 8px 18px rgba(0,0,0,.3); cursor: pointer; }
+.skin-carousel-select.selected { color: #123921; background: linear-gradient(#b7ff86, #59dd57); }
+.skin-carousel-select:disabled { color: #c6d2d9; background: linear-gradient(#536779, #293b4b); cursor: default; }
+
+@media (max-width: 520px) {
+  .skins-title { margin-bottom: 14px; }
+  .skin-carousel-stage { grid-template-columns: 46px minmax(0, 1fr) 46px; min-height: min(410px, 50vh); }
+  .skin-carousel-arrow { width: 42px; height: 66px; border-radius: 15px; font-size: 41px; }
+  .skin-carousel-dino { height: min(280px, 33vh); }
+  .skin-carousel-dino.sprite-preview { height: min(270px, 32vh); }
+}
+
 @media (min-width: 700px) {
   body.skins-open .skin-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
   body.menu-open .skins-menu { padding: 28px; }

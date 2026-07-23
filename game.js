@@ -139,6 +139,7 @@
   if (!ownedSkins.includes('classic')) ownedSkins.unshift('classic');
   let selectedSkin = localStorage.getItem('dino-selected-skin') || 'classic';
   if (!ownedSkins.includes(selectedSkin) || selectedSkin !== 'classic') selectedSkin = 'classic';
+  let skinCarouselIndex = Math.max(0, SKINS.findIndex(skin => skin.id === selectedSkin));
   const obstacles = [], coins = [], platforms = [], dust = [], clouds = [];
   let spriteColor = C.ink;
   let isNight = false, nightAmount = 0;
@@ -270,12 +271,26 @@
   }
 
   function renderSkinShop() {
-    skinGrid.innerHTML = SKINS.map(skin => {
-      const comingSoon = skin.id !== 'classic';
-      const owned = ownedSkins.includes(skin.id), selected = selectedSkin === skin.id;
-      const action = comingSoon ? 'СКОРО' : selected ? 'ВЫБРАН' : 'ВЫБРАТЬ';
-      return `<button class="skin-card skin-${skin.id}${selected ? ' selected' : ''}${comingSoon ? ' coming-soon' : ''}" type="button" data-skin="${skin.id}" aria-pressed="${selected}"${comingSoon ? ' disabled aria-disabled="true"' : ''}><img class="skin-card-art" src="${skin.image}" alt="${skin.name}" loading="lazy"><span class="skin-name">${skin.name}</span><span class="skin-action">${action}</span>${selected ? '<span class="skin-check" aria-hidden="true">✓</span>' : ''}</button>`;
-    }).join('');
+    const skin = SKINS[skinCarouselIndex] || SKINS[0];
+    const comingSoon = skin.id !== 'classic';
+    const selected = selectedSkin === skin.id;
+    const previewSource = skin.gameSprites?.[0] || skin.image;
+    const action = comingSoon ? 'СКОРО' : selected ? 'ВЫБРАН' : 'ВЫБРАТЬ';
+    skinGrid.innerHTML = `
+      <div class="skin-carousel-stage skin-${skin.id}${comingSoon ? ' coming-soon' : ''}">
+        <button class="skin-carousel-arrow skin-carousel-prev" type="button" data-skin-nav="-1" aria-label="Предыдущий скин">‹</button>
+        <div class="skin-carousel-scene">
+          <span class="skin-carousel-count">${String(skinCarouselIndex + 1).padStart(2, '0')} / ${String(SKINS.length).padStart(2, '0')}</span>
+          <img class="skin-carousel-dino${skin.gameSprites ? ' sprite-preview' : ''}" src="${previewSource}" alt="${skin.name}">
+          <div class="skin-carousel-platform" aria-hidden="true"></div>
+        </div>
+        <button class="skin-carousel-arrow skin-carousel-next" type="button" data-skin-nav="1" aria-label="Следующий скин">›</button>
+      </div>
+      <div class="skin-carousel-info">
+        <small>${comingSoon ? 'БУДУЩИЙ ПЕРСОНАЖ' : 'ДОСТУПНЫЙ ПЕРСОНАЖ'}</small>
+        <h3>${skin.name}</h3>
+        <button class="skin-carousel-select${selected ? ' selected' : ''}" type="button" data-skin="${skin.id}"${comingSoon ? ' disabled aria-disabled="true"' : ''}>${action}</button>
+      </div>`;
     drawMenuCharacter();
   }
 
@@ -994,7 +1009,15 @@
   thirdLocationNext.addEventListener('click', () => { renderThirdLocation(thirdViewedLocationIndex + 1); beep(480, .035, .01); });
   restartButton.addEventListener('click', start); menuButton.addEventListener('click', showMenu);
   pauseButton.addEventListener('click', () => paused ? resumeGame() : pauseGame()); resumeButton.addEventListener('click', resumeGame); pauseMenuButton.addEventListener('click', showMenu);
-  skinGrid.addEventListener('click', e => { const card = e.target.closest('[data-skin]'); if (card) chooseOrBuySkin(card.dataset.skin); });
+  skinGrid.addEventListener('click', e => {
+    const navigation = e.target.closest('[data-skin-nav]');
+    if (navigation) {
+      skinCarouselIndex = (skinCarouselIndex + Number(navigation.dataset.skinNav) + SKINS.length) % SKINS.length;
+      renderSkinShop(); beep(410, .035, .01); return;
+    }
+    const choice = e.target.closest('[data-skin]');
+    if (choice) chooseOrBuySkin(choice.dataset.skin);
+  });
   devDistanceButtons.addEventListener('click', e => {
     const button = e.target.closest('[data-distance], [data-obstacle-free]'); if (!button) return;
     devObstacleFree = button.hasAttribute('data-obstacle-free');
