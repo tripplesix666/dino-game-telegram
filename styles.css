@@ -448,21 +448,27 @@ body.location-view-new .new-location-view { display: block; }
 .third-theme-scorched { --third-bg: radial-gradient(circle at 68% 38%, #ff5922, transparent 20%), linear-gradient(145deg, #79331f, #1d0e13); }
 .third-island-layer { position: absolute; z-index: 3; inset: 0; display: none; background: url("assets/location-map/desert-forest-ground.png") center / 100% 100% no-repeat; pointer-events: none; }
 .third-theme-desert .third-island-layer { display: block; }
-.third-map-clouds { position: absolute; z-index: 4; top: 36%; right: 0; bottom: calc(41% + 10px); left: 0; display: none; overflow: hidden; pointer-events: none; }
-.third-theme-desert .third-map-clouds { display: none; }
-.third-map-clouds i { position: absolute; left: -18%; display: block; width: 56px; height: 30px; background: var(--map-cloud) center / contain no-repeat; filter: drop-shadow(0 4px 4px rgba(54,113,137,.18)); opacity: .88; animation: third-cloud-drift var(--cloud-time) linear infinite; animation-delay: var(--cloud-delay); }
-.third-map-clouds i:nth-child(1) { --map-cloud: url("assets/clouds/cloud-1.png"); --cloud-time: 24s; --cloud-delay: -17s; top: 2%; width: 54px; }
-.third-map-clouds i:nth-child(2) { --map-cloud: url("assets/clouds/cloud-3.png"); --cloud-time: 31s; --cloud-delay: -6s; top: 17%; width: 43px; opacity: .72; }
-.third-map-clouds i:nth-child(3) { --map-cloud: url("assets/clouds/cloud-5.png"); --cloud-time: 27s; --cloud-delay: -24s; top: 34%; width: 66px; }
-.third-map-clouds i:nth-child(4) { --map-cloud: url("assets/clouds/cloud-7.png"); --cloud-time: 36s; --cloud-delay: -13s; top: 48%; width: 40px; opacity: .68; }
-.third-map-clouds i:nth-child(5) { --map-cloud: url("assets/clouds/cloud-2.png"); --cloud-time: 29s; --cloud-delay: -2s; top: 10%; width: 49px; }
-.third-map-clouds i:nth-child(6) { --map-cloud: url("assets/clouds/cloud-6.png"); --cloud-time: 33s; --cloud-delay: -29s; top: 41%; width: 58px; opacity: .8; }
-@keyframes third-cloud-drift { to { transform: translateX(780%); } }
+.third-map-clouds { position: absolute; z-index: 4; top: 24%; right: 0; left: 0; display: none; height: 27%; overflow: hidden; pointer-events: none; }
+.third-theme-desert .third-map-clouds { display: block; }
+.third-map-clouds i { position: absolute; left: -32%; display: block; width: 132px; height: 76px; background-image: url("assets/location-map/location-clouds.png"); background-repeat: no-repeat; background-size: 400% 300%; filter: drop-shadow(0 4px 4px rgba(54,113,137,.18)); opacity: .88; animation: third-cloud-drift var(--cloud-time) linear infinite; animation-delay: var(--cloud-delay); }
+.third-map-clouds i:nth-child(1)  { --cloud-time: 38s; --cloud-delay: -31s; top: 0%;  background-position: 0 0; }
+.third-map-clouds i:nth-child(2)  { --cloud-time: 47s; --cloud-delay: -12s; top: 37%; background-position: 33.333% 0; scale: .78; opacity: .72; }
+.third-map-clouds i:nth-child(3)  { --cloud-time: 42s; --cloud-delay: -23s; top: 64%; background-position: 66.667% 0; scale: .62; opacity: .65; }
+.third-map-clouds i:nth-child(4)  { --cloud-time: 53s; --cloud-delay: -44s; top: 16%; background-position: 100% 0; scale: .86; }
+.third-map-clouds i:nth-child(5)  { --cloud-time: 45s; --cloud-delay: -37s; top: 52%; background-position: 0 50%; scale: .7; opacity: .7; }
+.third-map-clouds i:nth-child(6)  { --cloud-time: 50s; --cloud-delay: -5s;  top: 5%;  background-position: 33.333% 50%; scale: .72; }
+.third-map-clouds i:nth-child(7)  { --cloud-time: 40s; --cloud-delay: -17s; top: 70%; background-position: 66.667% 50%; scale: .58; opacity: .62; }
+.third-map-clouds i:nth-child(8)  { --cloud-time: 56s; --cloud-delay: -28s; top: 31%; background-position: 100% 50%; scale: .8; }
+.third-map-clouds i:nth-child(9)  { --cloud-time: 44s; --cloud-delay: -8s;  top: 10%; background-position: 0 100%; scale: .68; opacity: .76; }
+.third-map-clouds i:nth-child(10) { --cloud-time: 52s; --cloud-delay: -39s; top: 58%; background-position: 33.333% 100%; scale: .64; opacity: .68; }
+.third-map-clouds i:nth-child(11) { --cloud-time: 48s; --cloud-delay: -20s; top: 25%; background-position: 66.667% 100%; scale: .82; }
+.third-map-clouds i:nth-child(12) { --cloud-time: 58s; --cloud-delay: -50s; top: 72%; background-position: 100% 100%; scale: .55; opacity: .6; }
+@keyframes third-cloud-drift { to { left: 112%; } }
 .third-stage-heading { position: relative; z-index: 8; padding: 28px; text-align: left; text-shadow: 0 3px 10px rgba(0,0,0,.7); }
 .third-stage-heading small { color: #ff765d; font-size: 10px; font-weight: 950; letter-spacing: 2px; }
 .third-stage-heading h3 { max-width: 90%; margin: 8px 0 4px; font-size: clamp(30px, 7vw, 48px); line-height: .96; }
 .third-stage-heading span { color: #d3e3e9; font-size: 12px; font-weight: 850; letter-spacing: 1px; }
-.third-location-fog { position: absolute; z-index: 6; top: 33%; right: 0; bottom: calc(41% + 10px); left: var(--third-progress); overflow: hidden; background: transparent; -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%), linear-gradient(180deg, transparent, #000 10%, #000 100%); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 7%), linear-gradient(180deg, transparent, #000 10%, #000 100%); mask-composite: intersect; transition: left .55s ease; }
+.third-location-fog { display: none; }
 .third-location-fog::before,
 .third-location-fog::after { content: ""; position: absolute; inset: -20% -55%; background-image: url("assets/clouds/cloud-1.png"), url("assets/clouds/cloud-3.png"), url("assets/clouds/cloud-5.png"), url("assets/clouds/cloud-7.png"), url("assets/clouds/cloud-2.png"); background-position: 5% 12%, 31% 46%, 57% 8%, 78% 65%, 96% 28%; background-repeat: repeat-x; background-size: 56px auto, 43px auto, 66px auto, 47px auto, 53px auto; filter: drop-shadow(0 5px 6px rgba(83,137,158,.2)); opacity: .93; animation: third-fog-clouds 38s linear infinite; }
 .third-location-fog::after { inset: 8% -65% -24%; background-position: 15% 66%, 40% 18%, 66% 74%, 87% 24%, 100% 78%; background-size: 68px auto, 49px auto, 58px auto, 42px auto, 64px auto; opacity: .82; animation-duration: 52s; animation-direction: reverse; }
