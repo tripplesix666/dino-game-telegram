@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css?v=40" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.14.8</span>
+  <span class="app-version" aria-label="Версия приложения">v0.14.9</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -202,9 +202,9 @@
               <h3>РЕЖИМ РАЗРАБОТЧИКА</h3>
               <p class="eyebrow">ВИД ВЫБОРА ЛОКАЦИЙ</p>
               <div id="locationViewButtons" class="location-view-switch" role="group" aria-label="Вид выбора локаций">
-                <button type="button" data-location-view="legacy" aria-pressed="true">ЛЕГАСИ</button>
+                <button type="button" data-location-view="legacy" aria-pressed="false">ЛЕГАСИ</button>
                 <button type="button" data-location-view="new" aria-pressed="false">НОВАЯ</button>
-                <button type="button" data-location-view="third" aria-pressed="false">ВАРИАНТ 3</button>
+                <button type="button" data-location-view="third" aria-pressed="true">ВАРИАНТ 3</button>
               </div>
               <p class="eyebrow dev-run-title">ТЕСТОВЫЙ ЗАБЕГ</p>
               <p>Быстро запусти игру с начала нужной локации. Рекорд не сохраняется.</p>
@@ -261,6 +261,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=57"></script>
+  <script src="game.js?v=58"></script>
 </body>
 </html>

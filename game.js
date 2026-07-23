@@ -75,7 +75,7 @@
   let spawnTimer = 0, nextSpawn = 1.25, coinTimer = 0, nextCoin = 1.8, platformTimer = 0, nextPlatform = 6, animTime = 0, milestone = 0, coinCount = 0;
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
   const savedLocationView = localStorage.getItem('dino-location-view');
-  let locationView = ['legacy', 'new', 'third'].includes(savedLocationView) ? savedLocationView : 'legacy';
+  let locationView = ['legacy', 'new', 'third'].includes(savedLocationView) ? savedLocationView : 'third';
   let thirdViewedLocationIndex = null;
   let audio = null;
   let menuMusicTimer = null, menuMusicStep = 0, gameMusicTimer = null, gameMusicStep = 0, activeMenuSection = 'main';
