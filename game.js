@@ -84,14 +84,14 @@
   const SKINS = [
     { id: 'classic', name: 'КЛАССИЧЕСКИЙ', price: 0, color: '#07977e', accent: '#52c66d', image: 'assets/skins/classic.jpg', gameSprites: ['assets/game-skins/classic-run-4.png', 'assets/game-skins/classic-run-8.png'] },
     { id: 'desert', name: 'ПУСТЫННЫЙ', price: 0, color: '#b87529', accent: '#e1a54e', image: 'assets/skins/desert.jpg', gameSprites: ['assets/game-skins/desert.png', 'assets/game-skins/desert-run-2.png'] },
-    { id: 'ice', name: 'ЛЕДЯНОЙ', price: 0, color: '#54cbe5', accent: '#d9f8ff', image: 'assets/skins/ice.jpg' },
-    { id: 'fire', name: 'ОГНЕННЫЙ', price: 0, color: '#302e34', accent: '#ff5a19', image: 'assets/skins/fire.jpg' },
-    { id: 'jungle', name: 'ДЖУНГЛЕВЫЙ', price: 0, color: '#4b9d2f', accent: '#a9d530', image: 'assets/skins/jungle.jpg' },
-    { id: 'twilight', name: 'СУМЕРЕЧНЫЙ', price: 0, color: '#433278', accent: '#bd4cff', image: 'assets/skins/twilight.jpg' },
-    { id: 'gold', name: 'ЗОЛОТОЙ', price: 0, color: '#e8ad19', accent: '#fff06a', image: 'assets/skins/skeleton.jpg' },
-    { id: 'skeleton', name: 'СКЕЛЕТ', price: 0, color: '#d8ccb0', accent: '#493f38', image: 'assets/skins/gold.jpg' },
-    { id: 'rainbow', name: 'РАДУЖНЫЙ', price: 0, color: '#e25445', accent: '#ffcf3d', image: 'assets/skins/rainbow.jpg' },
-    { id: 'cosmic', name: 'КОСМИЧЕСКИЙ', price: 0, color: '#172b66', accent: '#24e6ff', image: 'assets/skins/cosmic.jpg' }
+    { id: 'ice', name: 'ЛЕДЯНОЙ', price: 0, color: '#54cbe5', accent: '#d9f8ff', image: 'assets/skins/ice-3d.png' },
+    { id: 'fire', name: 'ОГНЕННЫЙ', price: 0, color: '#302e34', accent: '#ff5a19', image: 'assets/skins/fire-3d.png' },
+    { id: 'jungle', name: 'ДЖУНГЛЕВЫЙ', price: 0, color: '#4b9d2f', accent: '#a9d530', image: 'assets/skins/jungle-3d.png' },
+    { id: 'twilight', name: 'СУМЕРЕЧНЫЙ', price: 0, color: '#433278', accent: '#bd4cff', image: 'assets/skins/twilight-3d.png' },
+    { id: 'gold', name: 'ЗОЛОТОЙ', price: 0, color: '#e8ad19', accent: '#fff06a', image: 'assets/skins/gold-3d.png' },
+    { id: 'skeleton', name: 'СКЕЛЕТ', price: 0, color: '#d8ccb0', accent: '#493f38', image: 'assets/skins/skeleton-3d.png' },
+    { id: 'rainbow', name: 'РАДУЖНЫЙ', price: 0, color: '#e25445', accent: '#ffcf3d', image: 'assets/skins/rainbow-3d.png' },
+    { id: 'cosmic', name: 'КОСМИЧЕСКИЙ', price: 0, color: '#172b66', accent: '#24e6ff', image: 'assets/skins/cosmic-3d.png' }
   ];
   const skinSprites = new Map(SKINS.filter(skin => skin.gameSprites).map(skin => {
     const images = skin.gameSprites.map(source => {
