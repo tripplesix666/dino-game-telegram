@@ -446,10 +446,10 @@ body.location-view-new .new-location-view { display: block; }
 .third-theme-meteor { --third-bg: radial-gradient(circle at 65% 30%, #ff8035, transparent 9%), linear-gradient(145deg, #592749, #160e25); }
 .third-theme-ice { --third-bg: linear-gradient(145deg, #a7eef4, #255789); }
 .third-theme-scorched { --third-bg: radial-gradient(circle at 68% 38%, #ff5922, transparent 20%), linear-gradient(145deg, #79331f, #1d0e13); }
-.third-island-layer { position: absolute; z-index: 3; right: 0; bottom: 34%; left: 0; display: none; height: 38%; background: url("assets/location-map/desert-forest-island.png") left center / 180% auto no-repeat; pointer-events: none; }
+.third-island-layer { position: absolute; z-index: 3; inset: 0; display: none; background: url("assets/location-map/desert-forest-ground.png") center / 100% 100% no-repeat; pointer-events: none; }
 .third-theme-desert .third-island-layer { display: block; }
 .third-map-clouds { position: absolute; z-index: 4; top: 36%; right: 0; bottom: calc(41% + 10px); left: 0; display: none; overflow: hidden; pointer-events: none; }
-.third-theme-desert .third-map-clouds { display: block; }
+.third-theme-desert .third-map-clouds { display: none; }
 .third-map-clouds i { position: absolute; left: -18%; display: block; width: 56px; height: 30px; background: var(--map-cloud) center / contain no-repeat; filter: drop-shadow(0 4px 4px rgba(54,113,137,.18)); opacity: .88; animation: third-cloud-drift var(--cloud-time) linear infinite; animation-delay: var(--cloud-delay); }
 .third-map-clouds i:nth-child(1) { --map-cloud: url("assets/clouds/cloud-1.png"); --cloud-time: 24s; --cloud-delay: -17s; top: 2%; width: 54px; }
 .third-map-clouds i:nth-child(2) { --map-cloud: url("assets/clouds/cloud-3.png"); --cloud-time: 31s; --cloud-delay: -6s; top: 17%; width: 43px; opacity: .72; }
