@@ -474,14 +474,14 @@ body.location-view-new .new-location-view { display: block; }
 .third-location-fog::after { content: ""; position: absolute; inset: -20% -55%; background-image: url("assets/clouds/cloud-1.png"), url("assets/clouds/cloud-3.png"), url("assets/clouds/cloud-5.png"), url("assets/clouds/cloud-7.png"), url("assets/clouds/cloud-2.png"); background-position: 5% 12%, 31% 46%, 57% 8%, 78% 65%, 96% 28%; background-repeat: repeat-x; background-size: 56px auto, 43px auto, 66px auto, 47px auto, 53px auto; filter: drop-shadow(0 5px 6px rgba(83,137,158,.2)); opacity: .93; animation: third-fog-clouds 38s linear infinite; }
 .third-location-fog::after { inset: 8% -65% -24%; background-position: 15% 66%, 40% 18%, 66% 74%, 87% 24%, 100% 78%; background-size: 68px auto, 49px auto, 58px auto, 42px auto, 64px auto; opacity: .82; animation-duration: 52s; animation-direction: reverse; }
 @keyframes third-fog-clouds { to { transform: translateX(20%); } }
-.third-route { position: absolute; z-index: 7; right: 7%; bottom: 41%; left: 7%; height: 8px; border-radius: 99px; background: rgba(8,22,28,.58); box-shadow: 0 0 0 3px rgba(255,255,255,.16); }
+.third-route { position: absolute; z-index: 7; right: 7%; bottom: 36.6%; left: 7%; height: 8px; border-radius: 99px; background: rgba(8,22,28,.58); box-shadow: 0 0 0 3px rgba(255,255,255,.16); }
 .third-route span { display: block; width: var(--third-progress); height: 100%; border-radius: inherit; background: linear-gradient(90deg, #ffd259, #55e66b); box-shadow: 0 0 12px rgba(88,225,105,.72); }
 .third-route small { position: absolute; top: 20px; color: rgba(255,255,255,.82); font-size: 10px; font-weight: 900; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,.8); }
 .third-route small:first-of-type { left: 0; transform: translateX(-25%); }
 .third-route small:last-of-type { right: 0; transform: translateX(25%); }
 .third-dino-marker { position: absolute; z-index: 8; bottom: calc(36.6% + 2px); left: 7%; display: grid; justify-items: center; width: 120px; transform: translateX(-50%); }
 .third-dino-marker img { display: block; width: 140px; height: 105px; object-fit: contain; image-rendering: auto; filter: drop-shadow(0 7px 5px rgba(0,0,0,.48)); }
-.third-record-flag { position: absolute; z-index: 9; bottom: calc(41% + 4px); left: var(--third-marker); width: 3px; height: 62px; background: #f3ead2; box-shadow: 0 2px 6px rgba(0,0,0,.55); transform: translateX(-50%); transition: left .55s ease; }
+.third-record-flag { position: absolute; z-index: 9; bottom: calc(36.6% + 4px); left: var(--third-marker); width: 3px; height: 62px; background: #f3ead2; box-shadow: 0 2px 6px rgba(0,0,0,.55); transform: translateX(-50%); transition: left .55s ease; }
 .third-record-flag::after { content: ""; position: absolute; bottom: -5px; left: 50%; width: 13px; height: 13px; border: 3px solid white; border-radius: 50%; background: #28c979; transform: translateX(-50%); }
 .third-record-flag strong { position: absolute; top: 0; left: 3px; min-width: 78px; padding: 8px 12px 8px 10px; background: #ef644d; color: white; clip-path: polygon(0 0, 100% 0, 88% 50%, 100% 100%, 0 100%); font-size: 10px; line-height: 1; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 2px 4px rgba(0,0,0,.4); box-shadow: 0 4px 10px rgba(0,0,0,.38); }
 .third-location-stage.future .third-record-flag { display: none; }
