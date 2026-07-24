@@ -449,21 +449,21 @@ body.location-view-new .new-location-view { display: block; }
 .third-theme-scorched { --third-bg: radial-gradient(circle at 68% 38%, #ff5922, transparent 20%), linear-gradient(145deg, #79331f, #1d0e13); }
 .third-island-layer { position: absolute; z-index: 3; inset: 0; display: none; background: url("assets/location-map/desert-forest-ground.png") center / 100% 100% no-repeat; pointer-events: none; }
 .third-theme-desert .third-island-layer { display: block; }
-.third-map-clouds { position: absolute; z-index: 4; top: 24%; right: 0; left: 0; display: none; height: 27%; overflow: hidden; pointer-events: none; }
+.third-map-clouds { position: absolute; z-index: 4; top: 33%; right: 0; left: 0; display: none; height: 17%; overflow: hidden; pointer-events: none; }
 .third-theme-desert .third-map-clouds { display: block; }
-.third-map-clouds i { position: absolute; left: -32%; display: block; width: 132px; height: 72px; background-position: center; background-repeat: no-repeat; background-size: contain; filter: brightness(0) invert(1); image-rendering: pixelated; opacity: 1; animation: third-cloud-drift var(--cloud-time) linear infinite; animation-delay: var(--cloud-delay); }
-.third-map-clouds i:nth-child(1)  { --cloud-time: 38s; --cloud-delay: -31s; top: 0%;  background-image: url("assets/location-map/clouds/cloud-1.png?v=2"); }
-.third-map-clouds i:nth-child(2)  { --cloud-time: 47s; --cloud-delay: -12s; top: 37%; background-image: url("assets/location-map/clouds/cloud-2.png?v=2"); scale: .78; }
-.third-map-clouds i:nth-child(3)  { --cloud-time: 42s; --cloud-delay: -23s; top: 64%; background-image: url("assets/location-map/clouds/cloud-3.png?v=2"); scale: .62; }
-.third-map-clouds i:nth-child(4)  { --cloud-time: 53s; --cloud-delay: -44s; top: 16%; background-image: url("assets/location-map/clouds/cloud-4.png?v=2"); scale: .86; }
-.third-map-clouds i:nth-child(5)  { --cloud-time: 45s; --cloud-delay: -37s; top: 52%; background-image: url("assets/location-map/clouds/cloud-5.png?v=2"); scale: .7; }
-.third-map-clouds i:nth-child(6)  { --cloud-time: 50s; --cloud-delay: -5s;  top: 5%;  background-image: url("assets/location-map/clouds/cloud-6.png?v=2"); scale: .72; }
-.third-map-clouds i:nth-child(7)  { --cloud-time: 40s; --cloud-delay: -17s; top: 70%; background-image: url("assets/location-map/clouds/cloud-7.png?v=2"); scale: .58; }
-.third-map-clouds i:nth-child(8)  { --cloud-time: 56s; --cloud-delay: -28s; top: 31%; background-image: url("assets/location-map/clouds/cloud-8.png?v=2"); scale: .8; }
-.third-map-clouds i:nth-child(9)  { --cloud-time: 44s; --cloud-delay: -8s;  top: 10%; background-image: url("assets/location-map/clouds/cloud-9.png?v=2"); scale: .68; }
-.third-map-clouds i:nth-child(10) { --cloud-time: 52s; --cloud-delay: -39s; top: 58%; background-image: url("assets/location-map/clouds/cloud-10.png?v=2"); scale: .64; }
-.third-map-clouds i:nth-child(11) { --cloud-time: 48s; --cloud-delay: -20s; top: 25%; background-image: url("assets/location-map/clouds/cloud-11.png?v=2"); scale: .82; }
-.third-map-clouds i:nth-child(12) { --cloud-time: 58s; --cloud-delay: -50s; top: 72%; background-image: url("assets/location-map/clouds/cloud-12.png?v=2"); scale: .55; }
+.third-map-clouds i { position: absolute; left: -32%; display: block; width: 132px; height: 72px; background-position: center; background-repeat: no-repeat; background-size: contain; filter: brightness(0) invert(1); image-rendering: pixelated; opacity: 1; transform-origin: center bottom; animation: third-cloud-drift var(--cloud-time) linear infinite; animation-delay: var(--cloud-delay); }
+.third-map-clouds i:nth-child(1)  { --cloud-time: 28s; --cloud-delay: -21s; top: 56%; background-image: url("assets/location-map/clouds/cloud-1.png?v=2"); scale: 1.05; }
+.third-map-clouds i:nth-child(2)  { --cloud-time: 68s; --cloud-delay: -42s; top: 5%;  background-image: url("assets/location-map/clouds/cloud-2.png?v=2"); scale: .46; }
+.third-map-clouds i:nth-child(3)  { --cloud-time: 46s; --cloud-delay: -33s; top: 31%; background-image: url("assets/location-map/clouds/cloud-3.png?v=2"); scale: .72; }
+.third-map-clouds i:nth-child(4)  { --cloud-time: 64s; --cloud-delay: -14s; top: 11%; background-image: url("assets/location-map/clouds/cloud-4.png?v=2"); scale: .5; }
+.third-map-clouds i:nth-child(5)  { --cloud-time: 31s; --cloud-delay: -27s; top: 59%; background-image: url("assets/location-map/clouds/cloud-5.png?v=2"); scale: .95; }
+.third-map-clouds i:nth-child(6)  { --cloud-time: 50s; --cloud-delay: -8s;  top: 27%; background-image: url("assets/location-map/clouds/cloud-6.png?v=2"); scale: .68; }
+.third-map-clouds i:nth-child(7)  { --cloud-time: 72s; --cloud-delay: -57s; top: 0%;  background-image: url("assets/location-map/clouds/cloud-7.png?v=2"); scale: .42; }
+.third-map-clouds i:nth-child(8)  { --cloud-time: 27s; --cloud-delay: -12s; top: 54%; background-image: url("assets/location-map/clouds/cloud-8.png?v=2"); scale: 1.1; }
+.third-map-clouds i:nth-child(9)  { --cloud-time: 44s; --cloud-delay: -37s; top: 35%; background-image: url("assets/location-map/clouds/cloud-9.png?v=2"); scale: .75; }
+.third-map-clouds i:nth-child(10) { --cloud-time: 66s; --cloud-delay: -28s; top: 8%;  background-image: url("assets/location-map/clouds/cloud-10.png?v=2"); scale: .48; }
+.third-map-clouds i:nth-child(11) { --cloud-time: 30s; --cloud-delay: -4s;  top: 61%; background-image: url("assets/location-map/clouds/cloud-11.png?v=2"); scale: 1; }
+.third-map-clouds i:nth-child(12) { --cloud-time: 52s; --cloud-delay: -45s; top: 29%; background-image: url("assets/location-map/clouds/cloud-12.png?v=2"); scale: .66; }
 @keyframes third-cloud-drift { to { left: 112%; } }
 .third-stage-heading { position: absolute; z-index: 8; top: max(20px, env(safe-area-inset-top)); right: max(20px, env(safe-area-inset-right)); padding: 0; text-align: right; text-shadow: 0 3px 10px rgba(0,0,0,.7); }
 .third-stage-heading small { color: #ff765d; font-size: 10px; font-weight: 950; letter-spacing: 2px; }
