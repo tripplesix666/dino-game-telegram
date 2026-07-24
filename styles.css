@@ -485,7 +485,7 @@ body.location-view-new .new-location-view { display: block; }
 .third-record-flag::after { content: ""; position: absolute; bottom: -5px; left: 50%; width: 13px; height: 13px; border: 3px solid white; border-radius: 50%; background: #28c979; transform: translateX(-50%); }
 .third-record-flag strong { position: absolute; top: 0; left: 3px; min-width: 78px; padding: 8px 12px 8px 10px; background: #ef644d; color: white; clip-path: polygon(0 0, 100% 0, 88% 50%, 100% 100%, 0 100%); font-size: 10px; line-height: 1; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 2px 4px rgba(0,0,0,.4); box-shadow: 0 4px 10px rgba(0,0,0,.38); }
 .third-location-stage.future .third-record-flag { display: none; }
-.third-stage-footer { position: absolute; z-index: 8; right: 20px; bottom: 20px; left: 20px; display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 18px; border: 1px solid rgba(255,255,255,.22); border-radius: 20px; background: rgba(4,17,27,.88); box-shadow: 0 10px 28px rgba(0,0,0,.35); }
+.third-stage-footer { position: absolute; z-index: 8; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: 1fr auto; align-content: end; align-items: center; min-height: 190px; padding: 78px 20px max(24px, env(safe-area-inset-bottom)); border: 0; border-radius: 0; background: linear-gradient(180deg, transparent 0%, rgba(4,17,27,.48) 27%, rgba(4,17,27,.9) 55%, #04111b 76%); box-shadow: none; }
 .third-stage-footer p { margin: 0; color: #9fb1bd; font-size: 9px; font-weight: 850; letter-spacing: 1.5px; text-align: left; }
 .third-stage-footer strong { grid-column: 1; color: white; font-size: 21px; text-align: left; }
 .third-stage-footer button { grid-column: 2; grid-row: 1 / span 2; min-width: 126px; min-height: 52px; border: 0; border-radius: 15px; background: linear-gradient(#6de64b, #1cb63c); color: white; font: 950 15px/1 system-ui, sans-serif; box-shadow: inset 0 2px 0 rgba(255,255,255,.25), 0 6px 16px rgba(0,0,0,.35); }
@@ -564,7 +564,7 @@ body.locations-open .third-stage-heading {
 @media (max-width: 520px) {
   .third-location-stage { min-height: min(570px, calc(100vh - 205px)); }
   .third-stage-heading { padding: 22px; }
-  .third-stage-footer { right: 12px; bottom: 12px; left: 12px; padding: 14px; }
+  .third-stage-footer { right: 0; bottom: 0; left: 0; min-height: 170px; padding: 68px 14px max(18px, env(safe-area-inset-bottom)); }
   .third-stage-footer button { min-width: 105px; }
   .third-dino-marker { width: 100px; }
   .third-dino-marker img { width: 115px; height: 88px; }
