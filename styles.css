@@ -442,13 +442,14 @@ body.location-view-new .new-location-view { display: block; }
 .third-location-nav.hidden { display: none; }
 .third-theme-desert { --third-bg: linear-gradient(180deg, #1eaff7 0%, #69d3ff 58%, #a9ebff 100%); }
 .third-theme-desert::before { background: linear-gradient(180deg, rgba(255,255,255,.08), transparent 55%, rgba(7,68,103,.16) 100%); }
-.third-theme-forest { --third-bg: linear-gradient(145deg, #4f8053, #10291e); }
+.third-theme-forest { --third-bg: linear-gradient(180deg, #45baf3 0%, #9de4fb 58%, #d8f5fa 100%); }
 .third-theme-jungle { --third-bg: radial-gradient(circle at 70% 28%, #72d45f, transparent 25%), linear-gradient(145deg, #17775d, #06271e); }
 .third-theme-meteor { --third-bg: radial-gradient(circle at 65% 30%, #ff8035, transparent 9%), linear-gradient(145deg, #592749, #160e25); }
 .third-theme-ice { --third-bg: linear-gradient(145deg, #a7eef4, #255789); }
 .third-theme-scorched { --third-bg: radial-gradient(circle at 68% 38%, #ff5922, transparent 20%), linear-gradient(145deg, #79331f, #1d0e13); }
 .third-island-layer { position: absolute; z-index: 3; inset: 0; display: none; background: url("assets/location-map/desert-forest-ground.png") center / 100% 100% no-repeat; pointer-events: none; }
 .third-theme-desert .third-island-layer { display: block; }
+.third-theme-forest .third-island-layer { display: block; background-image: url("assets/location-map/forest-jungle-ground.png?v=1"); }
 .third-map-clouds { position: absolute; z-index: 4; top: 33%; right: 0; left: 0; display: none; height: 17%; overflow: hidden; pointer-events: none; }
 .third-theme-desert .third-map-clouds { display: block; }
 .third-map-clouds i { position: absolute; left: -32%; display: block; width: 132px; height: 72px; background-position: center; background-repeat: no-repeat; background-size: contain; image-rendering: pixelated; opacity: 1; transform-origin: center bottom; animation: third-cloud-drift var(--cloud-time) linear infinite; animation-delay: var(--cloud-delay); }
@@ -470,10 +471,11 @@ body.location-view-new .new-location-view { display: block; }
 .third-stage-heading h3 { max-width: 100%; margin: 8px 0 4px auto; font-size: clamp(30px, 7vw, 48px); line-height: .96; }
 .third-stage-heading span { color: #d3e3e9; font-size: 12px; font-weight: 850; letter-spacing: 1px; }
 .third-location-fog { display: none; }
+.third-location-stage.future .third-location-fog { position: absolute; z-index: 6; top: 31%; right: -16%; bottom: 29%; left: -16%; display: block; overflow: hidden; pointer-events: none; mask-image: linear-gradient(180deg, transparent 0%, #000 17%, #000 82%, transparent 100%); }
 .third-location-fog::before,
-.third-location-fog::after { content: ""; position: absolute; inset: -20% -55%; background-image: url("assets/clouds/cloud-1.png"), url("assets/clouds/cloud-3.png"), url("assets/clouds/cloud-5.png"), url("assets/clouds/cloud-7.png"), url("assets/clouds/cloud-2.png"); background-position: 5% 12%, 31% 46%, 57% 8%, 78% 65%, 96% 28%; background-repeat: repeat-x; background-size: 56px auto, 43px auto, 66px auto, 47px auto, 53px auto; filter: drop-shadow(0 5px 6px rgba(83,137,158,.2)); opacity: .93; animation: third-fog-clouds 38s linear infinite; }
-.third-location-fog::after { inset: 8% -65% -24%; background-position: 15% 66%, 40% 18%, 66% 74%, 87% 24%, 100% 78%; background-size: 68px auto, 49px auto, 58px auto, 42px auto, 64px auto; opacity: .82; animation-duration: 52s; animation-direction: reverse; }
-@keyframes third-fog-clouds { to { transform: translateX(20%); } }
+.third-location-fog::after { content: ""; position: absolute; inset: -18% -30%; background: radial-gradient(ellipse at 8% 47%, rgba(244,252,250,.98) 0 8%, transparent 23%), radial-gradient(ellipse at 28% 63%, rgba(226,244,241,.94) 0 10%, transparent 27%), radial-gradient(ellipse at 48% 37%, rgba(248,253,251,.96) 0 9%, transparent 25%), radial-gradient(ellipse at 69% 60%, rgba(218,240,237,.95) 0 11%, transparent 28%), radial-gradient(ellipse at 90% 42%, rgba(247,253,252,.98) 0 9%, transparent 25%); background-size: 44% 76%, 51% 82%, 47% 72%, 55% 86%, 43% 78%; filter: blur(7px); opacity: .96; animation: third-fog-clouds 18s ease-in-out infinite alternate; }
+.third-location-fog::after { inset: -6% -38%; background-position: 12% 18%, 33% 65%, 57% 28%, 78% 72%, 98% 37%; background-size: 38% 68%, 48% 75%, 42% 66%, 50% 78%, 40% 70%; filter: blur(11px); opacity: .72; animation-duration: 25s; animation-direction: alternate-reverse; }
+@keyframes third-fog-clouds { from { transform: translate3d(-4%, 0, 0) scale(1.02); } to { transform: translate3d(6%, -2%, 0) scale(1.08); } }
 .third-route { position: absolute; z-index: 7; right: 7%; bottom: 36.6%; left: 7%; height: 8px; border: 1px solid rgba(0,0,0,.92); border-radius: 99px; background: rgba(8,22,28,.68); box-shadow: 0 0 0 1px rgba(0,0,0,.36), 0 2px 5px rgba(0,0,0,.35); }
 .third-route span { display: block; width: var(--third-progress); height: 100%; border-radius: inherit; background: linear-gradient(90deg, #ffd259, #55e66b); box-shadow: 0 0 12px rgba(88,225,105,.72); }
 .third-route small { position: absolute; top: 20px; color: rgba(255,255,255,.82); font-size: 10px; font-weight: 900; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,.8); }
