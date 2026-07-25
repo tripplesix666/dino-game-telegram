@@ -451,7 +451,8 @@ body.location-view-new .new-location-view { display: block; }
 .third-theme-desert .third-island-layer { display: block; }
 .third-theme-forest .third-island-layer { display: block; background-image: url("assets/location-map/forest-jungle-ground.png?v=1"); }
 .third-map-clouds { position: absolute; z-index: 4; top: 33%; right: 0; left: 0; display: none; height: 17%; overflow: hidden; pointer-events: none; }
-.third-theme-desert .third-map-clouds { display: block; }
+.third-theme-desert .third-map-clouds,
+.third-theme-forest .third-map-clouds { display: block; }
 .third-map-clouds i { position: absolute; left: -32%; display: block; width: 132px; height: 72px; background-position: center; background-repeat: no-repeat; background-size: contain; image-rendering: pixelated; opacity: 1; transform-origin: center bottom; animation: third-cloud-drift var(--cloud-time) linear infinite; animation-delay: var(--cloud-delay); }
 .third-map-clouds i:nth-child(1)  { --cloud-time: 28s; --cloud-delay: -21s; top: 56%; background-image: url("assets/location-map/clouds/cloud-1.png?v=3"); scale: 1.05; }
 .third-map-clouds i:nth-child(2)  { --cloud-time: 68s; --cloud-delay: -42s; top: 5%;  background-image: url("assets/location-map/clouds/cloud-2.png?v=3"); scale: .46; }
@@ -471,6 +472,7 @@ body.location-view-new .new-location-view { display: block; }
 .third-stage-heading h3 { max-width: 100%; margin: 8px 0 4px auto; font-size: clamp(30px, 7vw, 48px); line-height: .96; }
 .third-stage-heading span { color: #d3e3e9; font-size: 12px; font-weight: 850; letter-spacing: 1px; }
 .third-location-fog { display: none; }
+.third-theme-desert:not(.future) .third-location-fog { position: absolute; z-index: 6; top: 31%; right: -16%; bottom: 29%; left: var(--third-marker); display: block; overflow: hidden; pointer-events: none; mask-image: linear-gradient(180deg, transparent 0%, #000 17%, #000 82%, transparent 100%); }
 .third-location-stage.future .third-location-fog { position: absolute; z-index: 6; top: 31%; right: -16%; bottom: 29%; left: -16%; display: block; overflow: hidden; pointer-events: none; mask-image: linear-gradient(180deg, transparent 0%, #000 17%, #000 82%, transparent 100%); }
 .third-location-fog::before,
 .third-location-fog::after { content: ""; position: absolute; inset: -18% -30%; background: radial-gradient(ellipse at 8% 47%, rgba(244,252,250,.98) 0 8%, transparent 23%), radial-gradient(ellipse at 28% 63%, rgba(226,244,241,.94) 0 10%, transparent 27%), radial-gradient(ellipse at 48% 37%, rgba(248,253,251,.96) 0 9%, transparent 25%), radial-gradient(ellipse at 69% 60%, rgba(218,240,237,.95) 0 11%, transparent 28%), radial-gradient(ellipse at 90% 42%, rgba(247,253,252,.98) 0 9%, transparent 25%); background-size: 44% 76%, 51% 82%, 47% 72%, 55% 86%, 43% 78%; filter: blur(7px); opacity: .96; animation: third-fog-clouds 18s ease-in-out infinite alternate; }
@@ -483,6 +485,7 @@ body.location-view-new .new-location-view { display: block; }
 .third-route small:last-of-type { right: 0; transform: translateX(25%); }
 .third-dino-marker { position: absolute; z-index: 8; bottom: calc(36.6% + 2px); left: 7%; display: grid; justify-items: center; width: 120px; transform: translateX(-50%); }
 .third-dino-marker img { display: block; width: 140px; height: 105px; object-fit: contain; image-rendering: auto; filter: drop-shadow(0 7px 5px rgba(0,0,0,.48)); }
+.third-location-stage.future .third-dino-marker { display: none; }
 .third-record-flag { position: absolute; z-index: 9; bottom: calc(36.6% + 4px); left: var(--third-marker); width: 3px; height: 62px; background: #f3ead2; box-shadow: 0 2px 6px rgba(0,0,0,.55); transform: translateX(-50%); transition: left .55s ease; }
 .third-record-flag::after { content: ""; position: absolute; bottom: -5px; left: 50%; width: 13px; height: 13px; border: 3px solid white; border-radius: 50%; background: #28c979; transform: translateX(-50%); }
 .third-record-flag strong { position: absolute; top: 0; left: 3px; min-width: 78px; padding: 8px 12px 8px 10px; background: #ef644d; color: white; clip-path: polygon(0 0, 100% 0, 88% 50%, 100% 100%, 0 100%); font-size: 10px; line-height: 1; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 2px 4px rgba(0,0,0,.4); box-shadow: 0 4px 10px rgba(0,0,0,.38); }
