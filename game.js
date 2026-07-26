@@ -476,7 +476,7 @@
   }
 
   function spawnObstacle() {
-    const birdAllowed = score > 350 && Math.random() < .28;
+    const birdAllowed = score >= LOCATIONS[1].from && Math.random() < .28;
     if (birdAllowed) {
       const levels = [groundY - 54, groundY - 88, groundY - 122];
       obstacles.push({ type: 'bird', x: width + 30, y: levels[Math.floor(Math.random() * levels.length)], w: 66, h: 48, frame: 0 });
@@ -562,9 +562,11 @@
         coinTimer = 0; spawnCoins(); nextCoin = 1.8 + Math.random() * 2.1;
       }
 
-      platformTimer += dt;
-      if (platformTimer >= nextPlatform) {
-        platformTimer = 0; spawnPlatformRoute(); nextPlatform = 9 + Math.random() * 5;
+      if (score >= LOCATIONS[1].from) {
+        platformTimer += dt;
+        if (platformTimer >= nextPlatform) {
+          platformTimer = 0; spawnPlatformRoute(); nextPlatform = 9 + Math.random() * 5;
+        }
       }
     }
 
