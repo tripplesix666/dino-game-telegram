@@ -270,7 +270,7 @@
     thirdExplored.textContent = `${Math.round(locationProgress * 100)}%`;
     thirdLocationPlay.dataset.locationStart = String(viewedLocation.from);
     thirdLocationPlay.disabled = viewedLocation.from !== 0;
-    thirdLocationPlay.textContent = `НАЧАТЬ С ${viewedLocation.from} М`;
+    thirdLocationPlay.textContent = 'ИГРАТЬ';
     thirdLocationPrev.classList.toggle('hidden', thirdViewedLocationIndex === 0);
     thirdLocationNext.classList.toggle('hidden', thirdViewedLocationIndex === LOCATIONS.length - 1);
   }
