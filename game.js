@@ -118,6 +118,9 @@
   const groundTexture = new Image();
   groundTexture.src = 'assets/desert-ground.png';
   groundTexture.addEventListener('load', draw);
+  const forestGroundTexture = new Image();
+  forestGroundTexture.src = 'assets/forest-ground.png';
+  forestGroundTexture.addEventListener('load', draw);
   const daySkyTexture = new Image();
   daySkyTexture.src = 'assets/desert-sky-day.png';
   daySkyTexture.addEventListener('load', draw);
@@ -842,15 +845,36 @@
     ctx.restore();
   }
 
+  function forestLocationAmount() {
+    if (score < 2850 || score >= 6000) return 0;
+    if (score < 3000) return smoothstep((score - 2850) / 150);
+    if (score > 5850) return 1 - smoothstep((score - 5850) / 150);
+    return 1;
+  }
+
   function drawSkyBackground() {
     drawTiledSkyTexture(daySkyTexture, 1.4);
-    let forestAmount = 0;
-    if (score >= 2850 && score < 6000) {
-      if (score < 3000) forestAmount = smoothstep((score - 2850) / 150);
-      else if (score > 5850) forestAmount = 1 - smoothstep((score - 5850) / 150);
-      else forestAmount = 1;
+    drawTiledSkyTexture(forestSkyTexture, .62, forestLocationAmount());
+  }
+
+  function drawTiledGroundTexture(texture, sourceTop, surfaceY, alpha = 1) {
+    if (!texture.complete || !texture.naturalWidth || alpha <= 0) return false;
+    const groundHeight = height - groundY;
+    const sourceGroundHeight = texture.naturalHeight - surfaceY;
+    const textureScale = groundHeight / sourceGroundHeight;
+    const sourceHeight = texture.naturalHeight - sourceTop;
+    const tileWidth = texture.naturalWidth * textureScale;
+    const destinationY = groundY - (surfaceY - sourceTop) * textureScale;
+    const destinationHeight = sourceHeight * textureScale;
+    const groundOffset = running ? (elapsed * speed) % tileWidth : 0;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.imageSmoothingEnabled = true;
+    for (let x = -groundOffset; x < width; x += tileWidth) {
+      ctx.drawImage(texture, 0, sourceTop, texture.naturalWidth, sourceHeight, x, destinationY, tileWidth + 1, destinationHeight);
     }
-    drawTiledSkyTexture(forestSkyTexture, .62, forestAmount);
+    ctx.restore();
+    return true;
   }
 
   function drawCelestialBody() {
@@ -893,15 +917,8 @@
     drawCelestialBody();
     for (const c of clouds) drawCloud(c);
     const groundHeight = height - groundY;
-    if (groundTexture.complete && groundTexture.naturalWidth) {
-      const sourceY = 500;
-      const sourceHeight = groundTexture.naturalHeight - sourceY;
-      const tileWidth = groundTexture.naturalWidth * groundHeight / sourceHeight;
-      const groundOffset = running ? (elapsed * speed) % tileWidth : 0;
-      ctx.imageSmoothingEnabled = true;
-      for (let x = -groundOffset; x < width; x += tileWidth) {
-        ctx.drawImage(groundTexture, 0, sourceY, groundTexture.naturalWidth, sourceHeight, x, groundY, tileWidth + 1, groundHeight);
-      }
+    if (drawTiledGroundTexture(groundTexture, 500, 500)) {
+      drawTiledGroundTexture(forestGroundTexture, 535, 594, forestLocationAmount());
       if (nightAmount > 0) {
         ctx.fillStyle = `rgba(10, 21, 38, ${nightAmount * .58})`;
         ctx.fillRect(0, groundY, width, groundHeight);
