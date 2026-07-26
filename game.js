@@ -62,6 +62,9 @@
   const C = { ink: '#2f414b', muted: '#83a6b8', cloud: '#ffffff', accent: '#ee5d43', paper: '#dff3ff', platform: '#5f8fa8', platformTop: '#315b70' };
   const DINO_STAND_HEIGHT = 60;
   const DINO_DUCK_HEIGHT = 36;
+  const LOCATION_LENGTH = 3000;
+  const BASE_SPEED = 430;
+  const MAX_SPEED = 890;
   const LOCATIONS = [
     { name: 'ПУСТЫНЯ', from: 0, to: 3000, theme: 'desert' },
     { name: 'ЛЕС', from: 3000, to: 6000, theme: 'forest' },
@@ -210,10 +213,15 @@
     setNight(false, true);
   }
 
+  function speedForDistance(distance) {
+    const locationDistance = ((distance % LOCATION_LENGTH) + LOCATION_LENGTH) % LOCATION_LENGTH;
+    return BASE_SPEED + (MAX_SPEED - BASE_SPEED) * (locationDistance / LOCATION_LENGTH);
+  }
+
   function start() {
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     stopMenuMusic(); stopGameMusic();
-    reset(); score = devStartDistance; speed = devObstacleFree ? 890 : Math.min(890, 430 + score * .095);
+    reset(); score = devStartDistance; speed = devObstacleFree ? MAX_SPEED : speedForDistance(score);
     if (!pendingAttemptIsDeveloper) {
       const startedLocation = LOCATIONS.find(location => score >= location.from && score < location.to) || LOCATIONS[0];
       locationAttempts[startedLocation.theme] = Math.max(0, Number(locationAttempts[startedLocation.theme]) || 0) + 1;
@@ -514,7 +522,7 @@
   function update(dt) {
     const distanceDelta = dt * speed * .025;
     elapsed += dt; animTime += dt; score += distanceDelta;
-    speed = devObstacleFree ? 890 : Math.min(890, 430 + score * .095);
+    speed = devObstacleFree ? MAX_SPEED : speedForDistance(score);
     const nightTarget = updateDayNight();
     nightAmount += (nightTarget - nightAmount) * Math.min(1, dt * 2.2);
     const currentMilestone = Math.floor(score / 500);
