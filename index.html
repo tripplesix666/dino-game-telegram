@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=59" />
+  <link rel="stylesheet" href="styles.css?v=60" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.15.21</span>
+  <span class="app-version" aria-label="Версия приложения">v0.15.22</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -105,6 +105,13 @@
                 <span class="location-range">15000–18000 М</span>
                 <span class="location-action">СКОРО</span>
               </button>
+              <div class="location-connector" data-from="15000" data-to="18000" aria-hidden="true"><span><i></i><b></b></span></div>
+              <button class="location-card location-toxic locked" type="button" disabled aria-disabled="true">
+                <span class="location-number">07</span>
+                <span class="location-name">ТОКСИЧНЫЕ БОЛОТА</span>
+                <span class="location-range">18000–21000 М</span>
+                <span class="location-action">СКОРО</span>
+              </button>
               </div>
             </div>
             <div class="new-location-view">
@@ -133,6 +140,10 @@
                 <button class="new-location-card new-theme-scorched locked" type="button" data-from="15000" data-to="18000" disabled aria-disabled="true">
                   <span class="new-location-copy"><small>ЛОКАЦИЯ 06</small><strong>ИСПЕПЕЛЁННАЯ ЗЕМЛЯ</strong><em>15000–18000 М</em></span>
                   <span class="new-location-art new-art-scorched" aria-hidden="true"><b>🔒</b></span>
+                </button>
+                <button class="new-location-card new-theme-toxic locked" type="button" data-from="18000" data-to="21000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 07</small><strong>ТОКСИЧНЫЕ БОЛОТА</strong><em>18000–21000 М</em></span>
+                  <span class="new-location-art new-art-toxic" aria-hidden="true"><b>🔒</b></span>
                 </button>
               </div>
             </div>
@@ -218,6 +229,7 @@
                 <button type="button" data-distance="9000"><strong>МЕТЕОРИТЫ</strong><small>9000 М</small></button>
                 <button type="button" data-distance="12000"><strong>ЛЕДНИКОВЫЙ ПЕРИОД</strong><small>12000 М</small></button>
                 <button type="button" data-distance="15000"><strong>ИСПЕПЕЛЁННАЯ ЗЕМЛЯ</strong><small>15000 М</small></button>
+                <button type="button" data-distance="18000"><strong>ТОКСИЧНЫЕ БОЛОТА</strong><small>18000 М</small></button>
                 <button type="button" data-obstacle-free>БЕЗ ПРЕГРАД</button>
               </div>
             </div>
@@ -264,6 +276,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=62"></script>
+  <script src="game.js?v=63"></script>
 </body>
 </html>

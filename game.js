@@ -66,7 +66,8 @@
     { name: 'ДЖУНГЛИ', from: 6000, to: 9000, theme: 'jungle' },
     { name: 'МЕТЕОРИТНЫЙ ДОЖДЬ', from: 9000, to: 12000, theme: 'meteor' },
     { name: 'ЛЕДНИКОВЫЙ ПЕРИОД', from: 12000, to: 15000, theme: 'ice' },
-    { name: 'ИСПЕПЕЛЁННАЯ ЗЕМЛЯ', from: 15000, to: 18000, theme: 'scorched' }
+    { name: 'ИСПЕПЕЛЁННАЯ ЗЕМЛЯ', from: 15000, to: 18000, theme: 'scorched' },
+    { name: 'ТОКСИЧНЫЕ БОЛОТА', from: 18000, to: 21000, theme: 'toxic' }
   ];
   let width = 0, height = 0, scale = 1, groundY = 0;
   let running = false, paused = false, gameOver = false, lastTime = 0, elapsed = 0, score = 0, speed = 430;
