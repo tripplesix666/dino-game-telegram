@@ -450,6 +450,9 @@ body.location-view-new .new-location-view { display: block; }
 .third-island-layer { position: absolute; z-index: 3; inset: 0; display: none; background: url("assets/location-map/desert-forest-ground.png") center / 100% 100% no-repeat; pointer-events: none; }
 .third-theme-desert .third-island-layer { display: block; }
 .third-theme-forest .third-island-layer { display: block; background-image: url("assets/location-map/forest-jungle-ground.png?v=1"); }
+.third-theme-jungle .third-island-layer { display: block; background-image: url("assets/location-map/jungle-meteor-ground.png?v=1"); }
+.third-theme-meteor .third-island-layer { display: block; background-image: url("assets/location-map/meteor-ice-ground.png?v=1"); }
+.third-theme-ice .third-island-layer { display: block; background-image: url("assets/location-map/ice-scorched-ground.png?v=1"); }
 .third-map-clouds { position: absolute; z-index: 4; top: 33%; right: 0; left: 0; display: none; height: 17%; overflow: hidden; pointer-events: none; }
 .third-theme-desert .third-map-clouds,
 .third-theme-forest .third-map-clouds { display: block; }
@@ -467,9 +470,9 @@ body.location-view-new .new-location-view { display: block; }
 .third-map-clouds i:nth-child(11) { --cloud-time: 30s; --cloud-delay: -4s;  top: 61%; background-image: url("assets/location-map/clouds/cloud-11.png?v=3"); scale: 1; }
 .third-map-clouds i:nth-child(12) { --cloud-time: 52s; --cloud-delay: -45s; top: 29%; background-image: url("assets/location-map/clouds/cloud-12.png?v=3"); scale: .66; }
 @keyframes third-cloud-drift { to { left: 112%; } }
-.third-stage-heading { position: absolute; z-index: 8; top: max(20px, env(safe-area-inset-top)); right: max(20px, env(safe-area-inset-right)); padding: 0; text-align: right; text-shadow: 0 3px 10px rgba(0,0,0,.7); }
+.third-stage-heading { position: absolute; z-index: 8; top: max(20px, env(safe-area-inset-top)); right: max(20px, env(safe-area-inset-right)); left: max(120px, calc(env(safe-area-inset-left) + 120px)); padding: 0; text-align: right; text-shadow: 0 3px 10px rgba(0,0,0,.7); }
 .third-stage-heading small { color: #ff765d; font-size: 10px; font-weight: 950; letter-spacing: 2px; }
-.third-stage-heading h3 { max-width: 100%; margin: 8px 0 4px auto; font-size: clamp(30px, 7vw, 48px); line-height: .96; }
+.third-stage-heading h3 { max-width: 100%; margin: 8px 0 4px auto; font-size: clamp(30px, 7vw, 48px); line-height: .96; text-wrap: balance; }
 .third-stage-heading span { color: #d3e3e9; font-size: 12px; font-weight: 850; letter-spacing: 1px; }
 .third-location-fog { display: none; }
 .third-theme-desert:not(.future) .third-location-fog { position: absolute; z-index: 6; top: 31%; right: -16%; bottom: 29%; left: var(--third-marker); display: block; overflow: hidden; pointer-events: none; mask-image: linear-gradient(180deg, transparent 0%, #000 17%, #000 82%, transparent 100%); }
