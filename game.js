@@ -562,7 +562,7 @@
         coinTimer = 0; spawnCoins(); nextCoin = 1.8 + Math.random() * 2.1;
       }
 
-      if (score >= LOCATIONS[1].from) {
+      if (score >= LOCATIONS[2].from) {
         platformTimer += dt;
         if (platformTimer >= nextPlatform) {
           platformTimer = 0; spawnPlatformRoute(); nextPlatform = 9 + Math.random() * 5;
