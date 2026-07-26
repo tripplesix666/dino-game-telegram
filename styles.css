@@ -43,12 +43,13 @@ body:not(.menu-open) .app-version { left: max(66px, calc(env(safe-area-inset-lef
 body.night:not(.menu-open) .app-version { color: rgba(255, 255, 255, .42); }
 
 .game-shell {
-  height: var(--tg-viewport-stable-height, 100dvh);
+  width: min(100%, 560px);
+  height: min(var(--tg-viewport-stable-height, 100dvh), 1000px);
   position: relative;
   display: grid;
   grid-template-rows: 1fr 42px;
-  max-width: 1500px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 body.menu-open .topbar { display: none; }
@@ -166,7 +167,7 @@ h1, h2 { margin: 0; font-size: clamp(34px, 7vw, 66px); letter-spacing: .12em; li
 .result-row strong { font-size: 26px; letter-spacing: 3px; }
 .divider { width: 1px; background: #ccc; }
 
-.mobile-controls { display: flex; position: fixed; z-index: 3; left: max(18px, env(safe-area-inset-left)); right: max(18px, env(safe-area-inset-right)); bottom: 58px; justify-content: space-between; pointer-events: none; }
+.mobile-controls { display: flex; position: absolute; z-index: 3; left: max(18px, env(safe-area-inset-left)); right: max(18px, env(safe-area-inset-right)); bottom: 58px; justify-content: space-between; pointer-events: none; }
 .mobile-controls button {
   pointer-events: auto; width: 74px; height: 74px; border: 2px solid rgba(47,49,51,.35);
   border-radius: 50%; background: rgba(223,243,255,.78); color: var(--ink); font-size: 30px;
@@ -563,7 +564,7 @@ body.locations-open .third-location-view {
 }
 
 body.locations-open .third-location-stage {
-  min-height: var(--tg-viewport-stable-height, 100dvh);
+  min-height: 100%;
   border: 0;
   border-radius: 0;
   box-shadow: none;
