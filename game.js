@@ -139,6 +139,15 @@
     image.addEventListener('load', draw);
     return image;
   });
+  const BIRD_VARIANTS = ['green', 'orange'].map(id => ({
+    id,
+    frames: [1, 2].map(frame => {
+      const image = new Image();
+      image.src = `assets/obstacles/birds/${id}-${frame}.png`;
+      image.addEventListener('load', draw);
+      return image;
+    })
+  }));
   const CACTUS_VARIANTS = [
     { source: 'assets/obstacles/cactus-1.png', w: 33, h: 50 },
     { source: 'assets/obstacles/cactus-2.png', w: 46, h: 75 },
@@ -490,7 +499,8 @@
     const birdAllowed = score >= LOCATIONS[1].from && Math.random() < .28;
     if (birdAllowed) {
       const levels = [groundY - 54, groundY - 88, groundY - 122];
-      obstacles.push({ type: 'bird', x: width + 30, y: levels[Math.floor(Math.random() * levels.length)], w: 66, h: 48, frame: 0 });
+      const variant = BIRD_VARIANTS[Math.floor(Math.random() * BIRD_VARIANTS.length)];
+      obstacles.push({ type: 'bird', x: width + 30, y: levels[Math.floor(Math.random() * levels.length)], w: 72, h: 48, frame: 0, variant });
     } else {
       const variant = CACTUS_VARIANTS[Math.floor(Math.random() * CACTUS_VARIANTS.length)];
       obstacles.push({ type: 'cactus', x: width + 30, y: groundY - variant.h, w: variant.w, h: variant.h, variant });
@@ -791,18 +801,23 @@
   }
 
   function drawBird(o) {
-    const up = Math.floor(o.frame * 9) % 2 === 0;
-    const birdScale = 1.18;
-    spriteColor = C.ink;
-    ctx.save(); ctx.translate(o.x + 56 * birdScale, o.y + 5); ctx.scale(-birdScale, birdScale);
-    rect(13, 10, 29, 12); rect(36, 6, 13, 13); rect(47, 10, 9, 4);
-    rect(3, 13, 15, 6); rect(0, 10, 7, 4); rect(40, 9, 3, 3, C.paper);
-    if (up) {
-      rect(14, 4, 23, 8); rect(18, 0, 17, 5); rect(22, -4, 11, 5);
-    } else {
-      rect(12, 20, 26, 7); rect(17, 27, 20, 5); rect(24, 32, 12, 4);
+    const frames = o.variant?.frames;
+    const image = frames?.[Math.floor(o.frame * 7) % 2];
+    if (image?.complete && image.naturalWidth) {
+      const drawWidth = 112;
+      const drawHeight = 80;
+      const drawX = o.x - (drawWidth - o.w) / 2;
+      const drawY = o.y - (drawHeight - o.h) / 2;
+      ctx.save();
+      ctx.translate(drawX + drawWidth, drawY);
+      ctx.scale(-1, 1);
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(image, 0, 0, drawWidth, drawHeight);
+      ctx.restore();
+      return;
     }
-    ctx.restore();
+    spriteColor = C.ink;
+    rect(o.x, o.y, o.w, o.h);
   }
 
   function drawCoin(coin) {
