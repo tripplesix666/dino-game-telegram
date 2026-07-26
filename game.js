@@ -52,7 +52,9 @@
   const thirdFlagRecord = document.querySelector('#thirdFlagRecord');
   const thirdRouteStart = document.querySelector('#thirdRouteStart');
   const thirdRouteEnd = document.querySelector('#thirdRouteEnd');
-  const thirdDistanceLeft = document.querySelector('#thirdDistanceLeft');
+  const thirdAttempts = document.querySelector('#thirdAttempts');
+  const thirdBestResult = document.querySelector('#thirdBestResult');
+  const thirdExplored = document.querySelector('#thirdExplored');
   const thirdLocationPlay = document.querySelector('#thirdLocationPlay');
   const thirdLocationPrev = document.querySelector('#thirdLocationPrev');
   const thirdLocationNext = document.querySelector('#thirdLocationNext');
@@ -71,7 +73,7 @@
   ];
   let width = 0, height = 0, scale = 1, groundY = 0;
   let running = false, paused = false, gameOver = false, lastTime = 0, elapsed = 0, score = 0, speed = 430;
-  let rafId = 0, devStartDistance = 0, devObstacleFree = false;
+  let rafId = 0, devStartDistance = 0, devObstacleFree = false, pendingAttemptIsDeveloper = false;
   let runSessionPromise = null;
   let spawnTimer = 0, nextSpawn = 1.25, coinTimer = 0, nextCoin = 1.8, platformTimer = 0, nextPlatform = 6, animTime = 0, milestone = 0, coinCount = 0;
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
@@ -82,6 +84,13 @@
   let menuMusicTimer = null, menuMusicStep = 0, gameMusicTimer = null, gameMusicStep = 0, activeMenuSection = 'main';
   let highScore = Number(localStorage.getItem('dino-high-score') || 0);
   let totalCoins = Number(localStorage.getItem('dino-total-coins') || 0);
+  let locationAttempts = {};
+  try {
+    const savedAttempts = JSON.parse(localStorage.getItem('dino-location-attempts') || '{}');
+    if (savedAttempts && typeof savedAttempts === 'object' && !Array.isArray(savedAttempts)) locationAttempts = savedAttempts;
+  } catch {
+    locationAttempts = {};
+  }
   const SKINS = [
     { id: 'classic', name: 'КЛАССИЧЕСКИЙ', price: 0, color: '#07977e', accent: '#52c66d', image: 'assets/skins/classic.jpg', gameSprites: ['assets/game-skins/classic-run-4.png', 'assets/game-skins/classic-run-8.png'] },
     { id: 'desert', name: 'ПУСТЫННЫЙ', price: 0, color: '#b87529', accent: '#e1a54e', image: 'assets/skins/desert.jpg', gameSprites: ['assets/game-skins/desert.png', 'assets/game-skins/desert-run-2.png'] },
@@ -205,6 +214,11 @@
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     stopMenuMusic(); stopGameMusic();
     reset(); score = devStartDistance; speed = devObstacleFree ? 890 : Math.min(890, 430 + score * .095);
+    if (!pendingAttemptIsDeveloper) {
+      const startedLocation = LOCATIONS.find(location => score >= location.from && score < location.to) || LOCATIONS[0];
+      locationAttempts[startedLocation.theme] = Math.max(0, Number(locationAttempts[startedLocation.theme]) || 0) + 1;
+      localStorage.setItem('dino-location-attempts', JSON.stringify(locationAttempts));
+    }
     runSessionPromise = !isDeveloperRun() && window.DinoCloud?.enabled
       ? window.DinoCloud.startRun()
       : null;
@@ -230,10 +244,13 @@
     thirdFlagRecord.textContent = `${formatScore(highScore)} М`;
     thirdRouteStart.textContent = String(viewedLocation.from);
     thirdRouteEnd.textContent = `${viewedLocation.to} М`;
-    thirdDistanceLeft.textContent = `${Math.max(0, Math.ceil(viewedLocation.to - Math.max(highScore, viewedLocation.from)))} М`;
+    const bestLocationResult = Math.max(0, Math.min(viewedLocation.to - viewedLocation.from, highScore - viewedLocation.from));
+    thirdAttempts.textContent = String(Math.max(0, Number(locationAttempts[viewedLocation.theme]) || 0)).padStart(2, '0');
+    thirdBestResult.textContent = `${formatScore(bestLocationResult)} М`;
+    thirdExplored.textContent = `${Math.round(locationProgress * 100)}%`;
     thirdLocationPlay.dataset.locationStart = String(viewedLocation.from);
     thirdLocationPlay.disabled = viewedLocation.from !== 0;
-    thirdLocationPlay.textContent = viewedLocation.from === 0 ? 'ИГРАТЬ' : 'СКОРО';
+    thirdLocationPlay.textContent = `НАЧАТЬ С ${viewedLocation.from} М`;
     thirdLocationPrev.classList.toggle('hidden', thirdViewedLocationIndex === 0);
     thirdLocationNext.classList.toggle('hidden', thirdViewedLocationIndex === LOCATIONS.length - 1);
   }
@@ -1013,14 +1030,14 @@
   duckButton.addEventListener('pointerdown', e => { e.preventDefault(); setDuck(true); });
   for (const event of ['pointerup', 'pointercancel', 'pointerleave']) duckButton.addEventListener(event, () => setDuck(false));
   startButton.addEventListener('click', () => { showMenuSection('locations'); beep(420, .035, .01); });
-  desertLocationButton.addEventListener('click', () => { devStartDistance = 0; devObstacleFree = false; start(); });
+  desertLocationButton.addEventListener('click', () => { devStartDistance = 0; devObstacleFree = false; pendingAttemptIsDeveloper = false; start(); });
   newLocationGrid.addEventListener('click', e => {
     const card = e.target.closest('[data-location-start]'); if (!card) return;
-    devStartDistance = Number(card.dataset.locationStart); devObstacleFree = false; start();
+    devStartDistance = Number(card.dataset.locationStart); devObstacleFree = false; pendingAttemptIsDeveloper = false; start();
   });
   thirdLocationPlay.addEventListener('click', () => {
     if (thirdLocationPlay.disabled) return;
-    devStartDistance = Number(thirdLocationPlay.dataset.locationStart || 0); devObstacleFree = false; start();
+    devStartDistance = Number(thirdLocationPlay.dataset.locationStart || 0); devObstacleFree = false; pendingAttemptIsDeveloper = false; start();
   });
   thirdLocationPrev.addEventListener('click', () => { renderThirdLocation(thirdViewedLocationIndex - 1); beep(360, .035, .01); });
   thirdLocationNext.addEventListener('click', () => { renderThirdLocation(thirdViewedLocationIndex + 1); beep(480, .035, .01); });
@@ -1039,6 +1056,7 @@
     const button = e.target.closest('[data-distance], [data-obstacle-free]'); if (!button) return;
     devObstacleFree = button.hasAttribute('data-obstacle-free');
     devStartDistance = devObstacleFree ? 0 : Number(button.dataset.distance);
+    pendingAttemptIsDeveloper = true;
     beep(560, .05, .015); start();
   });
   locationViewButtons.addEventListener('click', e => {

@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=63" />
+  <link rel="stylesheet" href="styles.css?v=64" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.15.26</span>
+  <span class="app-version" aria-label="Версия приложения">v0.15.27</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -172,9 +172,21 @@
                 </div>
                 <div class="third-record-flag"><strong id="thirdFlagRecord">00531 М</strong></div>
                 <div class="third-stage-footer">
-                  <p>ДО КОНЦА ЛОКАЦИИ</p>
-                  <strong id="thirdDistanceLeft">2469 М</strong>
-                  <button id="thirdLocationPlay" type="button">ИГРАТЬ</button>
+                  <div class="third-location-stats">
+                    <div class="third-location-stat">
+                      <small>ПОПЫТКИ</small>
+                      <strong id="thirdAttempts">00</strong>
+                    </div>
+                    <div class="third-location-stat">
+                      <small>ЛУЧШИЙ РЕЗУЛЬТАТ</small>
+                      <strong id="thirdBestResult">00000 М</strong>
+                    </div>
+                    <div class="third-location-stat">
+                      <small>ИССЛЕДОВАНО</small>
+                      <strong id="thirdExplored">0%</strong>
+                    </div>
+                  </div>
+                  <button id="thirdLocationPlay" type="button">НАЧАТЬ С 0 М</button>
                 </div>
               </div>
             </div>
@@ -276,6 +288,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=64"></script>
+  <script src="game.js?v=65"></script>
 </body>
 </html>
