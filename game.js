@@ -134,6 +134,9 @@
   const forestSkyTexture = new Image();
   forestSkyTexture.src = 'assets/forest-sky-day.png?v=2';
   forestSkyTexture.addEventListener('load', draw);
+  const swampSkyTexture = new Image();
+  swampSkyTexture.src = 'assets/swamp-sky-day.png?v=1';
+  swampSkyTexture.addEventListener('load', draw);
   const jungleSkyTexture = new Image();
   jungleSkyTexture.src = 'assets/jungle-sky-day.png?v=1';
   jungleSkyTexture.addEventListener('load', draw);
@@ -890,9 +893,17 @@
     return 1;
   }
 
+  function swampLocationAmount() {
+    if (score < 5850 || score >= 9000) return 0;
+    if (score < 6000) return smoothstep((score - 5850) / 150);
+    if (score > 8850) return 1 - smoothstep((score - 8850) / 150);
+    return 1;
+  }
+
   function drawSkyBackground() {
     drawTiledSkyTexture(daySkyTexture, 1.4);
     drawTiledSkyTexture(forestSkyTexture, .62, forestLocationAmount());
+    drawTiledSkyTexture(swampSkyTexture, .56, swampLocationAmount());
     drawTiledSkyTexture(jungleSkyTexture, .52, jungleLocationAmount());
   }
 
