@@ -25,6 +25,8 @@
   const skinGrid = document.querySelector('#skinGrid');
   const devDistanceButtons = document.querySelector('#devDistanceButtons');
   const locationViewButtons = document.querySelector('#locationViewButtons');
+  const devFogToggle = document.querySelector('#devFogToggle');
+  const devFogLabel = document.querySelector('#devFogLabel');
   const devJumpControls = document.querySelector('#devJumpControls');
   const mainMenuScreen = document.querySelector('#mainMenuScreen');
   const locationsMenuScreen = document.querySelector('#locationsMenuScreen');
@@ -86,6 +88,7 @@
   let soundOn = localStorage.getItem('dino-sound') !== 'off';
   const savedLocationView = localStorage.getItem('dino-location-view');
   let locationView = ['legacy', 'new', 'third'].includes(savedLocationView) ? savedLocationView : 'third';
+  let devFogEnabled = localStorage.getItem('dino-dev-fog') !== 'off';
   let thirdViewedLocationIndex = null;
   let audio = null;
   let menuMusicTimer = null, menuMusicStep = 0, gameMusicTimer = null, gameMusicStep = 0, activeMenuSection = 'main';
@@ -313,6 +316,12 @@
     for (const button of locationViewButtons.querySelectorAll('[data-location-view]')) {
       button.setAttribute('aria-pressed', String(button.dataset.locationView === locationView));
     }
+  }
+
+  function updateDevFog() {
+    document.body.classList.toggle('dev-fog-off', !devFogEnabled);
+    devFogToggle.setAttribute('aria-pressed', String(devFogEnabled));
+    devFogLabel.textContent = `ТУМАН: ${devFogEnabled ? 'ВКЛ' : 'ВЫКЛ'}`;
   }
 
   function renderSkinShop() {
@@ -1112,6 +1121,11 @@
     localStorage.setItem('dino-location-view', locationView);
     updateLocationView(); updateMenuStats(); beep(430, .04, .012);
   });
+  devFogToggle.addEventListener('click', () => {
+    devFogEnabled = !devFogEnabled;
+    localStorage.setItem('dino-dev-fog', devFogEnabled ? 'on' : 'off');
+    updateDevFog(); beep(devFogEnabled ? 460 : 300, .04, .012);
+  });
   devJumpControls.addEventListener('click', e => {
     const button = e.target.closest('[data-jump-distance]');
     if (!button || !devObstacleFree || !running) return;
@@ -1130,6 +1144,7 @@
   for (const button of document.querySelectorAll('[data-menu-back]')) button.addEventListener('click', () => { showMenuSection('main'); beep(320, .035, .01); });
   soundButton.addEventListener('click', toggleSound);
   menuSoundToggle.addEventListener('click', toggleSound);
+  updateDevFog();
   document.addEventListener('pointerdown', () => startMenuMusic(), { once: true });
   window.addEventListener('resize', resize);
   document.addEventListener('visibilitychange', () => {

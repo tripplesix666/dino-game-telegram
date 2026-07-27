@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=66" />
+  <link rel="stylesheet" href="styles.css?v=67" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.15.34</span>
+  <span class="app-version" aria-label="Версия приложения">v0.15.35</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -217,6 +217,10 @@
                 <button type="button" data-location-view="new" aria-pressed="false">НОВАЯ</button>
                 <button type="button" data-location-view="third" aria-pressed="true">ВАРИАНТ 3</button>
               </div>
+              <button id="devFogToggle" class="settings-toggle developer-fog-toggle" type="button" aria-pressed="true">
+                <span class="settings-toggle-icon" aria-hidden="true">☁</span>
+                <span id="devFogLabel">ТУМАН: ВКЛ</span>
+              </button>
               <p class="eyebrow dev-run-title">ТЕСТОВЫЙ ЗАБЕГ</p>
               <p>Быстро запусти игру с начала нужной локации. Рекорд не сохраняется.</p>
               <div id="devDistanceButtons" class="dev-distances dev-start-distances">
@@ -277,6 +281,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=72"></script>
+  <script src="game.js?v=73"></script>
 </body>
 </html>
