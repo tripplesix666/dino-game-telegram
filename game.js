@@ -68,11 +68,15 @@
   const LOCATIONS = [
     { name: 'ПУСТЫНЯ', from: 0, to: 3000, theme: 'desert' },
     { name: 'ЛЕС', from: 3000, to: 6000, theme: 'forest' },
-    { name: 'ДЖУНГЛИ', from: 6000, to: 9000, theme: 'jungle' },
-    { name: 'МЕТЕОРИТНЫЙ ДОЖДЬ', from: 9000, to: 12000, theme: 'meteor' },
-    { name: 'ЛЕДНИКОВЫЙ ПЕРИОД', from: 12000, to: 15000, theme: 'ice' },
-    { name: 'ИСПЕПЕЛЁННАЯ ЗЕМЛЯ', from: 15000, to: 18000, theme: 'scorched' },
-    { name: 'ТОКСИЧНЫЕ БОЛОТА', from: 18000, to: 21000, theme: 'toxic' }
+    { name: 'БОЛОТА', from: 6000, to: 9000, theme: 'swamp' },
+    { name: 'ДЖУНГЛИ', from: 9000, to: 12000, theme: 'jungle' },
+    { name: 'ПАДЕНИЕ АСТЕРОИДА', from: 12000, to: 15000, theme: 'impact' },
+    { name: 'ГЛОБАЛЬНЫЕ ПОЖАРЫ', from: 15000, to: 18000, theme: 'firestorm' },
+    { name: 'ПЕПЕЛЬНАЯ ЗИМА', from: 18000, to: 21000, theme: 'ash' },
+    { name: 'ЛЕДНИКОВЫЙ ПЕРИОД', from: 21000, to: 24000, theme: 'ice' },
+    { name: 'ВОЗРОЖДЕНИЕ', from: 24000, to: 27000, theme: 'rebirth' },
+    { name: 'ДРЕВНЯЯ ЦИВИЛИЗАЦИЯ', from: 27000, to: 30000, theme: 'civilization' },
+    { name: 'КОСМОС', from: 30000, to: 33000, theme: 'space' }
   ];
   let width = 0, height = 0, scale = 1, groundY = 0;
   let running = false, paused = false, gameOver = false, lastTime = 0, elapsed = 0, score = 0, speed = 430;
@@ -583,7 +587,7 @@
         coinTimer = 0; spawnCoins(); nextCoin = 1.8 + Math.random() * 2.1;
       }
 
-      if (score >= LOCATIONS[2].from) {
+      if (score >= LOCATIONS[3].from) {
         platformTimer += dt;
         if (platformTimer >= nextPlatform) {
           platformTimer = 0; spawnPlatformRoute(); nextPlatform = 9 + Math.random() * 5;

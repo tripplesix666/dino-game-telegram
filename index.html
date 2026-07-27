@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f7f7f7" />
   <title>Dino Run</title>
   <script src="https://telegram.org/js/telegram-web-app.js?63"></script>
-  <link rel="stylesheet" href="styles.css?v=65" />
+  <link rel="stylesheet" href="styles.css?v=66" />
 </head>
 <body class="menu-open">
-  <span class="app-version" aria-label="Версия приложения">v0.15.33</span>
+  <span class="app-version" aria-label="Версия приложения">v0.15.34</span>
   <main class="game-shell" aria-label="Игра Динозаврик">
     <header class="topbar">
       <button id="pauseButton" class="icon-button" type="button" aria-label="Поставить игру на паузу">
@@ -64,54 +64,27 @@
               <p>Каждая следующая локация продолжает общий забег.</p>
               <p class="location-record">ТВОЙ РЕКОРД: <strong id="locationRecord">00000 М</strong></p>
               <div id="locationGrid" class="location-grid" aria-label="Выбор локации">
-              <button id="desertLocationButton" class="location-card location-desert" type="button">
-                <span class="location-number">01</span>
-                <span class="location-name">ПУСТЫНЯ</span>
-                <span class="location-range">0–3000 М</span>
-                <span class="location-action">ИГРАТЬ</span>
-              </button>
+              <button id="desertLocationButton" class="location-card location-desert" type="button"><span class="location-number">01</span><span class="location-name">ПУСТЫНЯ</span><span class="location-range">0–3000 М</span><span class="location-action">ИГРАТЬ</span></button>
               <div class="location-connector" data-from="0" data-to="3000" aria-hidden="true"><span><i></i><b></b></span></div>
-              <button class="location-card location-forest locked" type="button" disabled aria-disabled="true">
-                <span class="location-number">02</span>
-                <span class="location-name">ЛЕС</span>
-                <span class="location-range">3000–6000 М</span>
-                <span class="location-action">СКОРО</span>
-              </button>
+              <button class="location-card location-forest locked" type="button" disabled aria-disabled="true"><span class="location-number">02</span><span class="location-name">ЛЕС</span><span class="location-range">3000–6000 М</span><span class="location-action">СКОРО</span></button>
               <div class="location-connector" data-from="3000" data-to="6000" aria-hidden="true"><span><i></i><b></b></span></div>
-              <button class="location-card location-jungle locked" type="button" disabled aria-disabled="true">
-                <span class="location-number">03</span>
-                <span class="location-name">ДЖУНГЛИ</span>
-                <span class="location-range">6000–9000 М</span>
-                <span class="location-action">СКОРО</span>
-              </button>
+              <button class="location-card location-swamp locked" type="button" disabled aria-disabled="true"><span class="location-number">03</span><span class="location-name">БОЛОТА</span><span class="location-range">6000–9000 М</span><span class="location-action">СКОРО</span></button>
               <div class="location-connector" data-from="6000" data-to="9000" aria-hidden="true"><span><i></i><b></b></span></div>
-              <button class="location-card location-meteor locked" type="button" disabled aria-disabled="true">
-                <span class="location-number">04</span>
-                <span class="location-name">МЕТЕОРИТНЫЙ ДОЖДЬ</span>
-                <span class="location-range">9000–12000 М</span>
-                <span class="location-action">СКОРО</span>
-              </button>
+              <button class="location-card location-jungle locked" type="button" disabled aria-disabled="true"><span class="location-number">04</span><span class="location-name">ДЖУНГЛИ</span><span class="location-range">9000–12000 М</span><span class="location-action">СКОРО</span></button>
               <div class="location-connector" data-from="9000" data-to="12000" aria-hidden="true"><span><i></i><b></b></span></div>
-              <button class="location-card location-ice-age locked" type="button" disabled aria-disabled="true">
-                <span class="location-number">05</span>
-                <span class="location-name">ЛЕДНИКОВЫЙ ПЕРИОД</span>
-                <span class="location-range">12000–15000 М</span>
-                <span class="location-action">СКОРО</span>
-              </button>
+              <button class="location-card location-impact locked" type="button" disabled aria-disabled="true"><span class="location-number">05</span><span class="location-name">ПАДЕНИЕ АСТЕРОИДА</span><span class="location-range">12000–15000 М</span><span class="location-action">СКОРО</span></button>
               <div class="location-connector" data-from="12000" data-to="15000" aria-hidden="true"><span><i></i><b></b></span></div>
-              <button class="location-card location-scorched locked" type="button" disabled aria-disabled="true">
-                <span class="location-number">06</span>
-                <span class="location-name">ИСПЕПЕЛЁННАЯ ЗЕМЛЯ</span>
-                <span class="location-range">15000–18000 М</span>
-                <span class="location-action">СКОРО</span>
-              </button>
+              <button class="location-card location-firestorm locked" type="button" disabled aria-disabled="true"><span class="location-number">06</span><span class="location-name">ГЛОБАЛЬНЫЕ ПОЖАРЫ</span><span class="location-range">15000–18000 М</span><span class="location-action">СКОРО</span></button>
               <div class="location-connector" data-from="15000" data-to="18000" aria-hidden="true"><span><i></i><b></b></span></div>
-              <button class="location-card location-toxic locked" type="button" disabled aria-disabled="true">
-                <span class="location-number">07</span>
-                <span class="location-name">ТОКСИЧНЫЕ БОЛОТА</span>
-                <span class="location-range">18000–21000 М</span>
-                <span class="location-action">СКОРО</span>
-              </button>
+              <button class="location-card location-ash locked" type="button" disabled aria-disabled="true"><span class="location-number">07</span><span class="location-name">ПЕПЕЛЬНАЯ ЗИМА</span><span class="location-range">18000–21000 М</span><span class="location-action">СКОРО</span></button>
+              <div class="location-connector" data-from="18000" data-to="21000" aria-hidden="true"><span><i></i><b></b></span></div>
+              <button class="location-card location-ice-age locked" type="button" disabled aria-disabled="true"><span class="location-number">08</span><span class="location-name">ЛЕДНИКОВЫЙ ПЕРИОД</span><span class="location-range">21000–24000 М</span><span class="location-action">СКОРО</span></button>
+              <div class="location-connector" data-from="21000" data-to="24000" aria-hidden="true"><span><i></i><b></b></span></div>
+              <button class="location-card location-rebirth locked" type="button" disabled aria-disabled="true"><span class="location-number">09</span><span class="location-name">ВОЗРОЖДЕНИЕ</span><span class="location-range">24000–27000 М</span><span class="location-action">СКОРО</span></button>
+              <div class="location-connector" data-from="24000" data-to="27000" aria-hidden="true"><span><i></i><b></b></span></div>
+              <button class="location-card location-civilization locked" type="button" disabled aria-disabled="true"><span class="location-number">10</span><span class="location-name">ДРЕВНЯЯ ЦИВИЛИЗАЦИЯ</span><span class="location-range">27000–30000 М</span><span class="location-action">СКОРО</span></button>
+              <div class="location-connector" data-from="27000" data-to="30000" aria-hidden="true"><span><i></i><b></b></span></div>
+              <button class="location-card location-space locked" type="button" disabled aria-disabled="true"><span class="location-number">11</span><span class="location-name">КОСМОС</span><span class="location-range">30000–33000 М</span><span class="location-action">СКОРО</span></button>
               </div>
             </div>
             <div class="new-location-view">
@@ -125,25 +98,37 @@
                   <span class="new-location-copy"><small>ЛОКАЦИЯ 02</small><strong>ЛЕС</strong><em>3000–6000 М</em></span>
                   <span class="new-location-art new-art-forest" aria-hidden="true"><b>🔒</b></span>
                 </button>
-                <button class="new-location-card new-theme-jungle locked" type="button" data-from="6000" data-to="9000" disabled aria-disabled="true">
-                  <span class="new-location-copy"><small>ЛОКАЦИЯ 03</small><strong>ДЖУНГЛИ</strong><em>6000–9000 М</em></span>
+                <button class="new-location-card new-theme-swamp locked" type="button" data-from="6000" data-to="9000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 03</small><strong>БОЛОТА</strong><em>6000–9000 М</em></span>
+                  <span class="new-location-art" aria-hidden="true"><b>🔒</b></span>
+                </button>
+                <button class="new-location-card new-theme-jungle locked" type="button" data-from="9000" data-to="12000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 04</small><strong>ДЖУНГЛИ</strong><em>9000–12000 М</em></span>
                   <span class="new-location-art new-art-jungle" aria-hidden="true"><b>🔒</b></span>
                 </button>
-                <button class="new-location-card new-theme-meteor locked" type="button" data-from="9000" data-to="12000" disabled aria-disabled="true">
-                  <span class="new-location-copy"><small>ЛОКАЦИЯ 04</small><strong>МЕТЕОРИТНЫЙ ДОЖДЬ</strong><em>9000–12000 М</em></span>
-                  <span class="new-location-art new-art-meteor" aria-hidden="true"><b>🔒</b></span>
+                <button class="new-location-card new-theme-impact locked" type="button" data-from="12000" data-to="15000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 05</small><strong>ПАДЕНИЕ АСТЕРОИДА</strong><em>12000–15000 М</em></span>
+                  <span class="new-location-art" aria-hidden="true"><b>🔒</b></span>
                 </button>
-                <button class="new-location-card new-theme-ice locked" type="button" data-from="12000" data-to="15000" disabled aria-disabled="true">
-                  <span class="new-location-copy"><small>ЛОКАЦИЯ 05</small><strong>ЛЕДНИКОВЫЙ ПЕРИОД</strong><em>12000–15000 М</em></span>
-                  <span class="new-location-art new-art-ice" aria-hidden="true"><b>🔒</b></span>
+                <button class="new-location-card new-theme-firestorm locked" type="button" data-from="15000" data-to="18000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 06</small><strong>ГЛОБАЛЬНЫЕ ПОЖАРЫ</strong><em>15000–18000 М</em></span>
+                  <span class="new-location-art" aria-hidden="true"><b>🔒</b></span>
                 </button>
-                <button class="new-location-card new-theme-scorched locked" type="button" data-from="15000" data-to="18000" disabled aria-disabled="true">
-                  <span class="new-location-copy"><small>ЛОКАЦИЯ 06</small><strong>ИСПЕПЕЛЁННАЯ ЗЕМЛЯ</strong><em>15000–18000 М</em></span>
-                  <span class="new-location-art new-art-scorched" aria-hidden="true"><b>🔒</b></span>
+                <button class="new-location-card new-theme-ash locked" type="button" data-from="18000" data-to="21000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 07</small><strong>ПЕПЕЛЬНАЯ ЗИМА</strong><em>18000–21000 М</em></span>
+                  <span class="new-location-art" aria-hidden="true"><b>🔒</b></span>
                 </button>
-                <button class="new-location-card new-theme-toxic locked" type="button" data-from="18000" data-to="21000" disabled aria-disabled="true">
-                  <span class="new-location-copy"><small>ЛОКАЦИЯ 07</small><strong>ТОКСИЧНЫЕ БОЛОТА</strong><em>18000–21000 М</em></span>
-                  <span class="new-location-art new-art-toxic" aria-hidden="true"><b>🔒</b></span>
+                <button class="new-location-card new-theme-ice locked" type="button" data-from="21000" data-to="24000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 08</small><strong>ЛЕДНИКОВЫЙ ПЕРИОД</strong><em>21000–24000 М</em></span><span class="new-location-art" aria-hidden="true"><b>🔒</b></span>
+                </button>
+                <button class="new-location-card new-theme-rebirth locked" type="button" data-from="24000" data-to="27000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 09</small><strong>ВОЗРОЖДЕНИЕ</strong><em>24000–27000 М</em></span><span class="new-location-art" aria-hidden="true"><b>🔒</b></span>
+                </button>
+                <button class="new-location-card new-theme-civilization locked" type="button" data-from="27000" data-to="30000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 10</small><strong>ДРЕВНЯЯ ЦИВИЛИЗАЦИЯ</strong><em>27000–30000 М</em></span><span class="new-location-art" aria-hidden="true"><b>🔒</b></span>
+                </button>
+                <button class="new-location-card new-theme-space locked" type="button" data-from="30000" data-to="33000" disabled aria-disabled="true">
+                  <span class="new-location-copy"><small>ЛОКАЦИЯ 11</small><strong>КОСМОС</strong><em>30000–33000 М</em></span><span class="new-location-art" aria-hidden="true"><b>🔒</b></span>
                 </button>
               </div>
             </div>
@@ -237,11 +222,15 @@
               <div id="devDistanceButtons" class="dev-distances dev-start-distances">
                 <button type="button" data-distance="0"><strong>ПУСТЫНЯ</strong><small>0 М</small></button>
                 <button type="button" data-distance="3000"><strong>ЛЕС</strong><small>3000 М</small></button>
-                <button type="button" data-distance="6000"><strong>ДЖУНГЛИ</strong><small>6000 М</small></button>
-                <button type="button" data-distance="9000"><strong>МЕТЕОРИТЫ</strong><small>9000 М</small></button>
-                <button type="button" data-distance="12000"><strong>ЛЕДНИКОВЫЙ ПЕРИОД</strong><small>12000 М</small></button>
-                <button type="button" data-distance="15000"><strong>ИСПЕПЕЛЁННАЯ ЗЕМЛЯ</strong><small>15000 М</small></button>
-                <button type="button" data-distance="18000"><strong>ТОКСИЧНЫЕ БОЛОТА</strong><small>18000 М</small></button>
+                <button type="button" data-distance="6000"><strong>БОЛОТА</strong><small>6000 М</small></button>
+                <button type="button" data-distance="9000"><strong>ДЖУНГЛИ</strong><small>9000 М</small></button>
+                <button type="button" data-distance="12000"><strong>ПАДЕНИЕ АСТЕРОИДА</strong><small>12000 М</small></button>
+                <button type="button" data-distance="15000"><strong>ГЛОБАЛЬНЫЕ ПОЖАРЫ</strong><small>15000 М</small></button>
+                <button type="button" data-distance="18000"><strong>ПЕПЕЛЬНАЯ ЗИМА</strong><small>18000 М</small></button>
+                <button type="button" data-distance="21000"><strong>ЛЕДНИКОВЫЙ ПЕРИОД</strong><small>21000 М</small></button>
+                <button type="button" data-distance="24000"><strong>ВОЗРОЖДЕНИЕ</strong><small>24000 М</small></button>
+                <button type="button" data-distance="27000"><strong>ДРЕВНЯЯ ЦИВИЛИЗАЦИЯ</strong><small>27000 М</small></button>
+                <button type="button" data-distance="30000"><strong>КОСМОС</strong><small>30000 М</small></button>
                 <button type="button" data-obstacle-free>БЕЗ ПРЕГРАД</button>
               </div>
             </div>
@@ -288,6 +277,6 @@
   </main>
   <script src="telegram.js?v=8"></script>
   <script src="cloud-sync.js?v=8"></script>
-  <script src="game.js?v=71"></script>
+  <script src="game.js?v=72"></script>
 </body>
 </html>

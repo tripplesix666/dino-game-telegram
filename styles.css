@@ -427,11 +427,15 @@ body.menu-open .menu-screen:not(#mainMenuScreen) h2 { color: white; }
 .new-location-art b { position: relative; z-index: 2; display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid rgba(255,255,255,.3); border-radius: 50%; background: rgba(4,13,20,.72); font-size: 20px; }
 .new-theme-desert { --location-bg: url("assets/desert-sky-day.png"); }
 .new-theme-forest { --location-bg: linear-gradient(145deg, #4f8053, #132d23); }
+.new-theme-swamp { --location-bg: url("assets/location-map/toxic-crystal-ground.png?v=1"); }
 .new-theme-jungle { --location-bg: radial-gradient(circle at 70% 28%, #6bd35e, transparent 24%), linear-gradient(145deg, #16755b, #082a21); }
-.new-theme-meteor { --location-bg: radial-gradient(circle at 68% 28%, #ff8739, transparent 10%), linear-gradient(145deg, #5a294d, #171027); }
+.new-theme-impact { --location-bg: url("assets/location-map/meteor-ice-ground.png?v=1"); }
+.new-theme-firestorm { --location-bg: url("assets/location-map/scorched-ground.png?v=1"); }
+.new-theme-ash { --location-bg: linear-gradient(145deg, #6f737a, #20242a); }
 .new-theme-ice { --location-bg: linear-gradient(145deg, #a8edf4, #245589); }
-.new-theme-scorched { --location-bg: url("assets/location-map/scorched-ground.png?v=1"); }
-.new-theme-toxic { --location-bg: url("assets/location-map/toxic-crystal-ground.png?v=1"); }
+.new-theme-rebirth { --location-bg: linear-gradient(145deg, #8fd95c, #245f3d); }
+.new-theme-civilization { --location-bg: linear-gradient(145deg, #deb86b, #65502e); }
+.new-theme-space { --location-bg: radial-gradient(circle at 72% 25%, #7cdcff 0 2%, transparent 3%), linear-gradient(145deg, #182663, #050817 75%); }
 body.location-view-new .legacy-location-view { display: none; }
 body.location-view-new .new-location-view { display: block; }
 .third-location-view { display: none; width: min(680px, 100%); margin: 18px auto 24px; }
@@ -445,22 +449,32 @@ body.location-view-new .new-location-view { display: block; }
 .third-theme-desert { --third-bg: linear-gradient(180deg, #1eaff7 0%, #69d3ff 58%, #a9ebff 100%); }
 .third-theme-desert::before { background: linear-gradient(180deg, rgba(255,255,255,.08), transparent 55%, rgba(7,68,103,.16) 100%); }
 .third-theme-forest { --third-bg: linear-gradient(180deg, #45baf3 0%, #9de4fb 58%, #d8f5fa 100%); }
+.third-theme-swamp { --third-bg: linear-gradient(180deg, #83bbb0 0%, #456f59 55%, #172a22 100%); }
 .third-theme-jungle { --third-bg: radial-gradient(circle at 70% 28%, #72d45f, transparent 25%), linear-gradient(145deg, #17775d, #06271e); }
-.third-theme-meteor { --third-bg: radial-gradient(circle at 65% 30%, #ff8035, transparent 9%), linear-gradient(145deg, #592749, #160e25); }
+.third-theme-impact { --third-bg: radial-gradient(circle at 65% 30%, #ff8035, transparent 9%), linear-gradient(145deg, #592749, #160e25); }
+.third-theme-firestorm { --third-bg: linear-gradient(180deg, #ff7354 0%, #c43a55 48%, #421828 100%); }
+.third-theme-ash { --third-bg: linear-gradient(180deg, #8d939b 0%, #4a4e55 54%, #1b1d22 100%); }
 .third-theme-ice { --third-bg: linear-gradient(145deg, #a7eef4, #255789); }
-.third-theme-scorched { --third-bg: linear-gradient(180deg, #ff7354 0%, #c43a55 48%, #421828 100%); }
-.third-theme-toxic { --third-bg: linear-gradient(180deg, #81d8df 0%, #4a839f 50%, #18243c 100%); }
+.third-theme-rebirth { --third-bg: linear-gradient(180deg, #75d9f2 0%, #8de279 54%, #245b39 100%); }
+.third-theme-civilization { --third-bg: linear-gradient(180deg, #67cce9 0%, #e3c77b 58%, #775936 100%); }
+.third-theme-space { --third-bg: radial-gradient(circle at 22% 18%, #5471bd 0 1%, transparent 2%), radial-gradient(circle at 75% 32%, #b4efff 0 1%, transparent 2%), linear-gradient(180deg, #111b4b, #03050d 78%); }
 .third-island-layer { position: absolute; z-index: 3; inset: 0; display: none; background: url("assets/location-map/desert-forest-ground.png") center / 100% 100% no-repeat; pointer-events: none; }
 .third-theme-desert .third-island-layer { display: block; }
 .third-theme-forest .third-island-layer { display: block; background-image: url("assets/location-map/forest-jungle-ground.png?v=1"); }
+.third-theme-swamp .third-island-layer { display: block; background-image: url("assets/location-map/toxic-crystal-ground.png?v=1"); }
 .third-theme-jungle .third-island-layer { display: block; background-image: url("assets/location-map/jungle-meteor-ground.png?v=1"); }
-.third-theme-meteor .third-island-layer { display: block; background-image: url("assets/location-map/meteor-ice-ground.png?v=1"); }
+.third-theme-impact .third-island-layer { display: block; background-image: url("assets/location-map/meteor-ice-ground.png?v=1"); }
+.third-theme-firestorm .third-island-layer,
+.third-theme-ash .third-island-layer { display: block; background-image: url("assets/location-map/scorched-ground.png?v=1"); }
 .third-theme-ice .third-island-layer { display: block; background-image: url("assets/location-map/ice-scorched-ground.png?v=1"); }
-.third-theme-scorched .third-island-layer { display: block; background-image: url("assets/location-map/scorched-ground.png?v=1"); }
-.third-theme-toxic .third-island-layer { display: block; background-image: url("assets/location-map/toxic-crystal-ground.png?v=1"); }
+.third-theme-rebirth .third-island-layer { display: block; background-image: url("assets/location-map/forest-jungle-ground.png?v=1"); }
+.third-theme-civilization .third-island-layer { display: block; background-image: url("assets/location-map/desert-forest-ground.png?v=1"); }
+.third-theme-space .third-island-layer { display: block; background-image: url("assets/location-map/toxic-crystal-ground.png?v=1"); filter: hue-rotate(120deg) brightness(.62); }
 .third-map-clouds { position: absolute; z-index: 4; top: 33%; right: 0; left: 0; display: none; height: 17%; overflow: hidden; pointer-events: none; }
 .third-theme-desert .third-map-clouds,
-.third-theme-forest .third-map-clouds { display: block; }
+.third-theme-forest .third-map-clouds,
+.third-theme-rebirth .third-map-clouds,
+.third-theme-civilization .third-map-clouds { display: block; }
 .third-map-clouds i { position: absolute; left: -32%; display: block; width: 132px; height: 72px; background-position: center; background-repeat: no-repeat; background-size: contain; image-rendering: pixelated; opacity: 1; transform-origin: center bottom; animation: third-cloud-drift var(--cloud-time) linear infinite; animation-delay: var(--cloud-delay); }
 .third-map-clouds i:nth-child(1)  { --cloud-time: 28s; --cloud-delay: -21s; top: 56%; background-image: url("assets/location-map/clouds/cloud-1.png?v=3"); scale: 1.05; }
 .third-map-clouds i:nth-child(2)  { --cloud-time: 68s; --cloud-delay: -42s; top: 5%;  background-image: url("assets/location-map/clouds/cloud-2.png?v=3"); scale: .46; }
@@ -602,11 +616,15 @@ body.locations-open .third-stage-heading {
 .location-card:not(:disabled):hover::before { transform: scale(1.04); }
 .location-desert::before { background-image: url("assets/desert-sky-day.png"); background-color: #e5a93e; }
 .location-forest::before { background: linear-gradient(155deg, #29683d, #082b25 70%); }
+.location-swamp::before { background-image: url("assets/location-map/toxic-crystal-ground.png?v=1"); background-color: #264c36; }
 .location-jungle::before { background: radial-gradient(circle at 70% 28%, rgba(104,214,95,.72), transparent 24%), linear-gradient(145deg, #13735d, #05291f 72%); }
-.location-meteor::before { background: radial-gradient(circle at 74% 22%, #ff9b3d 0 2%, transparent 3%), linear-gradient(145deg, #4d244a, #140d26 72%); }
+.location-impact::before { background-image: url("assets/location-map/meteor-ice-ground.png?v=1"); background-color: #4d244a; }
+.location-firestorm::before { background-image: url("assets/location-map/scorched-ground.png?v=1"); background-color: #4a1c21; }
+.location-ash::before { background: linear-gradient(145deg, #777b82, #20242b 72%); }
 .location-ice-age::before { background: radial-gradient(circle at 70% 22%, rgba(225,250,255,.75), transparent 24%), linear-gradient(145deg, #6ccfe5, #173b68 74%); }
-.location-scorched::before { background-image: url("assets/location-map/scorched-ground.png?v=1"); background-color: #4a1c21; }
-.location-toxic::before { background-image: url("assets/location-map/toxic-crystal-ground.png?v=1"); background-color: #183047; }
+.location-rebirth::before { background: linear-gradient(145deg, #7bd660, #245f3d 72%); }
+.location-civilization::before { background: linear-gradient(145deg, #e0be73, #69502e 72%); }
+.location-space::before { background: radial-gradient(circle at 70% 25%, #8ce7ff 0 1.5%, transparent 2.5%), linear-gradient(145deg, #17245b, #040611 76%); }
 .location-number { position: absolute; top: 15px; left: 17px; font-size: 13px; font-weight: 900; opacity: .8; }
 .location-name { font-size: clamp(24px, 5vw, 36px); font-weight: 950; letter-spacing: 1px; }
 .location-range { margin-top: 3px; color: #cde8f1; font-size: 13px; font-weight: 800; letter-spacing: 1px; }
