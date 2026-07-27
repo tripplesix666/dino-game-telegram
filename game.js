@@ -132,7 +132,7 @@
   daySkyTexture.src = 'assets/desert-sky-day.png';
   daySkyTexture.addEventListener('load', draw);
   const forestSkyTexture = new Image();
-  forestSkyTexture.src = 'assets/forest-sky-day.png';
+  forestSkyTexture.src = 'assets/forest-sky-day.png?v=2';
   forestSkyTexture.addEventListener('load', draw);
   const sunTexture = new Image();
   sunTexture.src = 'assets/voxel-sun.png';
