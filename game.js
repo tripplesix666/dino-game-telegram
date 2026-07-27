@@ -134,6 +134,9 @@
   const forestSkyTexture = new Image();
   forestSkyTexture.src = 'assets/forest-sky-day.png?v=2';
   forestSkyTexture.addEventListener('load', draw);
+  const jungleSkyTexture = new Image();
+  jungleSkyTexture.src = 'assets/jungle-sky-day.png?v=1';
+  jungleSkyTexture.addEventListener('load', draw);
   const sunTexture = new Image();
   sunTexture.src = 'assets/voxel-sun.png';
   sunTexture.addEventListener('load', draw);
@@ -880,9 +883,17 @@
     return 1;
   }
 
+  function jungleLocationAmount() {
+    if (score < 8850 || score >= 12000) return 0;
+    if (score < 9000) return smoothstep((score - 8850) / 150);
+    if (score > 11850) return 1 - smoothstep((score - 11850) / 150);
+    return 1;
+  }
+
   function drawSkyBackground() {
     drawTiledSkyTexture(daySkyTexture, 1.4);
     drawTiledSkyTexture(forestSkyTexture, .62, forestLocationAmount());
+    drawTiledSkyTexture(jungleSkyTexture, .52, jungleLocationAmount());
   }
 
   function drawTiledGroundTexture(texture, sourceTop, surfaceY, alpha = 1) {
