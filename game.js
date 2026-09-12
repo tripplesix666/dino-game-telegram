@@ -126,7 +126,7 @@
   groundTexture.src = 'assets/desert-ground.png';
   groundTexture.addEventListener('load', draw);
   const forestGroundTexture = new Image();
-  forestGroundTexture.src = 'assets/forest-ground.png';
+  forestGroundTexture.src = 'assets/forest-ground.png?v=2';
   forestGroundTexture.addEventListener('load', draw);
   const daySkyTexture = new Image();
   daySkyTexture.src = 'assets/desert-sky-day.png';
