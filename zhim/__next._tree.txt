@@ -1,2 +1,2 @@
-:HL["/dino-game-telegram/zhim/_next/static/chunks/0fnvi9x_z3y0h.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"V3ALqPQnyh5gySWy6Qiw2"}
+:HL["/dino-game-telegram/zhim/_next/static/chunks/128r3cn0a7g--.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"zao-XZTduwMrQSDfc08Ko"}
