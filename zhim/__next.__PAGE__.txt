@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
 2:I[732,["/dino-game-telegram/zhim/_next/static/chunks/0typu5mmra_zv.js"],"ClientPageRoot"]
-3:I[31713,["/dino-game-telegram/zhim/_next/static/chunks/0typu5mmra_zv.js","/dino-game-telegram/zhim/_next/static/chunks/0akog81bk2pc~.js"],"default"]
+3:I[31713,["/dino-game-telegram/zhim/_next/static/chunks/0typu5mmra_zv.js","/dino-game-telegram/zhim/_next/static/chunks/0rq6lp7k9zqha.js"],"default"]
 6:I[25326,["/dino-game-telegram/zhim/_next/static/chunks/0typu5mmra_zv.js"],"OutletBoundary"]
 7:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/dino-game-telegram/zhim/_next/static/chunks/0akog81bk2pc~.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"TycStqkhCTvjNnNPLykVi"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"Component":"$3","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@4","$@5"]}}],[["$","script","script-0",{"src":"/dino-game-telegram/zhim/_next/static/chunks/0rq6lp7k9zqha.js","async":true}]],["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"GU00UyakNrs70mYagdc6c"}
 4:{}
 5:"$0:rsc:props:children:0:props:serverProvidedParams:params"
 8:null
